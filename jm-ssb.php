@@ -1,13 +1,13 @@
 <?php
 /*
 	Plugin Name: Jogar Mais - Social Share Buttons
-	Plugin URI: http://share.jogarmais.com.br
+	Plugin URI: http://jogarmais.com.br
 	Version: 1.0.0
 	Author: Victor Freitas
 	Author URI: http://jogarmais.com.br
 	License: GPL2
 	Text Domain: jm-ssb
-	Description: Insere botões de compartilhamento das redes sociais. Os botões podem ser inseridos via shortcode ou método php.
+	Description: Insere botões de compartilhamento das redes sociais. Os botões são inseridos automáticamente ou podem ser chamados via shortcode ou método php.
 */
 
 namespace JM\Share_Buttons;
