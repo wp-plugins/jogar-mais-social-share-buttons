@@ -1,6 +1,6 @@
 <?php
 /*
-	Plugin Name: Jogar Mais - Social Share Buttons
+	Plugin Name: Social Share Buttons by Jogar Mais
 	Plugin URI: http://jogarmais.com.br
 	Version: 1.0.0
 	Author: Victor Freitas
@@ -23,7 +23,7 @@ class Init
 	const DS = DIRECTORY_SEPARATOR;
 	const FILE = __FILE__;
 
-	const JOGAR_MAIS_SOCIAL_BUTTONS_NAME = 'Jogar Mais - Social Share Buttons';
+	const JOGAR_MAIS_SOCIAL_BUTTONS_NAME = 'Social Share Buttons by Jogar Mais';
 
 	const JOGAR_MAIS_SOCIAL_BUTTONS_DESC = 'Adiciona os botões de compartilhamento para seus posts e páginas';
 

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Jogar Mais - Social Share Buttons
+ * @package Social Share Buttons by Jogar Mais
  * @author  Victor Freitas
  * @subpackage Social Icons Display
  */

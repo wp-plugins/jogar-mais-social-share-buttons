@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Jogar Mais - Social Share Buttons | Admin
+ * @package Social Share Buttons by Jogar Mais | Admin
  * @author  Victor Freitas
  * @subpackage View Admin Page
  * @version 1.0
