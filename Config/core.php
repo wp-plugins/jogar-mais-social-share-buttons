@@ -10,6 +10,7 @@ namespace JM\Share_Buttons;
 
 Init::uses( 'option', 'Controller' );
 Init::uses( 'share', 'Controller' );
+Init::uses( 'settings', 'Model' );
 
 class Core
 {
@@ -27,12 +28,12 @@ class Core
 		self::$share_controller  = new Share_Controller();
 		self::$option_controller = new Option_Controller();
 
-		add_filter( 'plugin_action_links_' . self::_jm_ssb_base_name(), array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_plugin_link' ) );
-		add_action( 'wp_enqueue_scripts', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_admin_css' ) );
-		add_action( 'admin_menu', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_show_menu_page' ) );
-		register_activation_hook( Init::FILE, array( __CLASS__, 'jm_ssb_activate' ) );
-		register_deactivation_hook( Init::FILE, array( __CLASS__, 'jm_ssb_deactivate' ) );
+		add_filter( 'plugin_action_links_' . self::_base_name(), array(  __CLASS__, 'plugin_link' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_css' ) );
+		add_action( 'admin_menu', array( __CLASS__, 'show_menu_page' ) );
+		register_activation_hook( Settings::FILE, array( __CLASS__, 'activate' ) );
+		register_deactivation_hook( Settings::FILE, array( __CLASS__, 'deactivate' ) );
 	}
 
 	/**
@@ -40,7 +41,7 @@ class Core
 	 * @package Register Activation Hook
 	 * @return Void
 	 */
-	public static function jm_ssb_activate()
+	public static function activate()
 	{
 
 	}
@@ -50,7 +51,7 @@ class Core
 	 * @package Register Deactivation Hook
 	 * @return Void
 	 */
-	public static function jm_ssb_deactivate()
+	public static function deactivate()
 	{
 
 	}
@@ -60,9 +61,9 @@ class Core
 	 * @package Adds links page plugin action
 	 * @return Array links action plugins
 	 */
-	public static function jm_ssb_plugin_link( $links )
+	public static function plugin_link( $links )
 	{
-		$settings_link = '<a href="admin.php?page=' . Init::PLUGIN_SLUG . '">' . Init::CONFIG_NAME . '</a>';
+		$settings_link = '<a href="admin.php?page=' . Init::PLUGIN_SLUG . '">Configurações</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -73,7 +74,7 @@ class Core
 	 * @package Title posts
 	 * @return String title posts
 	 */
-	protected static function _jm_ssb_get_title()
+	protected static function _get_title()
 	{
 		global $post;
 
@@ -90,7 +91,7 @@ class Core
 	 * @package Permalinks posts
 	 * @return String permalinks
 	 */
-	protected static function _jm_ssb_get_permalink()
+	protected static function _get_permalink()
 	{
 		global $post;
 
@@ -107,7 +108,7 @@ class Core
 	 * @package Thumbnail posts
 	 * @return String thumbnail
 	 */
-	protected static function _jm_ssb_get_image()
+	protected static function _get_image()
 	{
 		global $post;
 
@@ -127,7 +128,7 @@ class Core
 	 * @package Get content global $post
 	 * @return String content
 	 */
-	protected static function _jm_ssb_body_mail()
+	protected static function _body_mail()
 	{
 		global $post;
 
@@ -148,7 +149,7 @@ class Core
 	 * @package Plugin base file
 	 * @return String
 	 */
-	private static function _jm_ssb_base_name()
+	private static function _base_name()
 	{
 		$plugin_base = plugin_basename( plugin_dir_path( __DIR__ ) . Init::PLUGIN_SLUG . '.php' );
 
@@ -180,18 +181,18 @@ class Core
 	 * @package Generate data all social icons
 	 * @return Object all data links
 	 */
-	protected static function _jm_ssb_services()
+	protected static function _services()
 	{
-		$options = self::$option_controller->jm_ssb_check_options();
+		$options = self::$option_controller->get_options();
 
-		$title       = rawurlencode( '"' . self::_jm_decode( self::_jm_ssb_get_title() . '" ' ) );
-		$url         = rawurlencode( self::_jm_ssb_get_permalink() );
+		$title       = rawurlencode( '"' . self::_jm_decode( self::_get_title() . '" ' ) );
+		$url         = rawurlencode( self::_get_permalink() );
 		$tracking    = rawurlencode( '?utm_source=whatsapp&utm_medium=social_media&utm_campaign=whatsapp' );
-		$thumbnail   = rawurlencode( self::_jm_ssb_get_image() );
-		$get_content = rawurlencode( self::_jm_ssb_body_mail() );
+		$thumbnail   = rawurlencode( self::_get_image() );
+		$get_content = rawurlencode( self::_body_mail() );
 		$caracter    = rawurlencode( '➜ ' );
-		$sms_title   = rawurlencode( self::_jm_replace( '&', 'e', self::_jm_decode( self::_jm_ssb_get_title() ) ) . ' ' );
-		$twitter_via = ( ( ! empty( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ) ) ? '&via=' . esc_html( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ) : '' );
+		$sms_title   = rawurlencode( self::_jm_replace( '&', 'e', self::_jm_decode( self::_get_title() ) ) . ' ' );
+		$twitter_via = ( ( ! empty( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ) ) ? '&via=' . esc_html( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ) : '' );
 
 		$data_action    = 'data-action="open-popup"';
 		$share_services = ( object ) array(
@@ -201,16 +202,16 @@ class Core
 				'link'  => "https://www.facebook.com/sharer/sharer.php?u={$url}",
 				'title' => 'Compartilhar no Facebook',
 				'icon'  => 'facebook.svg',
-				'class' => Init::PLUGIN_PREFIX . '-facebook',
+				'class' => Settings::PLUGIN_PREFIX . '-facebook',
 				'popup' => $data_action,
 				'img'   => 'icon-facebook',
 			),
 			'twitter' => ( object ) array(
 				'name'  => 'Twitter',
-				'link'  => "https://twitter.com/share?url={$url}&text=Acabei de ver {$title} - Clica pra ver também {$caracter}{$twitter_via}",
+				'link'  => "https://twitter.com/share?url={$url}&text=Acabei de ver {$title} - Clique pra ver também {$caracter}{$twitter_via}",
 				'title' => 'Compartilhar no Twitter',
 				'icon'  => 'twitter.svg',
-				'class' => Init::PLUGIN_PREFIX . '-twitter',
+				'class' => Settings::PLUGIN_PREFIX . '-twitter',
 				'popup' => $data_action,
 				'img'   => 'icon-twitter',
 			),
@@ -219,7 +220,7 @@ class Core
 				'link'  => "https://plus.google.com/share?url={$url}",
 				'title' => 'Compartilhar no Google+',
 				'icon'  => 'google_plus.svg',
-				'class' => Init::PLUGIN_PREFIX . '-google-plus',
+				'class' => Settings::PLUGIN_PREFIX . '-google-plus',
 				'popup' => $data_action,
 				'img'   => 'icon-google',
 			),
@@ -228,7 +229,7 @@ class Core
 				'link'  => "whatsapp://send?text={$title}{$caracter}{$url}{$tracking}",
 				'title' => 'Compartilhar no WhatsApp',
 				'icon'  => 'whatsapp.svg',
-				'class' => Init::PLUGIN_PREFIX . '-whatsapp',
+				'class' => Settings::PLUGIN_PREFIX . '-whatsapp',
 				'popup' => '',
 				'img'   => 'icon-whatsapp',
 			),
@@ -237,7 +238,7 @@ class Core
 				'link'  => "sms:?body={$sms_title}{$caracter}{$url}",
 				'title' => 'Enviar via SMS',
 				'icon'  => 'sms.svg',
-				'class' => Init::PLUGIN_PREFIX . '-sms',
+				'class' => Settings::PLUGIN_PREFIX . '-sms',
 				'popup' => '',
 				'img'   => 'icon-sms',
 			),
@@ -246,7 +247,7 @@ class Core
 				'link'  => "https://pinterest.com/pin/create/button/?url={$url}&media={$thumbnail}&description={$title}",
 				'title' => 'Compartilhar no Pinterest',
 				'icon'  => 'pinterest.png',
-				'class' => Init::PLUGIN_PREFIX . '-pinterest',
+				'class' => Settings::PLUGIN_PREFIX . '-pinterest',
 				'popup' => $data_action,
 				'img'   => 'icon-pinterest',
 			),
@@ -255,7 +256,7 @@ class Core
 				'link'  => "https://www.linkedin.com/shareArticle?mini=true&url={$url}&title={$title}",
 				'title' => 'Compartilhar no Linkedin',
 				'icon'  => 'linkedin.svg',
-				'class' => Init::PLUGIN_PREFIX . '-linkedin',
+				'class' => Settings::PLUGIN_PREFIX . '-linkedin',
 				'popup' => $data_action,
 				'img'   => 'icon-linkedin',
 			),
@@ -264,7 +265,7 @@ class Core
 				'link'  => 'http://www.tumblr.com/share',
 				'title' => 'Compartilhar no Tumblr',
 				'icon'  => 'tumblr.svg',
-				'class' => Init::PLUGIN_PREFIX . '-tumblr',
+				'class' => Settings::PLUGIN_PREFIX . '-tumblr',
 				'popup' => $data_action,
 				'img'   => 'icon-tumblr',
 			),
@@ -273,7 +274,7 @@ class Core
 				'link'  => "https://mail.google.com/mail/u/0/?ui=2&view=cm&fs=1&tf=1&su={$title}&body={$get_content}\n{$url}",
 				'title' => 'Enviar via Gmail',
 				'icon'  => 'gmail.svg',
-				'class' => Init::PLUGIN_PREFIX . '-gmail',
+				'class' => Settings::PLUGIN_PREFIX . '-gmail',
 				'popup' => $data_action,
 				'img'   => 'icon-gmail',
 			),
@@ -282,7 +283,7 @@ class Core
 				'link'  => "mailto:?subject={$title}&body={$url}",
 				'title' => 'Enviar por email',
 				'icon'  => 'email.svg',
-				'class' => Init::PLUGIN_PREFIX . '-email',
+				'class' => Settings::PLUGIN_PREFIX . '-email',
 				'popup' => $data_action,
 				'img'   => 'icon-email',
 			),
@@ -291,7 +292,7 @@ class Core
 				'link'  => "http://www.printfriendly.com/print?url={$url}&partner=whatsapp",
 				'title' => 'Imprimir via Print Friendly',
 				'icon'  => 'printfriendly.svg',
-				'class' => Init::PLUGIN_PREFIX . '-print-friendly',
+				'class' => Settings::PLUGIN_PREFIX . '-print-friendly',
 				'popup' => $data_action,
 				'img'   => 'icon-printfriendly',
 			),
@@ -305,26 +306,26 @@ class Core
 	 * @package Enqueue scripts and styles
 	 * @return Void
 	 */
-	public static function jm_ssb_scripts()
+	public static function scripts()
 	{
-		$options = self::$option_controller->jm_ssb_check_options();
+		$options = self::$option_controller->get_options();
 
 		wp_enqueue_script(
-			Init::PLUGIN_PREFIX . '-theme-scripts',
-			self::_jm_ssb_plugin_url( 'javascripts/script.min.js' ),
+			Settings::PLUGIN_PREFIX . '-theme-scripts',
+			self::_plugin_url( 'javascripts/script.min.js' ),
 			array( 'jquery' ),
-			self::_jm_ssb_filetime( self::_jm_ssb_file_path( 'javascripts/script.min.js' ) ),
+			self::_filetime( self::_file_path( 'javascripts/script.min.js' ) ),
 			true
 		);
 
-		if ( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] === 'off' )
+		if ( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] === 'off' )
 			return;
 
 		wp_enqueue_style(
-			Init::PLUGIN_PREFIX . '-theme-style',
-			self::_jm_ssb_plugin_url( 'stylesheet/style.css' ),
+			Settings::PLUGIN_PREFIX . '-theme-style',
+			self::_plugin_url( 'stylesheet/style.css' ),
 			array(),
-			self::_jm_ssb_filetime( self::_jm_ssb_file_path( 'stylesheet/style.css' ) )
+			self::_filetime( self::_file_path( 'stylesheet/style.css' ) )
 		);
 	}
 
@@ -333,13 +334,13 @@ class Core
 	 * @package Enqueue scripts and styles for admin page
 	 * @return Void
 	 */
-	public static function jm_ssb_admin_css()
+	public static function admin_css()
 	{
 		wp_enqueue_style(
-			Init::PLUGIN_PREFIX . '-theme-admin-style',
-			self::_jm_ssb_plugin_url( 'stylesheet/admin.css' ),
+			Settings::PLUGIN_PREFIX . '-theme-admin-style',
+			self::_plugin_url( 'stylesheet/admin.css' ),
 			array(),
-			self::_jm_ssb_filetime( self::_jm_ssb_file_path( 'stylesheet/admin.css' ) )
+			self::_filetime( self::_file_path( 'stylesheet/admin.css' ) )
 		);
 	}
 
@@ -348,15 +349,15 @@ class Core
 	 * @package Register menu page plugin
 	 * @return void
 	 */
-	public function jm_ssb_show_menu_page()
+	public static function show_menu_page()
 	{
 		add_menu_page(
-			'Jogar Mais - Social Share Buttons | Settings',
-			'Social Buttons',
+			'Social Share Buttons by Jogar Mais | Settings',
+			'Share Buttons',
 			'manage_options',
 			Init::PLUGIN_SLUG,
-			array( 'JM\Share_Buttons\Setting_View', Init::PLUGIN_PREFIX_UNDERSCORE . '_options' ),
-			plugins_url( 'assets/icons/menu-icon.png', __DIR__ )
+			array( 'JM\Share_Buttons\Setting_View', 'options' ),
+			'dashicons-share-alt2'
 	  	);
 	}
 
@@ -365,7 +366,7 @@ class Core
 	 * @package Plugin file url in assets directory
 	 * @return String
 	 */
-	protected static function _jm_ssb_plugin_url( $file )
+	protected static function _plugin_url( $file )
 	{
 		$file_url = plugins_url( 'assets/' . $file, __DIR__ );
 
@@ -377,9 +378,9 @@ class Core
 	 * @package Plugin file path in assets directory
 	 * @return String
 	 */
-	protected static function _jm_ssb_file_path( $file )
+	protected static function _file_path( $file )
 	{
-		$path = plugin_dir_path( dirname( __FILE__ ) ) . Init::DS . 'assets/' . $file;
+		$path = plugin_dir_path( dirname( __FILE__ ) ) . Settings::DS . 'assets/' . $file;
 
 		return $path;
 	}
@@ -389,7 +390,7 @@ class Core
 	 * @package Generate file time style and scripts
 	 * @return Integer
 	 */
-	protected static function _jm_ssb_filetime( $path )
+	protected static function _filetime( $path )
 	{
 		$file_time = date( 'dmYHi', filemtime( $path ) );
 
@@ -401,7 +402,7 @@ class Core
 	 * @package Convert string for lowercase
 	 * @return String
 	 */
-	protected static function _jm_ssb_strtolower( $string )
+	protected static function _strtolower( $string )
 	{
 		return strtolower( $string );
 	}
@@ -411,7 +412,7 @@ class Core
 	 * @package Convert string for uppercase
 	 * @return String
 	 */
-	protected static function _jm_ssb_strtoupper( $string )
+	protected static function _strtoupper( $string )
 	{
 		return strtoupper( $string );
 	}

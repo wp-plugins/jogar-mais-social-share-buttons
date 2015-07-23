@@ -11,233 +11,248 @@ namespace JM\Share_Buttons;
 
 class Setting_View extends Share_View
 {
-	public static $options_controller;
-
 	/**
 	 * @since 1.0
 	 * @package Show options admin page
 	 */
-	public static function jm_ssb_options()
+	public static function options()
 	{
-		self::$options_controller = Core::$option_controller;
-		$options                  = self::$options_controller->jm_ssb_check_options();
+		$model   = new Settings();
+		$options = $model->options->get_options();
 	?>
-		<div class="<?php echo Init::PLUGIN_PREFIX; ?>-admin-wrap">
-			<form action="options.php" method="post" class="<?php echo Init::PLUGIN_PREFIX; ?>-db-form">
-		    	
-		    	<div class="<?php echo Init::PLUGIN_PREFIX; ?>-admin-right">
-		    		<span class="<?php echo Init::PLUGIN_PREFIX; ?>-title">Configurações Extras</span>
+		<div class="wrap">
+			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
+			<p><?php echo Settings::PLUGIN_DESC; ?></p>
+			<div class="jm-ssb-settings-wrap">
+				<form action="options.php" method="post">
+					<table class="form-table table-configurations" data-table-configurations>
+						<span class="jm-ssb-settings-title">Configurações</span>
+						<tbody>
+							<tr class="jm-ssb-settings-placements">
+								<th scope="row">
+									<label>Locais disponíveis</label>
+								</th>
+								<td>
+					                <label for="single">
+					                	<span>Single Post</span>
+					                	<input id="single" type="checkbox" value="on"
+					                		   name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_single]"
+					                		   <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_single'] ); ?> />
+					                </label>
+					            </td>								
+								<td>
+					                <label for="pages">
+					                	<span>Páginas</span>
+					                	<input id="pages" type="checkbox" value="on"
+					                		   name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_pages]"
+					                		   <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_pages'] ); ?> />
+					                </label>
+					            </td>
+								<td>
+					                <label for="home">
+					                	<span>Página Home</span>
+					                	<input id="home" type="checkbox" value="on"
+					                		   name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_home]"
+					                		   <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_home'] ); ?> />
+					                </label>
+				                </td>
+								<td>
+					                <label for="before">
+					                	<span>Antes do Conteúdo</span>
+					                	<input id="before" type="checkbox" value="on"
+					                	       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_before]"
+					                	       <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'] ); ?> />
+					                </label>
+				                </td>
+								<td>
+					                <label for="after">
+					                	<span>Depois do Conteúdo</span>
+					                	<input id="after" type="checkbox" value="on"
+					                	       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_after]"
+					                	       <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_after'] ); ?> />
+					                </label>
+				                </td>
+								<td>
+					                <label for="jm-excerpt">
+					                	<span>Exibir em conteúdo curto</span>
+					                	<input id="jm-excerpt" type="checkbox" value="on"
+					                	       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_excerpt]"
+					                	       <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_excerpt'] ); ?> />
+					                </label>
+				                </td>
+							</tr>
+							<tr class="<?php echo Settings::PLUGIN_PREFIX; ?>-icons-settings">
+								<th scope="row">
+									<label for="custom-class">Redes sociais disponíveis</label>
+								</th>
+								<td>
+									<?php
+									foreach ( self::_buttons_settings() as $key => $button ) :
 
-			    		<label for="remove-style">
-			    			<span>Desabilitar CSS</span>
-			    			<input id="remove-style" type="checkbox" value="off" <?php checked( 'off', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] ); ?>
-			    			       name="jm_ssb_style_settings[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_remove_style]" />
-			    		</label>
+										printf( '<label for="%s">', $button->class );
+										printf( '<img src="' . parent::_plugin_url( "icons/%s" ) . '" class="%s">', $button->icon, $button->class );
+										printf( '<input id="%s" type="checkbox" name="jm_ssb[' . Settings::PLUGIN_PREFIX_UNDERSCORE . '_%s]" value="%s" %s>',
+											$button->class,
+											$button->name,
+											$button->name,
+											checked( $button->name, $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_' . $button->name], false )
+										);
+										echo '</label>';
 
-						<label for="icons-style-size">
-			    			<span class="size">Tamanho dos Ícones</span>
-			    			<input id="icons-style-size" type="number" step="1" min="15" max="60" class="small-text"
-			    			       value="<?php echo intval( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'] ); ?>"
-			    			       name="jm_ssb_style_settings[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_icons_style_size]" />px
-			    		</label>
-
-						<label for="<?php echo Init::PLUGIN_PREFIX; ?>-twitter-username">
-			    			<span class="size">Nome de usuário do Twitter</span>
-			    			<input id="<?php echo Init::PLUGIN_PREFIX; ?>-twitter-username" type="text" class="medium-text"
-			    			       value="<?php echo esc_html( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ); ?>"
-			    			       name="jm_ssb_style_settings[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_twitter_via]" />
-			    		</label>
-
-		    	</div>
-
-		        <div class="<?php echo Init::PLUGIN_PREFIX; ?>-admin-top-desc">
-		            <h1><?php echo Init::JOGAR_MAIS_SOCIAL_BUTTONS_NAME; ?><small> - <?php echo Init::JOGAR_MAIS_SOCIAL_BUTTONS_DESC; ?></small></h1>
-		        </div>
-
-				<div class="<?php echo Init::PLUGIN_PREFIX; ?>-admin-content">
-			      <div class="<?php echo Init::PLUGIN_PREFIX; ?>-admin-main">
-			        <div class="thead">
-
-		                <label for="single">
-		                	<span>Single Post</span>
-		                	<input id="single" type="checkbox" value="on"
-		                		   name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_single]"
-		                		   <?php checked( 'on', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_single'] ); ?> />
-		                </label>
-
-		                <label for="pages">
-		                	<span>Páginas</span>
-		                	<input id="pages" type="checkbox" value="on"
-		                		   name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_pages]"
-		                		   <?php checked( 'on', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_pages'] ); ?> />
-		                </label>
-
-		                <label for="home">
-		                	<span>Página Home</span>
-		                	<input id="home" type="checkbox" value="on"
-		                		   name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_home]"
-		                		   <?php checked( 'on', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_home'] ); ?> />
-		                </label>
-
-		                <label for="before">
-		                	<span>Antes do Conteúdo</span>
-		                	<input id="before" type="checkbox" value="on"
-		                	       name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_before]"
-		                	       <?php checked( 'on', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_before'] ); ?> />
-		                </label>
-
-		                <label for="after">
-		                	<span>Depois do Conteúdo</span>
-		                	<input id="after" type="checkbox" value="on"
-		                	       name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_after]"
-		                	       <?php checked( 'on', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_after'] ); ?> />
-		                </label>
-
-		                <label for="jm-excerpt">
-		                	<span>Exibir em conteúdo curto</span>
-		                	<input id="jm-excerpt" type="checkbox" value="on"
-		                	       name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_excerpt]"
-		                	       <?php checked( 'on', $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_excerpt'] ); ?> />
-		                </label>
-
-			        </div>
-
-			        <div class="<?php echo Init::PLUGIN_PREFIX; ?>-custom-class">
-			        	<div class="ssb-custom-title">
-			        		<h2>Classes customizadas para o plugin</h2>
-			        	</div>
-		                <label for="jm-custom-class">
-		                	<span>Classe princípal</span>
-		                	<input id="jm-custom-class" class="regular-text" placeholder="Infome sua classe customizada"
-		                	       name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_class]"
-		                	       value="<?php echo esc_html( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_class'] ); ?>">
-		                </label>
-		            </div>
-
-			      </div>
-				</div>
-
-				<div class="<?php echo Init::PLUGIN_PREFIX; ?>-icons-settings">
-					<div class="ssb-custom-title">
-						<h3>Marque ou remova as redes para compartilhar seus posts</h3>
+									endforeach;
+									?>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="custom-class">Classe personalizada</label>
+								</th>
+								<td>
+									<input id="custom-class" class="large-text" type="text"
+										   placeholder="Classe personalizada para div princípal"
+									       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_class]"
+										   value="<?php echo esc_html( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_class'] ); ?>">
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									Opções de aparência
+								</th>
+								<td>
+									<label for="setting-buttons-theme-main">
+										<input id="setting-buttons-theme-main" type="radio"
+										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
+											   value="0"
+											   <?php checked( 0, $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] ); ?>>
+										Tema princípal
+									</label>
+									<hr>
+									<label for="setting-buttons-theme-secondary">
+										<input id="setting-buttons-theme-secondary" type="radio"
+										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
+											   value="1"
+											   <?php checked( 1, $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] ); ?>>
+										<span title="Obs.: Marcando esta opção o tema princípal será exibido automáticamente para usuários em dispositivos mobile">Tema secundário</span>
+									</label>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="form-table table-extras" data-table-extras>
+						<span class="jm-ssb-settings-title">Configurações Extras</span>
+						<tbody>
+							<tr>
+								<th scope="row">
+									<label for="icons-size">Tamanho dos Ícones</label>
+								</th>
+								<td>
+									<input id="icons-size" step="1" min="15" max="60" type="number"
+									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_icons_style_size]"
+										   value="<?php echo intval( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'] ); ?>">px
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="twitter-username">Twitter username</label>
+								</th>
+								<td>
+									<input id="twitter-username" class="large-text" type="text"
+										   placeholder="Seu nome de usuário do Twitter"
+									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_twitter_via]"
+										   value="<?php echo esc_html( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ); ?>">
+									via @username
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="disable-css">Desabilitar CSS</label>
+								</th>
+								<td>
+									<label for="disable-css">
+										<input id="disable-css" type="checkbox"
+										       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_remove_style]"
+											   value="off"
+											   <?php checked( 'off', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] ); ?>>
+										Marque para desabilitar
+									</label>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="options-use">
+						<span class="jm-ssb-settings-title">Opções de uso</span>
+						<blockquote>Via shortcode: <code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code> //Retorna todos os botões || Obs.: As classes são opcionais</blockquote>
+						<blockquote>Via shortcode: <code>[JMSSBWHATSAPP class=""]</code> //Retorna apenas o botão do WhatsApp</blockquote>
+						<blockquote>Via metódo PHP: <code>JM\Share_Buttons\Share_View::jm_ssb()</code> //Retorna todos os botões</blockquote>
 					</div>
-					<div class="<?php echo Init::PLUGIN_PREFIX; ?>-icons-social">
 					<?php
-					foreach ( self::_jm_ssp_buttons_settings() as $key => $icons ) :
-
-						echo '<label for="' . $icons->class . '">';
-
-						printf( '<img src="' . parent::_jm_ssb_plugin_url( "icons/%s" ) . '" class="%s">', $icons->icon, $icons->class );
-						printf( '<input id="%s" type="checkbox" name="jm_ssb[' . Init::PLUGIN_PREFIX_UNDERSCORE . '_%s]" value="%s"
-						 ' . checked( $icons->name, $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_' . $icons->name], false ) . ' />',
-							$icons->class, $icons->name, $icons->name );
-
-						echo '</label>';
-
-					endforeach;
+						settings_fields( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
+						submit_button( 'Salvar Alterações' );
 					?>
-					</div>
-				</div>
-
-		        <div class="<?php echo Init::PLUGIN_PREFIX; ?>-custom-code">
-		        	<div class="ssb-custom-title">
-		        		<h4>Estilo para desktop</h4>
-		        	</div>
-		        	<div class="style-buttons-settings">
-		        		<blockquote>Obs.: Marcando esta opção o estilo padrão será exibido apenas para usuários em dispositivos móveis.</blockquote>						
-						<span class="icons-settings">
-							
-							<label for="setting-buttons-desktop">
-								<input type="hidden" name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]" value="0">
-								<input type="checkbox" id="setting-buttons-desktop" value="1"
-									   name="jm_ssb[<?php echo Init::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
-									   <?php checked( 1, $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] ); ?>>
-								<img src="<?php echo parent::_jm_ssb_plugin_url( 'images/options-setting-buttons.png' ); ?>" width="360px" height="25px">
-							</label>
-
-						</span>
-					</div>
-		        </div>
-
-		        <div class="<?php echo Init::PLUGIN_PREFIX; ?>-custom-code">
-		        	<div class="ssb-custom-title">
-		        		<h5>Usando shortcode</h5>
-		        	</div>
-		        	<blockquote>Classes são opcionais</blockquote>
-		        	<blockquote><code>[JMSSB class_ul="" class_li="" class_icon="" class_link=""]</code> //Retorna todos os botões</blockquote>
-		        	<blockquote><code>[JMSSBWHATSAPP class=""]</code> //Retorna apenas o botão do WhatsApp</blockquote>
-		        </div>
-
-				<?php
-			        settings_fields( Init::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
-			    ?>
-				<span class="btn-<?php echo Init::PLUGIN_PREFIX; ?>-db">
-					<input type="submit" class="button-primary" value="<?php _e( 'Salvar Alterações' ); ?>" />
-				</span>
-
-		    </form>
+				</form>
+			</div>
 		</div>
 	<?php
 	}
 
-	protected static function _jm_ssp_buttons_settings()
+	protected static function _buttons_settings()
 	{
 		$buttons_settings = ( object ) array(
 
 			'facebook' => ( object ) array(
 				'name'  => 'Facebook',
 				'icon'  => 'facebook.svg',
-				'class' => Init::PLUGIN_PREFIX . '-facebook',
+				'class' => Settings::PLUGIN_PREFIX . '-facebook',
 			),
 			'twitter' => ( object ) array(
 				'name'  => 'Twitter',
 				'icon'  => 'twitter.svg',
-				'class' => Init::PLUGIN_PREFIX . '-twitter',
+				'class' => Settings::PLUGIN_PREFIX . '-twitter',
 			),
 			'google_plus' => ( object ) array(
 				'name'  => 'Google',
 				'icon'  => 'google_plus.svg',
-				'class' => Init::PLUGIN_PREFIX . '-google-plus',
+				'class' => Settings::PLUGIN_PREFIX . '-google-plus',
 			),
 			'whatsapp' => ( object ) array(
 				'name'  => 'Whatsapp',
 				'icon'  => 'whatsapp.svg',
-				'class' => Init::PLUGIN_PREFIX . '-whatsapp',
+				'class' => Settings::PLUGIN_PREFIX . '-whatsapp',
 			),
 			'sms' => ( object ) array(
 				'name'  => 'Sms',
 				'icon'  => 'sms.svg',
-				'class' => Init::PLUGIN_PREFIX . '-sms',
+				'class' => Settings::PLUGIN_PREFIX . '-sms',
 			),
 			'pinterest' => ( object ) array(
 				'name'  => 'Pinterest',
 				'icon'  => 'pinterest.png',
-				'class' => Init::PLUGIN_PREFIX . '-pinterest',
+				'class' => Settings::PLUGIN_PREFIX . '-pinterest',
 			),
 			'linkedin' => ( object ) array(
 				'name'  => 'Linkedin',
 				'icon'  => 'linkedin.svg',
-				'class' => Init::PLUGIN_PREFIX . '-linkedin',
+				'class' => Settings::PLUGIN_PREFIX . '-linkedin',
 			),
 			'tumblr' => ( object ) array(
 				'name'  => 'Tumblr',
 				'icon'  => 'tumblr.svg',
-				'class' => Init::PLUGIN_PREFIX . '-tumblr',
+				'class' => Settings::PLUGIN_PREFIX . '-tumblr',
 			),
 			'gmail' => ( object ) array(
 				'name'  => 'Gmail',
 				'icon'  => 'gmail.svg',
-				'class' => Init::PLUGIN_PREFIX . '-gmail',
+				'class' => Settings::PLUGIN_PREFIX . '-gmail',
 			),
 			'email' => ( object ) array(
 				'name'  => 'Email',
 				'icon'  => 'email.svg',
-				'class' => Init::PLUGIN_PREFIX . '-email',
+				'class' => Settings::PLUGIN_PREFIX . '-email',
 			),
 			'printfriendly' => ( object ) array(
 				'name'  => 'PrintFriendly',
 				'icon'  => 'printfriendly.svg',
-				'class' => Init::PLUGIN_PREFIX . '-print-friendly',
+				'class' => Settings::PLUGIN_PREFIX . '-print-friendly',
 			),
 		);
 

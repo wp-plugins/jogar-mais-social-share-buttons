@@ -10,19 +10,26 @@ namespace JM\Share_Buttons;
 
 class Share_View extends Core
 {
+	private static function _get_options()
+	{
+		$model = new Settings();
+
+		return $model->options->get_options();
+	}
+
 	/**
 	 * @since 1.0
 	 * @package Generate all icons sharing
 	 * @return String HTML the icons sharing
 	 *
 	 */
-	public static function jm_ssb_links( $atts = array() )
+	public static function links( $atts = array() )
 	{
-		$service = parent::_jm_ssb_services();
-		$options = parent::$option_controller->jm_ssb_check_options();
+		$service = parent::_services();
+		$options = self::_get_options();
 
-		if ( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] )
-			return self::jm_ssb_buttons_ftg();
+		if ( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] && ! wp_is_mobile() )
+			return self::_theme_two();
 
 		extract(
 			shortcode_atts(
@@ -32,25 +39,25 @@ class Share_View extends Core
 					'class_link' => '',
 					'class_icon' => '',
 				),
-				$atts, 'jmSSB'
+				$atts, 'JMSSB'
 			)
 		);
 
-		$buttons_content = self::_jm_ssb_start_buttons_content( parent::_jm_ssb_get_permalink(), esc_html( $class_ul ), esc_html( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_class'] ) );
+		$buttons_content = self::_start_buttons_content( parent::_get_permalink(), esc_html( $class_ul ), esc_html( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_class'] ) );
 
 		foreach ( $service as $key => $social ) :
 
 			if ( ! in_array( $social->name, (array) $options ) )
 				continue;
 
-			$add_link   = self::_jm_ssb_add_link( $social->name, $social->link );
+			$add_link   = self::_add_link( $social->name, $social->link );
 			$class_link = ( $class_link !== '' ) ? 'class=' . $class_link : '';
 
-			$buttons_content .= '<div class="' . Init::PLUGIN_PREFIX . '-shared ' . $social->class . ' ' . esc_html( $class_li ) . '">';
+			$buttons_content .= '<div class="' . Settings::PLUGIN_PREFIX . '-shared ' . $social->class . ' ' . esc_html( $class_li ) . '">';
 			$buttons_content .= '<a ' . $add_link . $social->popup . esc_html( $class_link ) . ' title="' . $social->title . '">';
-			$buttons_content .= '<span class="' . Init::PLUGIN_PREFIX . '-icon ' . Init::PLUGIN_PREFIX . '-' . $social->img . ' ' . esc_html( $class_icon ) . '"></span>';
+			$buttons_content .= '<span class="' . Settings::PLUGIN_PREFIX . '-icon ' . Settings::PLUGIN_PREFIX . '-' . $social->img . ' ' . esc_html( $class_icon ) . '"></span>';
 			$buttons_content .= '</a>';
-			$buttons_content .= self::_jm_ssb_add_counter( $social->name );
+			$buttons_content .= self::_add_counter( $social->name );
 			$buttons_content .= '</div>';
 
 		endforeach;
@@ -66,15 +73,15 @@ class Share_View extends Core
 	 * @return String HTML
 	 *
 	 */
-	public static function jm_ssb_buttons_ftg()
+	private static function _theme_two()
 	{
-		$social_reference = parent::_jm_ssb_services();
+		$social_reference = parent::_services();
 
-		$buttons_content  = '<div class="' . Init::PLUGIN_PREFIX . '-social-ftg" data-' . Init::PLUGIN_PREFIX . ' data-element-url="' . parent::_jm_ssb_get_permalink() . '">';
-		$buttons_content .= self::_jm_ssb_create_html( $social_reference->facebook );
-		$buttons_content .= self::_jm_ssb_create_html( $social_reference->google_plus );
-		$buttons_content .= self::_jm_ssb_create_html( $social_reference->twitter );
-		$buttons_content .= self::_jm_ssb_create_html( $social_reference->linkedin );
+		$buttons_content  = '<div class="' . Settings::PLUGIN_PREFIX . '-container-theme-two" data-' . Settings::PLUGIN_PREFIX . ' data-element-url="' . parent::_get_permalink() . '">';
+		$buttons_content .= self::_change_button( $social_reference->facebook );
+		$buttons_content .= self::_change_button( $social_reference->google_plus );
+		$buttons_content .= self::_change_button( $social_reference->twitter );
+		$buttons_content .= self::_change_button( $social_reference->linkedin );
 		$buttons_content .= '</div>';
 
 		return $buttons_content;
@@ -86,14 +93,14 @@ class Share_View extends Core
 	 * @return String HTML
 	 *
 	 */
-	private static function _jm_ssb_create_html( $reference_name = array() )
+	private static function _change_button( $reference_name = array() )
 	{
-		$social_name = parent::_jm_ssb_strtolower( $reference_name->name );
+		$social_name = parent::_strtolower( $reference_name->name );
 
-		$create_buttons_content  = '<div class="' . $social_name . '-share">';		
+		$create_buttons_content  = '<div class="jm-ssb-theme-two ' . $social_name . '-share">';		
 		$create_buttons_content .= '<a data-attr-url="' . $reference_name->link . '" ' . $reference_name->popup . ' title="' . $reference_name->title . '">';
 		$create_buttons_content .= '<span class="icons-align ' . $reference_name->img . '"></span>';
-		$create_buttons_content .= 'Compartilhar';
+		$create_buttons_content .= ( $social_name == 'twitter' ) ? 'tweetar' : 'Compartilhar';
 		$create_buttons_content .= '</a>';
 		$create_buttons_content .= '<span class="count" data-counter-' . $social_name . '>...</span>';
 		$create_buttons_content .= '</div>';
@@ -107,10 +114,10 @@ class Share_View extends Core
 	 * @package Generate icon sharing for WhatsApp shortcode
 	 * @return Void
 	 */
-	public static function jm_ssb_whatsapp( $atts = array() )
+	public static function whatsapp( $atts = array() )
 	{
-		$plugins_url      = parent::_jm_ssb_plugin_url( 'icons/' );
-		$social_reference = parent::_jm_ssb_services();
+		$plugins_url      = parent::_plugin_url( 'icons/' );
+		$social_reference = parent::_services();
 
 		extract(
 			shortcode_atts(
@@ -126,7 +133,7 @@ class Share_View extends Core
 						<span class="icon-whatsapp"></span>
 					</a>
 				</div>',
-				Init::PLUGIN_PREFIX,
+				Settings::PLUGIN_PREFIX,
 				esc_html( $class ),
 				$social_reference->whatsapp->link,
 				$social_reference->whatsapp->title
@@ -155,7 +162,7 @@ class Share_View extends Core
 			);
 		endif;
 
-		return self::jm_ssb_links( $attrs );
+		return self::links( $attrs );
 	}
 
 	/**
@@ -163,13 +170,13 @@ class Share_View extends Core
 	 * @package Change size from icons
 	 * @return String
 	 */
-	public static function jm_ssb_icons_style()
+	public static function icons_style()
 	{
-		$options = parent::$option_controller->jm_ssb_check_options();
-		$option  = $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'];
+		$options = self::_get_options();
+		$option  = $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'];
 
-		if ( ( $option != 32 && $option != '' ) && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] != 'off' )
-			printf( '<style>.' . Init::PLUGIN_PREFIX . '-shared a .' . Init::PLUGIN_PREFIX . '-icon{width: %spx; height: %spx; background-size: cover;}</style>' . "\n", $option, $option );
+		if ( ( $option != 32 && $option != '' ) && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] != 'off' )
+			printf( '<style>.' . Settings::PLUGIN_PREFIX . '-shared a .' . Settings::PLUGIN_PREFIX . '-icon{width: %spx; height: %spx; background-size: cover;}</style>' . "\n", $option, $option );
 	}
 
 	/**
@@ -177,7 +184,7 @@ class Share_View extends Core
 	 * @package Set social name for counter shares
 	 * @return Array
 	 */
-	private static function _jm_ssb_social_name_active()
+	private static function _social_name_active()
 	{
 		$social_name = array(
 			'Facebook',
@@ -194,12 +201,12 @@ class Share_View extends Core
 	 * @package Adds attribute counters social
 	 * @return String
 	 */
-	private static function _jm_ssb_add_counter( $social_name )
+	private static function _add_counter( $social_name )
 	{
 		$add_count = '';
 
-		if ( in_array( $social_name, self::_jm_ssb_social_name_active() ) )
-			$add_count = '<span data-counter-' . parent::_jm_ssb_strtolower( $social_name ) . ' class="' . Init::PLUGIN_PREFIX . '-counter">...</span>';
+		if ( in_array( $social_name, self::_social_name_active() ) )
+			$add_count = '<span data-counter-' . parent::_strtolower( $social_name ) . ' class="' . Settings::PLUGIN_PREFIX . '-counter">...</span>';
 
 		return $add_count;
 	}
@@ -209,7 +216,7 @@ class Share_View extends Core
 	 * @package Verfy and return links from icons
 	 * @return String
 	 */
-	private static function _jm_ssb_add_link( $social_name, $social_link )
+	private static function _add_link( $social_name, $social_link )
 	{
 		$add_link = 'data-attr-url="' . $social_link . '" ';
 
@@ -224,7 +231,7 @@ class Share_View extends Core
 	 * @package Verfy and return first buttons content
 	 * @return String
 	 */
-	private static function _jm_ssb_start_buttons_content( $permalink, $class_ul = '', $class_option = '' )
+	private static function _start_buttons_content( $permalink, $class_ul = '', $class_option = '' )
 	{
 		if ( ! empty( $class_ul ) )
 			$class_ul = " {$class_ul}";
@@ -232,7 +239,7 @@ class Share_View extends Core
 		if ( ! empty( $class_option ) )
 			$class_option = " {$class_option}";
 
-		$start_buttons_content = "<div data-" . Init::PLUGIN_PREFIX . " data-element-url=\"{$permalink}\" class=\"" . Init::PLUGIN_PREFIX . "-social{$class_ul}{$class_option}\">";
+		$start_buttons_content = "<div data-" . Settings::PLUGIN_PREFIX . " data-element-url=\"{$permalink}\" class=\"" . Settings::PLUGIN_PREFIX . "-social{$class_ul}{$class_option}\">";
 
 		return $start_buttons_content;
 	}
