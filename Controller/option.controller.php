@@ -22,9 +22,9 @@ class Option_Controller
 	 */
 	public function __construct()
 	{
-		add_action( 'admin_init', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_register_options' ) );
-		add_action( 'admin_init', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_register_options_settings' ) );
-		add_action( 'admin_init', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_register_options_style_settings' ) );
+		add_action( 'admin_init', array( &$this, 'register_options' ) );
+		add_action( 'admin_init', array( &$this, 'register_options_settings' ) );
+		add_action( 'admin_init', array( &$this, 'register_options_style_settings' ) );
 	}
 
 	/**
@@ -32,19 +32,19 @@ class Option_Controller
 	 * @package Register options plugin
 	 * @return void
 	 */
-	public function jm_ssb_register_options()
+	public function register_options()
 	{
-		register_setting( Init::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb' );
 
 		$new_options = array(
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_single'  => 'on',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_before'  => 'on',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_after'   => 'off',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_pages'   => 'off',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_home'    => 'off',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_excerpt' => 'off',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_class'   => '',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_desktop' => 0,
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_single'  => 'on',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'  => 'on',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_after'   => 'off',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_pages'   => 'off',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_home'    => 'off',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_excerpt' => 'off',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_class'   => '',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop' => 0,
 		);
 		add_option( 'jm_ssb', $new_options );
 	}
@@ -54,22 +54,22 @@ class Option_Controller
 	 * @package Register options plugin
 	 * @return void
 	 */
-	public function jm_ssb_register_options_settings()
+	public function register_options_settings()
 	{
-		register_setting( Init::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_settings' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_settings' );
 
 		$new_options_settings = array(
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Facebook'      => 'Facebook',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Twitter'       => 'Twitter',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Google'        => 'Google',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Whatsapp'      => 'Whatsapp',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Sms'           => 'Sms',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Pinterest'     => 'Pinterest',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Linkedin'      => 'Linkedin',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Tumblr'        => 'Tumblr',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Gmail'         => 'Gmail',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_Email'         => 'Email',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_PrintFriendly' => 'PrintFriendly',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Facebook'      => 'Facebook',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Twitter'       => 'Twitter',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Google'        => 'Google',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Whatsapp'      => 'Whatsapp',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Sms'           => 'Sms',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Pinterest'     => 'Pinterest',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Linkedin'      => 'Linkedin',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Tumblr'        => 'Tumblr',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Gmail'         => 'Gmail',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Email'         => 'Email',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_PrintFriendly' => 'PrintFriendly',
 		);
 		add_option( 'jm_ssb_settings', $new_options_settings );
 	}
@@ -79,15 +79,15 @@ class Option_Controller
 	 * @package Register options plugin style configurations
 	 * @return void
 	 */
-	public function jm_ssb_register_options_style_settings()
+	public function register_options_style_settings()
 	{
-		register_setting( Init::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_style_settings' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_style_settings' );
 
 		$new_options_settings = array(
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'     => 'on',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size' => 32,
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_icons_style'      => 'default',
-			Init::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'      => '',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'     => 'on',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size' => 32,
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style'      => 'default',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'      => '',
 
 		);
 		add_option( 'jm_ssb_style_settings', $new_options_settings );
@@ -98,7 +98,7 @@ class Option_Controller
 	 * @package Show this options plugins
 	 * @return Array all options this plugin
 	 */
-	public function jm_ssb_options()
+	public function options()
 	{
 		$option                 = get_option( 'jm_ssb' );
 		$options_settings       = get_option( 'jm_ssb_settings' );
@@ -110,12 +110,12 @@ class Option_Controller
 
 	/**
 	 * @since 1.0
-	 * @package Check this options plugins
-	 * @return Array all options plugin
+	 * @package Check this options
+	 * @return Array
 	 */
-	public function jm_ssb_check_options()
+	private function check_options()
 	{
-		$options = self::jm_ssb_options();
+		$options = self::options();
 
 		$array_options = array(
 			0  => 'excerpt',
@@ -145,11 +145,21 @@ class Option_Controller
 
 		foreach ( $array_options as $value ) :
 
-			if ( ! isset( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_' . $value] ) )
-				$options[Init::PLUGIN_PREFIX_UNDERSCORE . '_' . $value] = '';
+			if ( ! isset( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_' . $value] ) )
+				$options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_' . $value] = '';
 
 		endforeach;
 
 		return $options;
+	}
+
+		/**
+	 * @since 1.0
+	 * @package Return this options
+	 * @return Array
+	 */
+	public function get_options()
+	{
+		return $this->check_options();
 	}
 }

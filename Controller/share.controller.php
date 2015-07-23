@@ -16,11 +16,11 @@ class Share_Controller
 	{
 		$this->options_controller = new Option_Controller();
 
-		add_shortcode( 'JMSSB', array( 'JM\Share_Buttons\Share_View', Init::PLUGIN_PREFIX_UNDERSCORE . '_links' ) );
-		add_shortcode( 'JMSSBWHATSAPP', array( 'JM\Share_Buttons\Share_View', Init::PLUGIN_PREFIX_UNDERSCORE . '_whatsapp' ) );
-		add_filter( 'the_content', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_content' ), 100 );
-		add_action( 'init', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_custom_excerpt' ) );
-		add_filter( 'wp_head', array( 'JM\Share_Buttons\Share_View', Init::PLUGIN_PREFIX_UNDERSCORE . '_icons_style' ) );
+		add_shortcode( 'JMSSB', array( 'JM\Share_Buttons\Share_View', 'links' ) );
+		add_shortcode( 'JMSSBWHATSAPP', array( 'JM\Share_Buttons\Share_View', 'whatsapp' ) );
+		add_filter( 'the_content', array( &$this, 'content' ), 100 );
+		add_action( 'init', array( &$this, 'custom_excerpt' ) );
+		add_filter( 'wp_head', array( 'JM\Share_Buttons\Share_View', 'icons_style' ) );
 	}
 
 	/**
@@ -28,12 +28,12 @@ class Share_Controller
 	 * @package Verifies that is active buttons to the_excerpt
 	 * @return Void
 	 */
-	public function jm_ssb_custom_excerpt()
+	public function custom_excerpt()
 	{
-		$options = $this->options_controller->jm_ssb_check_options();
+		$options = $this->options_controller->get_options();
 
-		if ( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_excerpt'] === 'on' )
-			add_filter( 'the_excerpt', array( &$this, Init::PLUGIN_PREFIX_UNDERSCORE . '_content' ), 100 );
+		if ( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_excerpt'] === 'on' )
+			add_filter( 'the_excerpt', array( &$this, 'content' ), 100 );
 	}
 
 	/**
@@ -41,18 +41,18 @@ class Share_Controller
 	 * @package The content check insertions
 	 * @return string
 	 */
-	protected function _jm_ssb_check_new_content()
+	protected function _check_new_content()
 	{
-		$options  = $this->options_controller->jm_ssb_check_options();
+		$options  = $this->options_controller->get_options();
 		$position = '';
 
-		if ( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_before'] === 'on' && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_after'] === 'on' )
+		if ( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'] === 'on' && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_after'] === 'on' )
 			$position = 'full';
 
-		if ( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_before'] === 'on' && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_after'] !== 'on' )
+		if ( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'] === 'on' && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_after'] !== 'on' )
 			$position = 'before';
 
-		if ( $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_before'] !== 'on' && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_after'] === 'on' )
+		if ( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'] !== 'on' && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_after'] === 'on' )
 			$position = 'after';
 
 		return $position;
@@ -63,28 +63,28 @@ class Share_Controller
 	 * @package The content after it is finished processing
 	 * @return String the_content single, pages, home
 	 */
-	public function jm_ssb_content( $the_content )
+	public function content( $the_content )
 	{
-		$buttons     = Share_View::jm_ssb_links();
-		$options     = $this->options_controller->jm_ssb_check_options();
+		$buttons     = Share_View::links();
+		$options     = $this->options_controller->get_options();
 		$new_content = '';
 
-		if ( $this->_jm_ssb_is_single() || $this->_jm_ssb_is_page() || $this->_jm_ssb_is_home() ) :
+		if ( $this->_is_single() || $this->_is_page() || $this->_is_home() ) :
 
-	      	if ( $this->_jm_ssb_check_new_content() === 'full' ) :
+	      	if ( $this->_check_new_content() === 'full' ) :
 	      		$new_content .= $buttons;
 	      		$new_content .= $the_content;
 	      		$new_content .= $buttons;
 	      		$the_content = $new_content;
 	      	endif;
 
-	      	if ( $this->_jm_ssb_check_new_content() === 'before' ) :
+	      	if ( $this->_check_new_content() === 'before' ) :
 				$new_content .= $buttons;
 				$new_content .= $the_content;
 				$the_content = $new_content;
 	      	endif;
 
-	      	if ( $this->_jm_ssb_check_new_content() === 'after' ) :
+	      	if ( $this->_check_new_content() === 'after' ) :
 				$new_content .= $the_content;
 				$new_content .= $buttons;
 				$the_content = $new_content;
@@ -102,11 +102,11 @@ class Share_Controller
 	 * @package Make sure is activated the sharing buttons in singles
 	 * @return Bool
 	 */
-	protected function _jm_ssb_is_single()
+	protected function _is_single()
 	{
-		$options = $this->options_controller->jm_ssb_check_options();
+		$options = $this->options_controller->get_options();
 
-		if ( is_single() && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_single'] === 'on' )
+		if ( is_single() && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_single'] === 'on' )
 			return true;
 
 		return false;
@@ -117,11 +117,11 @@ class Share_Controller
 	 * @package Make sure is activated the sharing buttons in pages
 	 * @return Bool
 	 */
-	protected function _jm_ssb_is_page()
+	protected function _is_page()
 	{
-		$options = $this->options_controller->jm_ssb_check_options();
+		$options = $this->options_controller->get_options();
 
-		if ( is_page() && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_pages'] === 'on' )
+		if ( is_page() && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_pages'] === 'on' )
 			return true;
 
 		return false;
@@ -132,11 +132,11 @@ class Share_Controller
 	 * @package make sure is activated the sharing buttons in home
 	 * @return Bool
 	 */
-	protected function _jm_ssb_is_home()
+	protected function _is_home()
 	{
-		$options = $this->options_controller->jm_ssb_check_options();
+		$options = $this->options_controller->get_options();
 
-		if ( ( is_home() || is_front_page() ) && $options[Init::PLUGIN_PREFIX_UNDERSCORE . '_home'] === 'on' )
+		if ( ( is_home() || is_front_page() ) && $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_home'] === 'on' )
 			return true;
 
 		return false;
