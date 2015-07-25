@@ -1,10 +1,11 @@
 === Social Share Buttons by Jogar Mais ===
 
-Contributors: Victor Freitas
+Author URL: http://jogarmais.com.br
+Contributors: victorfreitas1
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E
 Tags: share, social, buttons, share buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
-Tested up to: 4.2.2
+Tested up to: 4.2.3
 Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
