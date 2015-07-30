@@ -4,7 +4,7 @@
  * @package Social Share Buttons by Jogar Mais | Admin
  * @author  Victor Freitas
  * @subpackage View Admin Page
- * @version 1.0
+ * @version 1.0.2
  */
 
 namespace JM\Share_Buttons;
@@ -13,12 +13,11 @@ class Setting_View extends Share_View
 {
 	/**
 	 * @since 1.0
-	 * @package Show options admin page
+	 * @param Show options admin page
 	 */
-	public static function options()
+	public static function render_settings_page()
 	{
-		$model   = new Settings();
-		$options = $model->options->get_options();
+		$model = new Settings();
 	?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
@@ -37,7 +36,7 @@ class Setting_View extends Share_View
 					                	<span>Single Post</span>
 					                	<input id="single" type="checkbox" value="on"
 					                		   name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_single]"
-					                		   <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_single'] ); ?> />
+					                		   <?php checked( 'on', $model->single ); ?> />
 					                </label>
 					            </td>								
 								<td>
@@ -45,7 +44,7 @@ class Setting_View extends Share_View
 					                	<span>Páginas</span>
 					                	<input id="pages" type="checkbox" value="on"
 					                		   name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_pages]"
-					                		   <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_pages'] ); ?> />
+					                		   <?php checked( 'on', $model->pages ); ?> />
 					                </label>
 					            </td>
 								<td>
@@ -53,7 +52,7 @@ class Setting_View extends Share_View
 					                	<span>Página Home</span>
 					                	<input id="home" type="checkbox" value="on"
 					                		   name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_home]"
-					                		   <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_home'] ); ?> />
+					                		   <?php checked( 'on', $model->home ); ?> />
 					                </label>
 				                </td>
 								<td>
@@ -61,7 +60,7 @@ class Setting_View extends Share_View
 					                	<span>Antes do Conteúdo</span>
 					                	<input id="before" type="checkbox" value="on"
 					                	       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_before]"
-					                	       <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'] ); ?> />
+					                	       <?php checked( 'on', $model->before ); ?> />
 					                </label>
 				                </td>
 								<td>
@@ -69,7 +68,7 @@ class Setting_View extends Share_View
 					                	<span>Depois do Conteúdo</span>
 					                	<input id="after" type="checkbox" value="on"
 					                	       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_after]"
-					                	       <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_after'] ); ?> />
+					                	       <?php checked( 'on', $model->after ); ?> />
 					                </label>
 				                </td>
 								<td>
@@ -77,7 +76,7 @@ class Setting_View extends Share_View
 					                	<span>Exibir em conteúdo curto</span>
 					                	<input id="jm-excerpt" type="checkbox" value="on"
 					                	       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_excerpt]"
-					                	       <?php checked( 'on', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_excerpt'] ); ?> />
+					                	       <?php checked( 'on', $model->excerpt ); ?> />
 					                </label>
 				                </td>
 							</tr>
@@ -87,15 +86,15 @@ class Setting_View extends Share_View
 								</th>
 								<td>
 									<?php
-									foreach ( self::_buttons_settings() as $key => $button ) :
+									foreach ( self::_icons_settings() as $key => $button ) :
 
 										printf( '<label for="%s">', $button->class );
-										printf( '<img src="' . parent::_plugin_url( "icons/%s" ) . '" class="%s">', $button->icon, $button->class );
+										printf( '<img src="' . Utils_Helper::plugin_url( "icons/%s" ) . '" class="%s">', $button->icon, $button->class );
 										printf( '<input id="%s" type="checkbox" name="jm_ssb[' . Settings::PLUGIN_PREFIX_UNDERSCORE . '_%s]" value="%s" %s>',
 											$button->class,
 											$button->name,
 											$button->name,
-											checked( $button->name, $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_' . $button->name], false )
+											checked( $button->name, Utils_Helper::option( '_' . $button->name ), false )
 										);
 										echo '</label>';
 
@@ -111,7 +110,7 @@ class Setting_View extends Share_View
 									<input id="custom-class" class="large-text" type="text"
 										   placeholder="Classe personalizada para div princípal"
 									       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_class]"
-										   value="<?php echo esc_html( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_class'] ); ?>">
+										   value="<?php echo $model->class; ?>">
 								</td>
 							</tr>
 							<tr>
@@ -123,7 +122,7 @@ class Setting_View extends Share_View
 										<input id="setting-buttons-theme-main" type="radio"
 										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
 											   value="0"
-											   <?php checked( 0, $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] ); ?>>
+											   <?php checked( 0, $model->desktop ); ?>>
 										Tema princípal
 									</label>
 									<hr>
@@ -131,7 +130,7 @@ class Setting_View extends Share_View
 										<input id="setting-buttons-theme-secondary" type="radio"
 										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
 											   value="1"
-											   <?php checked( 1, $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop'] ); ?>>
+											   <?php checked( 1, $model->desktop ); ?>>
 										<span title="Obs.: Marcando esta opção o tema princípal será exibido automáticamente para usuários em dispositivos mobile">Tema secundário</span>
 									</label>
 								</td>
@@ -148,7 +147,7 @@ class Setting_View extends Share_View
 								<td>
 									<input id="icons-size" step="1" min="15" max="60" type="number"
 									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_icons_style_size]"
-										   value="<?php echo intval( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'] ); ?>">px
+										   value="<?php echo $model->icons_size; ?>">px
 								</td>
 							</tr>
 							<tr>
@@ -159,8 +158,20 @@ class Setting_View extends Share_View
 									<input id="twitter-username" class="large-text" type="text"
 										   placeholder="Seu nome de usuário do Twitter"
 									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_twitter_via]"
-										   value="<?php echo esc_html( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'] ); ?>">
-									via @username
+										   value="<?php echo $model->twitter_username; ?>">
+									<p class="description">via @username</p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="tracking-analytics">UTM de tracking</label>
+								</th>
+								<td>
+									<input id="tracking-analytics" class="large-text" type="text"
+										   placeholder="Adicione UTM tracking (Analytics)"
+									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_tracking]"
+										   value="<?php echo $model->tracking; ?>">
+									<p class="description">Utilize o encode <code>&amp;</code> para adicionar parâmetros em seu tracking. (Facebook; Google Plus; Whatsapp; Pinterest; Linkedin)</p>
 								</td>
 							</tr>
 							<tr>
@@ -169,10 +180,9 @@ class Setting_View extends Share_View
 								</th>
 								<td>
 									<label for="disable-css">
-										<input id="disable-css" type="checkbox"
+										<input id="disable-css" type="checkbox" value="off"
 										       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_remove_style]"
-											   value="off"
-											   <?php checked( 'off', $options[Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'] ); ?>>
+											   <?php checked( 'off', $model->disable_css ); ?>>
 										Marque para desabilitar
 									</label>
 								</td>
@@ -187,6 +197,7 @@ class Setting_View extends Share_View
 					</div>
 					<?php
 						settings_fields( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
+						do_settings_sections( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
 						submit_button( 'Salvar Alterações' );
 					?>
 				</form>
@@ -195,67 +206,72 @@ class Setting_View extends Share_View
 	<?php
 	}
 
-	protected static function _buttons_settings()
+	/**
+	 * @since 1.0
+	 * @param Generate data all social icons display
+	 * @return Object
+	 */
+	protected static function _icons_settings()
 	{
-		$buttons_settings = ( object ) array(
+		$icons_settings = array(
 
-			'facebook' => ( object ) array(
+			'facebook' => array(
 				'name'  => 'Facebook',
 				'icon'  => 'facebook.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-facebook',
 			),
-			'twitter' => ( object ) array(
+			'twitter' => array(
 				'name'  => 'Twitter',
 				'icon'  => 'twitter.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-twitter',
 			),
-			'google_plus' => ( object ) array(
+			'google_plus' => array(
 				'name'  => 'Google',
 				'icon'  => 'google_plus.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-google-plus',
 			),
-			'whatsapp' => ( object ) array(
+			'whatsapp' => array(
 				'name'  => 'Whatsapp',
 				'icon'  => 'whatsapp.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-whatsapp',
 			),
-			'sms' => ( object ) array(
+			'sms' => array(
 				'name'  => 'Sms',
 				'icon'  => 'sms.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-sms',
 			),
-			'pinterest' => ( object ) array(
+			'pinterest' => array(
 				'name'  => 'Pinterest',
 				'icon'  => 'pinterest.png',
 				'class' => Settings::PLUGIN_PREFIX . '-pinterest',
 			),
-			'linkedin' => ( object ) array(
+			'linkedin' => array(
 				'name'  => 'Linkedin',
 				'icon'  => 'linkedin.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-linkedin',
 			),
-			'tumblr' => ( object ) array(
+			'tumblr' => array(
 				'name'  => 'Tumblr',
 				'icon'  => 'tumblr.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-tumblr',
 			),
-			'gmail' => ( object ) array(
+			'gmail' => array(
 				'name'  => 'Gmail',
 				'icon'  => 'gmail.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-gmail',
 			),
-			'email' => ( object ) array(
+			'email' => array(
 				'name'  => 'Email',
 				'icon'  => 'email.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-email',
 			),
-			'printfriendly' => ( object ) array(
+			'printfriendly' => array(
 				'name'  => 'PrintFriendly',
 				'icon'  => 'printfriendly.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-print-friendly',
 			),
 		);
 
-		return $buttons_settings;
+		return Utils_Helper::array_to_object( $icons_settings );
 	}
 }
