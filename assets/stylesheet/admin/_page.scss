@@ -1,0 +1,92 @@
+.jm-ssb-settings-wrap {
+    background: #f6fbfd;
+    padding: 5px 10px;
+
+    .description {
+        display: table;
+        width: 100%;
+    }
+}
+
+.jm-ssb-settings-placements td,
+.jm-ssb-icons-settings td label {
+    background-color: #ebebeb;
+    background-image: -webkit-linear-gradient(#f9f9f9, #ebebeb);
+    background-image: -o-linear-gradient(#f9f9f9, #ebebeb);
+    background-image: linear-gradient(#f9f9f9, #ebebeb);
+    border: 1px solid #ccc;
+}
+
+.jm-ssb-settings-title {
+    background-color: #EDEDED;
+    border-bottom-width: 1px;
+    border-color: #ccc;
+    border-left: 0;
+    border-right: 0;
+    border-style: solid;
+    border-top: 0;
+    display: block;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.3em;
+    font-weight: 700;
+    line-height: 30px;
+    margin: 1em 0;
+    position: relative;
+    text-indent: 3px;
+    top: 16px;
+}
+
+.table-configurations th,
+.table-extras th {
+    font-weight: normal;
+}
+
+.jm-ssb-settings-placements td,
+.jm-ssb-icons-settings td label {
+    @include border-radius( 3px );
+    float: left;
+    font-weight: 400;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 4px;
+    position: relative;
+    text-indent: 5px;
+}
+
+.jm-ssb-settings-placements td {
+    left: 12px;
+    padding: 5px;
+    top: 12px;
+}
+
+.jm-ssb-icons-settings td label {
+    padding: 0 8px;
+    top: -2px;
+}
+
+.jm-ssb-icons-settings img {
+    @include border-radius( 4px );
+    display: inline-block;
+    height: 20px;
+    margin-left: -5px;
+    margin-right: 5px;
+    margin-top: 4px;
+    width: 20px;
+}
+
+.jm-ssb-icons-settings input {
+    display: inline-block;
+    margin-bottom: 8px;
+    margin-right: 2px;
+}
+
+.jm-ssb-sharing-report-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+.widefat .jm-ssb-sharing-report-center {
+    text-align: center;
+}
+.jm-ssb-sharing-report-table thead th:last-child,
+.jm-ssb-sharing-report-table tbody td:last-child {
+    font-weight: bolder;
+}
