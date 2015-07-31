@@ -1,13 +1,18 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais
+ * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Social Icons Display
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 class Share_Controller
 {

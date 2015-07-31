@@ -1,24 +1,35 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais
+ * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Social Settings Controller
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
+
+Init::uses( 'ajax', 'Controller' );
 
 class Settings_Controller
 {
 	public function __construct()
 	{
+		register_activation_hook( Settings::FILE, array( &$this, 'activate' ) );
+		register_deactivation_hook( Settings::FILE, array( &$this, 'deactivate' ) );
 		add_filter( 'plugin_action_links_' . Utils_Helper::base_name(), array( &$this, 'plugin_link' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_style' ) );
 		add_action( 'admin_menu', array( &$this, 'menu_page' ) );		
-		register_activation_hook( Settings::FILE, array( &$this, 'activate' ) );
-		register_deactivation_hook( Settings::FILE, array( &$this, 'deactivate' ) );
+		add_action( 'wp_ajax_nopriv_get_plus_google', array( 'JM\Share_Buttons\Ajax_Controller', 'get_plus_google' ) );
+		add_action( 'wp_ajax_get_plus_google', array( 'JM\Share_Buttons\Ajax_Controller', 'get_plus_google' ) );
+		add_action( 'wp_ajax_nopriv_global_counts_social_share', array( 'JM\Share_Buttons\Ajax_Controller', 'global_counts_social_share' ) );
+		add_action( 'wp_ajax_global_counts_social_share', array( 'JM\Share_Buttons\Ajax_Controller', 'global_counts_social_share' ) );
 	}
 
 	/**
@@ -50,7 +61,15 @@ class Settings_Controller
 			true
 		);
 
-		if ( 'off' === Utils_Helper::option( 'remove_style' ) )
+		wp_localize_script(
+			Settings::PLUGIN_PREFIX . '-theme-scripts',
+			'PluginGlobalVars',
+			array(
+				'urlAjax' => admin_url( 'admin-ajax.php' ),
+			)
+		);
+
+		if ( 'off' === Utils_Helper::option( '_remove_style' ) )
 			return;
 
 		wp_enqueue_style(
@@ -84,12 +103,30 @@ class Settings_Controller
 	public function menu_page()
 	{
 		add_menu_page(
-			'Social Share Buttons by Jogar Mais | Settings',
+			'Social Share Buttons',
 			'Share Buttons',
 			'manage_options',
 			Init::PLUGIN_SLUG,
 			array( 'JM\Share_Buttons\Setting_View', 'render_settings_page' ),
 			'dashicons-share-alt2'
+	  	);
+
+	  	add_submenu_page(
+	  		Init::PLUGIN_SLUG,
+	  		'Extra Settings | Social Share Buttons',
+	  		'Configurações extra',
+	  		'manage_options',
+	  		Init::PLUGIN_SLUG . '-extra-settings',
+	  		array( 'JM\Share_Buttons\Setting_View', 'render_extra_settings_page' )
+	  	);
+
+	  	add_submenu_page(
+	  		Init::PLUGIN_SLUG,
+	  		'Opções de uso | Social Share Buttons',
+	  		'Opções de uso',
+	  		'manage_options',
+	  		Init::PLUGIN_SLUG . '-faq',
+	  		array( 'JM\Share_Buttons\Setting_View', 'render_page_faq' )
 	  	);
 	}
 

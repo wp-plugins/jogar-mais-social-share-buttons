@@ -1,17 +1,23 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais | Functions
+ * @package Social Share Buttons | Functions
  * @author  Victor Freitas
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 //Controller
 Init::uses( 'settings', 'Controller' );
 Init::uses( 'option', 'Controller' );
 Init::uses( 'share', 'Controller' );
+Init::uses( 'sharing-report', 'Controller' );
 //Utils
 Init::uses( 'utils', 'Helper' );
 
@@ -24,9 +30,10 @@ class Core
 	 */
 	public function __construct()
 	{
-		$settings = new Settings_Controller();
-		$share    = new Share_Controller();
-		$option   = new Option_Controller();
+		$settings     = new Settings_Controller();
+		$share        = new Share_Controller();
+		$option       = new Option_Controller();
+		$share_report = new Sharing_Report_Controller();
 	}
 
 	/**
@@ -149,14 +156,14 @@ class Core
 	 */
 	protected static function _get_services()
 	{
-		$title       = rawurlencode( '"' . Utils_Helper::jm_decode( Utils_Helper::get_title() . '" ' ) );
+		$title       = rawurlencode( '"' . Utils_Helper::html_decode( Utils_Helper::get_title() . '" ' ) );
 		$url         = rawurlencode( Utils_Helper::get_permalink() );
 		$tracking    = ( ( '' !== Utils_Helper::option( '_tracking' ) ) ? Utils_Helper::option( '_tracking' ) : '' );
 		$tracking    = rawurlencode( $tracking );
 		$thumbnail   = rawurlencode( Utils_Helper::get_image() );
 		$content     = rawurlencode( Utils_Helper::body_mail() );
 		$caracter    = rawurlencode( '➜ ' );
-		$sms_title   = rawurlencode( Utils_Helper::jm_replace( '&', 'e', Utils_Helper::jm_decode( Utils_Helper::get_title() ) ) . ' ' );
+		$sms_title   = rawurlencode( Utils_Helper::replace( '&', 'e', Utils_Helper::html_decode( Utils_Helper::get_title() ) ) . ' ' );
 		$twitter_via = ( ( '' !== Utils_Helper::option( '_twitter_via' ) ) ? '&via=' . Utils_Helper::option( '_twitter_via' ) : '' );
 
 		return self::_set_services( $title, $url, $tracking, $thumbnail, $content, $caracter, $sms_title, $twitter_via );

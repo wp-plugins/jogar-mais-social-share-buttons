@@ -1,13 +1,18 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais | Admin
+ * @package Social Share Buttons | Admin
  * @author  Victor Freitas
  * @subpackage View Admin Page
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 class Setting_View extends Share_View
 {
@@ -22,10 +27,10 @@ class Setting_View extends Share_View
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
 			<p><?php echo Settings::PLUGIN_DESC; ?></p>
+			<span class="jm-ssb-settings-title">Configurações</span>
 			<div class="jm-ssb-settings-wrap">
 				<form action="options.php" method="post">
 					<table class="form-table table-configurations" data-table-configurations>
-						<span class="jm-ssb-settings-title">Configurações</span>
 						<tbody>
 							<tr class="jm-ssb-settings-placements">
 								<th scope="row">
@@ -100,6 +105,7 @@ class Setting_View extends Share_View
 
 									endforeach;
 									?>
+								 <p class="description">Opções disponíveis apenas para o tema princípal.</p>
 								</td>
 							</tr>
 							<tr>
@@ -131,14 +137,38 @@ class Setting_View extends Share_View
 										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
 											   value="1"
 											   <?php checked( 1, $model->desktop ); ?>>
-										<span title="Obs.: Marcando esta opção o tema princípal será exibido automáticamente para usuários em dispositivos mobile">Tema secundário</span>
+										<span title="Marcando esta opção o tema princípal será exibido automáticamente para usuários em dispositivos mobile">Tema secundário</span>
 									</label>
 								</td>
 							</tr>
 						</tbody>
 					</table>
+					<?php
+						settings_fields( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
+						do_settings_sections( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
+						submit_button( 'Salvar Alterações' );
+					?>
+				</form>
+			</div>
+		</div>
+	<?php
+	}
+
+	/**
+	 * @since 1.0
+	 * @param Show options admin page - extra settings
+	 */
+	public static function render_extra_settings_page()
+	{
+		$model = new Settings();
+	?>
+		<div class="wrap">
+			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
+			<p><?php echo Settings::PLUGIN_DESC; ?></p>
+			<span class="jm-ssb-settings-title">Configurações Extras</span>
+			<div class="jm-ssb-settings-wrap">
+				<form action="options.php" method="post">
 					<table class="form-table table-extras" data-table-extras>
-						<span class="jm-ssb-settings-title">Configurações Extras</span>
 						<tbody>
 							<tr>
 								<th scope="row">
@@ -189,18 +219,32 @@ class Setting_View extends Share_View
 							</tr>
 						</tbody>
 					</table>
-					<div class="options-use">
-						<span class="jm-ssb-settings-title">Opções de uso</span>
-						<blockquote>Via shortcode: <code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code> //Retorna todos os botões || Obs.: As classes são opcionais</blockquote>
-						<blockquote>Via shortcode: <code>[JMSSBWHATSAPP class=""]</code> //Retorna apenas o botão do WhatsApp</blockquote>
-						<blockquote>Via metódo PHP: <code>JM\Share_Buttons\Share_View::jm_ssb()</code> //Retorna todos os botões</blockquote>
-					</div>
 					<?php
-						settings_fields( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
-						do_settings_sections( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page' );
+						settings_fields( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page' );
+						do_settings_sections( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page' );
 						submit_button( 'Salvar Alterações' );
 					?>
 				</form>
+			</div>
+		</div>
+	<?php
+	}
+
+	/**
+	 * @since 1.0
+	 * @param Show options admin page
+	 */
+	public static function render_page_faq()
+	{
+	?>
+		<div class="wrap">
+			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
+			<p><?php echo Settings::PLUGIN_DESC; ?></p>
+			<span class="jm-ssb-settings-title">Opções de uso</span>
+			<div class="jm-ssb-settings-wrap">		
+				<blockquote>Via shortcode: <code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code> //Retorna todos os botões || Obs.: As classes são opcionais</blockquote>
+				<blockquote>Via shortcode: <code>[JMSSBWHATSAPP class=""]</code> //Retorna apenas o botão do WhatsApp</blockquote>
+				<blockquote>Via metódo PHP: <code>JM\Share_Buttons\Share_View::jm_ssb()</code> //Retorna todos os botões</blockquote>
 			</div>
 		</div>
 	<?php

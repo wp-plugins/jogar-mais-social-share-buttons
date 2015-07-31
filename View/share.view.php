@@ -1,13 +1,18 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais
+ * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Social Icons Display
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 class Share_View extends Core
 {
@@ -69,9 +74,11 @@ class Share_View extends Core
 	 */
 	private static function _theme_two()
 	{
-		$services = parent::_get_services();
+		$ajax_nonce = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
+		$services   = parent::_get_services();
 
-		$buttons_content  = '<div class="' . Settings::PLUGIN_PREFIX . '-container-theme-two" data-' . Settings::PLUGIN_PREFIX . ' data-element-url="' . Utils_Helper::get_permalink() . '">';
+		$buttons_content  = '<div class="' . Settings::PLUGIN_PREFIX . '-container-theme-two" data-element-' . Settings::PLUGIN_PREFIX . ' data-attr-nonce="' . $ajax_nonce . '"';
+		$buttons_content .= ' data-attr-reference="' . Utils_Helper::get_id() . '" data-element-url="' . Utils_Helper::get_permalink() . '">';
 		$buttons_content .= self::_change_button( $services->facebook );
 		$buttons_content .= self::_change_button( $services->google_plus );
 		$buttons_content .= self::_change_button( $services->twitter );
@@ -89,7 +96,7 @@ class Share_View extends Core
 	 */
 	private static function _change_button( $reference_name = array() )
 	{
-		$social_name = Utils_Helper::strtolower( $reference_name->name );
+		$social_name = strtolower( $reference_name->name );
 
 		$create_buttons_content  = '<div class="jm-ssb-theme-two ' . $social_name . '-share">';		
 		$create_buttons_content .= '<a data-attr-url="' . $reference_name->link . '" ' . $reference_name->popup . ' title="' . $reference_name->title . '">';
@@ -169,7 +176,7 @@ class Share_View extends Core
 		$model      = new Settings();
 		$icons_size = $model->icons_size;
 
-		if ( ( $icons_size != 32 && $icons_size != '' ) && $model->remove_style != 'off' )
+		if ( ( $icons_size != 32 && $icons_size ) && 'off' !== $model->disable_css )
 			printf( '<style>.' . Settings::PLUGIN_PREFIX . '-shared a .' . Settings::PLUGIN_PREFIX . '-icon{width: %spx; height: %spx; background-size: cover;}</style>' . "\n", $icons_size, $icons_size );
 	}
 
@@ -185,6 +192,7 @@ class Share_View extends Core
 			'Twitter',
 			'Pinterest',
 			'Linkedin',
+			'Google',
 		);
 
 		return $social_name;
@@ -200,7 +208,7 @@ class Share_View extends Core
 		$count_content = '';
 
 		if ( in_array( $social_name, self::_social_name_active() ) )
-			$count_content = '<span data-counter-' . Utils_Helper::strtolower( $social_name ) . ' class="' . Settings::PLUGIN_PREFIX . '-counter">...</span>';
+			$count_content = '<span data-counter-' . strtolower( $social_name ) . ' class="' . Settings::PLUGIN_PREFIX . '-counter">...</span>';
 
 		return $count_content;
 	}
@@ -227,13 +235,16 @@ class Share_View extends Core
 	 */
 	private static function _start_buttons_content( $permalink, $class_ul = '', $class_option = '' )
 	{
+		$ajax_nonce = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
+ 
 		if ( '' !== $class_ul )
 			$class_ul = " {$class_ul}";
 
 		if ( '' !== $class_option )
 			$class_option = " {$class_option}";
 
-		$start_buttons_content = "<div data-" . Settings::PLUGIN_PREFIX . " data-element-url=\"{$permalink}\" class=\"" . Settings::PLUGIN_PREFIX . "-social{$class_ul}{$class_option}\">";
+		$start_buttons_content  = "<div data-element-" . Settings::PLUGIN_PREFIX . " data-attr-reference=\"" . Utils_Helper::get_id() . "\" data-attr-nonce=\"{$ajax_nonce}\"";
+		$start_buttons_content .= " data-element-url=\"{$permalink}\" class=\"" . Settings::PLUGIN_PREFIX . "-social{$class_ul}{$class_option}\">";
 
 		return $start_buttons_content;
 	}

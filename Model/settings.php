@@ -1,13 +1,18 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais | Settings
+ * @package Social Share Buttons | Settings
  * @author  Victor Freitas
  * @subpackage Settings Model
  * @version 1.0.1
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 class Settings
 {
@@ -244,7 +249,7 @@ class Settings
 
 	const FILE = __FILE__;
 
-	const PLUGIN_NAME = 'Social Share Buttons by Jogar Mais';
+	const PLUGIN_NAME = 'Social Share Buttons';
 
 	const PLUGIN_DESC = 'Adiciona os botões de compartilhamento automáticamente em posts e páginas';
 
@@ -262,6 +267,9 @@ class Settings
 	 */
 	public function __get( $prop_name )
 	{
+		if ( isset( $this->$prop_name ) )
+			return $this->$prop_name;
+
 		return $this->_get_property( $prop_name );
 	}
 
@@ -276,109 +284,136 @@ class Settings
 	private function _get_property( $prop_name )
 	{
 		switch ( $prop_name ) :
+
 			case 'total_options' :
 				if ( ! isset( $this->total_options ) )
 					$this->total_options = $this->get_options();
 				break;
+
 			case 'excerpt' :
 				if ( ! isset( $this->excerpt ) )
 					$this->excerpt = $this->option( '_excerpt' );
-				break;				
+				break;
+
 			case 'single' :
 				if ( ! isset( $this->single ) )
 					$this->single = $this->option( '_single' );
-				break;				
+				break;
+
 			case 'before' :
 				if ( ! isset( $this->before ) )
 					$this->before = $this->option( '_before' );
-				break;				
+				break;
+
 			case 'after' :
 				if ( ! isset( $this->after ) )
 					$this->after = $this->option( '_after' );
-				break;				
+				break;
+
 			case 'pages' :
 				if ( ! isset( $this->pages ) )
 					$this->pages = $this->option( '_pages' );
-				break;				
+				break;
+
 			case 'home' :
 				if ( ! isset( $this->home ) )
 					$this->home = $this->option( '_home' );
-				break;				
+				break;
+
 			case 'class' :
 				if ( ! isset( $this->class ) )
 					$this->class = $this->option( '_class' );
-				break;				
+				break;
+
 			case 'printfriendly' :
 				if ( ! isset( $this->printfriendly ) )
 					$this->printfriendly = $this->option( '_PrintFriendly' );
-				break;				
+				break;
+
 			case 'google' :
 				if ( ! isset( $this->google ) )
 					$this->google = $this->option( '_Google' );
-				break;				
+				break;
+
 			case 'pinterest' :
 				if ( ! isset( $this->pinterest ) )
 					$this->pinterest = $this->option( '_Pinterest' );
-				break;				
+				break;
+
 			case 'linkedin' :
 				if ( ! isset( $this->linkedin ) )
 					$this->linkedin = $this->option( '_Linkedin' );
-				break;				
+				break;
+
 			case 'facebook' :
 				if ( ! isset( $this->facebook ) )
 					$this->facebook = $this->option( '_Facebook' );
-				break;				
+				break;
+
 			case 'whatsapp' :
 				if ( ! isset( $this->whatsapp ) )
 					$this->whatsapp = $this->option( '_Whatsapp' );
-				break;				
+				break;
+
 			case 'sms' :
 				if ( ! isset( $this->sms ) )
 					$this->sms = $this->option( '_Sms' );
-				break;				
+				break;
+
 			case 'twitter' :
 				if ( ! isset( $this->twitter ) )
 					$this->twitter = $this->option( '_Twitter' );
-				break;				
+				break;
+
 			case 'tumblr' :
 				if ( ! isset( $this->tumblr ) )
 					$this->tumblr = $this->option( '_Tumblr' );
-				break;				
+				break;
+
 			case 'gmail' :
 				if ( ! isset( $this->gmail ) )
 					$this->gmail = $this->option( '_Gmail' );
-				break;				
+				break;
+
 			case 'email' :
 				if ( ! isset( $this->email ) )
 					$this->email = $this->option( '_Email' );
-				break;				
+				break;
+
 			case 'disable_css' :
 				if ( ! isset( $this->disable_css ) )
 					$this->disable_css = $this->option( '_remove_style' );
-				break;				
+				break;
+
 			case 'icons_size' :
 				if ( ! isset( $this->icons_size ) )
 					$this->icons_size = $this->option( '_icons_style_size', 'intval' );
-				break;				
+				break;
+
 			case 'icons_style' :
 				if ( ! isset( $this->icons_style ) )
 					$this->icons_style = $this->option( '_icons_style' );
-				break;				
+				break;
+
 			case 'desktop' :
 				if ( ! isset( $this->desktop ) )
 					$this->desktop = $this->option( '_desktop', 'intval' );
-				break;				
+				break;
+
 			case 'twitter_username' :
 				if ( ! isset( $this->twitter_username ) )
 					$this->twitter_username = $this->option( '_twitter_via' );
-				break;				
+				break;
+
 			case 'tracking' :
 				if ( ! isset( $this->tracking ) )
 					$this->tracking = $this->option( '_tracking' );
 				break;
+
 			default :
 				return false;
 				break;
+
 		endswitch;
 
 		return $this->$prop_name;

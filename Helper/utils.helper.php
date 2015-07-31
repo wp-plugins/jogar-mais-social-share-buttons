@@ -1,13 +1,18 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais
+ * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
  * @version 1.0.0
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 class Utils_Helper
 {
@@ -32,10 +37,23 @@ class Utils_Helper
 	}
 
 	/**
-	 * @since 1.0
-	 * @param Sanitize requests, strings
-	 * @return String
-	 */
+	* @since 1.0
+	* @param request event
+	* @return String
+	*/
+	public static function request( $key, $default = '', $sanitize = 'esc_html' )
+	{
+		if ( ! isset( $_REQUEST[ $key ] ) OR empty( $_REQUEST[ $key ] ) )
+			return $default;
+
+		return self::sanitize_type( $_REQUEST[ $key ], $sanitize );
+	}
+
+	/**
+	* @since 1.0
+	* @param Sanitize requests, strings
+	* @return String
+	*/
 	public static function sanitize_type( $value, $name_function )
 	{
 		if ( ! is_callable( $name_function ) || 'esc_html' === $name_function )
@@ -63,19 +81,34 @@ class Utils_Helper
 
 	/**
 	 * @since 1.0
+	 * @param Post ID
+	 * @return Integer
+	 */
+	public static function get_id()
+	{
+		global $post;
+
+		if ( isset( $post->ID ) )
+			return $post->ID;
+
+		//return get_the_id();
+	}
+
+	/**
+	 * @since 1.0
 	 * @param Permalinks posts
-	 * @return String permalinks
+	 * @return String
 	 */
 	public static function get_permalink()
 	{
 		global $post;
 
-		$the_permalink = '';
+		$permalink = '';
 
 		if ( isset( $post->ID ) )
-			$the_permalink = get_permalink( $post->ID );
+			$permalink = get_permalink( $post->ID );
 
-		return $the_permalink;
+		return $permalink;
 	}
 
 	/**
@@ -136,7 +169,7 @@ class Utils_Helper
 	 * @param Convert entityes
 	 * @return String
 	 */
-	public static function jm_decode( $string )
+	public static function html_decode( $string )
 	{
 		return html_entity_decode( $string, ENT_NOQUOTES, 'UTF-8' );
 	}
@@ -146,7 +179,7 @@ class Utils_Helper
 	 * @param Replaces
 	 * @return String
 	 */
-	public static function jm_replace( $search, $replace, $subject )
+	public static function replace( $search, $replace, $subject )
 	{
 		return str_replace( $search, $replace, $subject );
 	}
@@ -189,26 +222,6 @@ class Utils_Helper
 
 	/**
 	 * @since 1.0
-	 * @param Convert string for lowercase
-	 * @return String
-	 */
-	public static function strtolower( $string )
-	{
-		return strtolower( $string );
-	}
-
-	/**
-	 * @since 1.0
-	 * @param Convert string for uppercase
-	 * @return String
-	 */
-	public static function strtoupper( $string )
-	{
-		return strtoupper( $string );
-	}
-
-	/**
-	 * @since 1.0
 	 * @param Get option unique and sanitize
 	 * @return String
 	 */
@@ -221,6 +234,27 @@ class Utils_Helper
 			return self::sanitize_type( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . $option], $sanitize );
 
 		return '';
+	}
+
+	/**
+	 * @since 1.0
+	 * @param response error server json
+	 * @return json
+	 */
+	public static function error_server_json( $code, $message = 'Message Error', $echo = true )
+	{
+		$response = json_encode(
+			array(
+				'status' 	=> 'error',
+				'code'   	=> $code,
+				'message'	=> $message,
+			)
+		);
+
+		if ( ! $echo )
+			return $response;
+
+		echo $response;
 	}
 
 	/**

@@ -1,13 +1,18 @@
 <?php
 /**
  *
- * @package Social Share Buttons by Jogar Mais | Register Options
+ * @package Social Share Buttons | Register Options
  * @author  Victor Freitas
  * @subpackage Social Buttons Options Admin Page
- * @since 1.0.2
+ * @since 1.0.3
  */
 
 namespace JM\Share_Buttons;
+
+// Avoid that files are directly loaded
+if ( ! function_exists( 'add_action' ) ) :
+	exit(0);
+endif;
 
 //View
 Init::uses( 'share', 'View' );
@@ -26,8 +31,8 @@ class Option_Controller
 	public function __construct()
 	{
 		add_action( 'admin_init', array( &$this, 'register_options' ) );
-		add_action( 'admin_init', array( &$this, 'register_options_settings' ) );
-		add_action( 'admin_init', array( &$this, 'register_options_style_settings' ) );
+		add_action( 'admin_init', array( &$this, 'register_options_social_media' ) );
+		add_action( 'admin_init', array( &$this, 'register_options_extra_settings' ) );
 	}
 
 	/**
@@ -56,7 +61,7 @@ class Option_Controller
 	 * @param Register options plugin
 	 * @return void
 	 */
-	public function register_options_settings()
+	public function register_options_social_media()
 	{
 		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_settings' );
 		$new_options_settings = array(
@@ -80,9 +85,9 @@ class Option_Controller
 	 * @param Register options plugin style configurations
 	 * @return void
 	 */
-	public function register_options_style_settings()
+	public function register_options_extra_settings()
 	{
-		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_style_settings' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page', 'jm_ssb_style_settings' );
 		$new_options_settings = array(
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'     => 'on',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size' => 32,

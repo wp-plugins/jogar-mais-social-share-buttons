@@ -1,4 +1,4 @@
-=== Social Share Buttons by Jogar Mais ===
+=== Social Share Buttons by Victor Freitas ===
 
 Author URL: http://jogarmais.com.br
 Contributors: victorfreitas1
@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: share, social, buttons, share buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.2.3
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,11 +36,14 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 == Screenshots ==
 
-1. screenshot-01.png
-2. screenshot-02.png
-3. screenshot-03.png
-4. screenshot-04.png
-5. screenshot-05.png
+1. screenshot-1.png
+2. screenshot-2.png
+3. screenshot-3.png
+4. screenshot-4.png
+5. screenshot-5.png
+6. screenshot-6.png
+7. screenshot-7.png
+8. screenshot-8.png
 
 * Sharing buttons
 * Settings panel
@@ -65,7 +68,9 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.2 =
-New: Option UTM tracking for analytics
-New: Screenshots
+= 1.0.3 =
+New: Adds submenu page
+New: Page report share counter
+New: Counter for google plus
+New: Submenus
 Fix: Code patterns fixes
