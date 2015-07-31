@@ -1,0 +1,70 @@
+.jm-ssb-counter {
+			transform: translateX( -55% );
+			transition: opacity .3s;
+	-webkit-transform: translateX( -55% );
+	-webkit-transition: opacity .3s;
+	background: $colorCount;
+	border-radius: 5px; 
+	bottom: 120%;
+	box-shadow: 0 0 0 1px #E0E0E0 inset;
+	color: $colorSilver;
+	font: normal 12px Helvetica, Arial, Sans-Serif;
+	left: -999em;
+	opacity: 0;
+	padding: 6px 12px;
+	position: absolute;
+
+	&:before {
+		-webkit-transform: translateX( -50% );
+		border-color: #ebebeb transparent transparent;
+		border-style: solid;
+		border-width: 5px;
+		content: "";
+		left: 50%;
+		position: absolute;
+		top: 100%;		
+		transform: translateX( -50% );
+	}
+}
+
+.jm-ssb-facebook-counter {
+	background: $fbColor;
+
+	&:before {
+		border-color: $fbColor transparent transparent;
+	}
+}
+.jm-ssb-twitter-counter {
+	background: $ttColor;
+
+	&:before {
+		border-color: $ttColor transparent transparent;
+	}
+}
+.jm-ssb-google-plus-counter {
+	background: $gpColor;
+
+	&:before {
+		border-color: $gpColor transparent transparent;
+	}	
+}
+.jm-ssb-pinterest-counter {
+	background: $pinColor;
+
+	&:before {
+		border-color: $pinColor transparent transparent;
+	}	
+}
+.jm-ssb-linkedin-counter {
+	background: $inColor;
+
+	&:before {
+		border-color: $inColor transparent transparent;
+	}	
+}
+.jm-ssb-tumblr-counter {
+	background: $tColor;
+	&:before {
+		border-color: $tColor transparent transparent;
+	}		
+}
