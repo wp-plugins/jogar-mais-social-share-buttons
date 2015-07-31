@@ -22,6 +22,8 @@ class Sharing_Report_View
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
 			<p class="description">Relatório de Compartilhamento dos Posts</p>
+			<p></p>
+			<p class="description">Esta página tem um cache de 10 minutos</p>
 			<?php
 				if ( ! $posts ) :
 			?>

@@ -23,6 +23,8 @@ class Sharing_Report_Controller
 {
 	const POSTS_PER_PAGE = 20;
 
+	const JM_TRANSIENT = 'jm-transient-sharing-report';
+
 	public function __construct()
 	{
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
@@ -33,7 +35,7 @@ class Sharing_Report_Controller
 		global $wpdb;
 
 		$offset = ( ( $page - 1 ) * self::POSTS_PER_PAGE );
-		$cache  = get_transient( 'jm-transient-sharing-report' );
+		$cache  = get_transient( self::JM_TRANSIENT );
 
 		if ( false !== $cache && isset( $cache[$page] ) )
 			return $cache[$page];
@@ -98,7 +100,7 @@ class Sharing_Report_Controller
 
 		$cache[$page] = $wpdb->get_results( $query );
 
-		set_transient( 'jm-transient-sharing-report', $cache, 1 * MINUTE_IN_SECONDS );
+		set_transient( self::JM_TRANSIENT, $cache, 10 * MINUTE_IN_SECONDS );
 
 		return $cache[$page];
 	}
@@ -132,7 +134,7 @@ class Sharing_Report_Controller
 
 		$page += 1;
 
-		return get_admin_url( null, 'themes.php?page=vivo-manager-sharing-report&sharing_report_page=' ) . $page;
+		return get_admin_url( null, 'themes.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
 	}
 
 	public function get_prev_link( $page )
@@ -142,6 +144,6 @@ class Sharing_Report_Controller
 
 		$page -= 1;
 
-		return get_admin_url( null, 'themes.php?page=vivo-manager-sharing-report&sharing_report_page=' ) . $page;
+		return get_admin_url( null, 'themes.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
 	}
 }
