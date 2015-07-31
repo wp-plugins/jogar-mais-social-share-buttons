@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace JM\Share_Buttons;
@@ -119,7 +119,7 @@ class Sharing_Report_Controller
 
 	public function report()
 	{
-		$page      = Utils_Helper::request( 'sharing_report_page', 1, 'intval' );
+		$page      = Utils_Helper::request( 'report_page', 1, 'intval' );
 		$posts     = $this->get_sharing_report( $page );
 		$next_page = $this->get_next_link( $page, count( $posts ) );
 		$prev_page = $this->get_prev_link( $page );
@@ -134,7 +134,7 @@ class Sharing_Report_Controller
 
 		$page += 1;
 
-		return get_admin_url( null, 'themes.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
+		return get_admin_url( null, 'admin.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
 	}
 
 	public function get_prev_link( $page )
@@ -144,6 +144,6 @@ class Sharing_Report_Controller
 
 		$page -= 1;
 
-		return get_admin_url( null, 'themes.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
+		return get_admin_url( null, 'admin.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
 	}
 }
