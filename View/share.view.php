@@ -119,7 +119,7 @@ class Share_View extends Core
 	{
 		$element  = strtolower( $reference->name );
 		$content  = "<div class=\"jm-ssb-theme-two {$element}-share\">";		
-		$content .= "<a data-attr-url=\"{$reference->link}\" {$reference->popup} title=\"{$reference->title}\">";
+		$content .= "<a data-attr-url=\"{$reference->link}\" data-action=\"open-popup\" title=\"{$reference->title}\">";
 		$content .= "<i class=\"{$prefix}-icons-align {$prefix}-{$reference->img}\"></i>";
 		$content .= ( $element == 'twitter' ) ? 'tweetar' : 'Compartilhar';
 		$content .= '</a>';
@@ -176,7 +176,7 @@ class Share_View extends Core
 		$element  = strtolower( $reference->name );
 		$content  = "<div class=\"{$prefix}-total-share\">";
 		$content .= "<div class=\"{$prefix}-total-share-btn {$element}\">";
-		$content .= "<a data-attr-url=\"{$reference->link}\" {$reference->popup} title=\"{$reference->title}\">";
+		$content .= "<a data-attr-url=\"{$reference->link}\" data-action=\"open-popup\" title=\"{$reference->title}\">";
 		$content .= "<i class=\"{$prefix}-{$reference->img}\"></i>";
 		$content .= ( $element == 'facebook' ) ? "<span>{$element}</span>" : '';
 		$content .= '</a>';
