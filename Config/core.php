@@ -9,9 +9,8 @@
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 //Controller
 Init::uses( 'settings', 'Controller' );
@@ -37,11 +36,20 @@ class Core
 	}
 
 	/**
+	 * Generate object all social icons
+	 * 
 	 * @since 1.0
-	 * @param Generate data all social icons
+	 * @param String $title
+	 * @param String $url
+	 * @param String $tracking
+	 * @param String $thumbnail
+	 * @param String $content
+	 * @param String $caracter
+	 * @param String $sms_title
+	 * @param String $twitter_via
 	 * @return Object all data links
 	 */
-	private static function _set_services( $title, $url, $tracking, $thumbnail, $content, $caracter, $sms_title, $twitter_via )
+	private static function _set_elements( $title, $url, $tracking, $thumbnail, $content, $caracter, $sms_title, $twitter_via )
 	{
 		$data_action    = 'data-action="open-popup"';
 		$share_services = array(
@@ -56,7 +64,7 @@ class Core
 			),
 			'twitter' => array(
 				'name'  => 'Twitter',
-				'link'  => "https://twitter.com/share?url={$url}&text=Acabei de ver {$title} - Clique pra ver também {$caracter}{$twitter_via}",
+				'link'  => "https://twitter.com/share?url={$url}&text=Acabei de ver {$title} - Clique pra ver também {$caracter}&via={$twitter_via}",
 				'title' => 'Compartilhar no Twitter',
 				'icon'  => 'twitter.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-twitter',
@@ -150,22 +158,49 @@ class Core
 	}
 
 	/**
+	 * Encode all items from data services
+	 * 
 	 * @since 1.0
-	 * @param Encode all items from data services
+	 * @param Null
 	 * @return Object
 	 */
-	protected static function _get_services()
+	protected static function _get_elements()
 	{
-		$title       = rawurlencode( '"' . Utils_Helper::html_decode( Utils_Helper::get_title() . '" ' ) );
-		$url         = rawurlencode( Utils_Helper::get_permalink() );
-		$tracking    = ( ( '' !== Utils_Helper::option( '_tracking' ) ) ? Utils_Helper::option( '_tracking' ) : '' );
-		$tracking    = rawurlencode( $tracking );
-		$thumbnail   = rawurlencode( Utils_Helper::get_image() );
-		$content     = rawurlencode( Utils_Helper::body_mail() );
-		$caracter    = rawurlencode( '➜ ' );
-		$sms_title   = rawurlencode( Utils_Helper::replace( '&', 'e', Utils_Helper::html_decode( Utils_Helper::get_title() ) ) . ' ' );
-		$twitter_via = ( ( '' !== Utils_Helper::option( '_twitter_via' ) ) ? '&via=' . Utils_Helper::option( '_twitter_via' ) : '' );
+		$arguments = self::_get_arguments();
+		$tracking  = Utils_Helper::option( '_tracking' );
+		$elements  = self::_set_elements(
+			rawurlencode( $arguments['title'] ),
+			rawurlencode( $arguments['link'] ),
+			rawurlencode( $tracking ),
+			rawurlencode( $arguments['thumbnail'] ),
+			rawurlencode( $arguments['body_mail'] ),
+			rawurlencode( '➜ ' ),
+			rawurlencode( $arguments['sms_title'] ),
+			Utils_Helper::option( '_twitter_via' )
+		);
 
-		return self::_set_services( $title, $url, $tracking, $thumbnail, $content, $caracter, $sms_title, $twitter_via );
+		return $elements;
+	}
+
+	/**
+	 * Get arguments for social url elements
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Array
+	 */
+	private static function _get_arguments()
+	{
+		$title        = Utils_Helper::get_title();
+		$title_decode = Utils_Helper::html_decode( $title );
+		$arguments    = array(
+			'title'     => '"' . $title_decode . '" ',
+			'link'      => Utils_Helper::get_permalink(),
+			'thumbnail' => Utils_Helper::get_image(),
+			'body_mail' => Utils_Helper::body_mail(),
+			'sms_title' => str_replace( '&', 'e', $title_decode ) . ' ',
+		);
+
+		return $arguments;
 	}
 }

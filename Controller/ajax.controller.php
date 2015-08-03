@@ -4,15 +4,14 @@
  * @package Social Share Buttons | Ajax
  * @author  Victor Freitas
  * @subpackage Ajax Controller
- * @version 1.0.0
+ * @version 1.0.2
  */
 
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Ajax_Controller
 {
@@ -21,12 +20,12 @@ class Ajax_Controller
 	*
 	* @since 1.0
 	* @var string
-	* @return string
 	*/
 	const AJAX_VERIFY_NONCE_COUNTER = 'jm-counter-social-share';
 
 	public static function get_plus_google()
 	{
+
 		$url = Utils_Helper::request( 'url', false, 'esc_url' );
 
 		if ( ! $url ) :
@@ -35,38 +34,67 @@ class Ajax_Controller
 			exit(0);
 		endif;
 
-		$posts_fiels = '[{"method":"pos.plusones.get","id":"p","params":{"nolog":true,"id":"' . $url . '","source":"widget","userId":"@viewer","groupId":"@self"},"jsonrpc":"2.0","key":"p","apiVersion":"v1"}]';
+	    $args = array(
+			'method'  => 'POST',
+			'headers' => array(
+		        'Content-Type' => 'application/json'
+		    ),
+		    'body' => json_encode(
+		    	array(
+					'method'     => 'pos.plusones.get',
+					'id'         => 'p',
+					'method'     => 'pos.plusones.get',
+					'jsonrpc'    => '2.0',
+					'key'        => 'p',
+					'apiVersion' => 'v1',
+			        'params' => array(
+						'nolog'   =>true,
+						'id'      => $url,
+						'source'  =>'widget',
+						'userId'  =>'@viewer',
+						'groupId' =>'@self',
+		        	) 
+		     	)
+		    ),
+		    'sslverify' => false
+		);
 
-        $cheader = curl_init();
-        //set option curl
-        curl_setopt($cheader, CURLOPT_URL, "https://clients6.google.com/rpc");
-        curl_setopt($cheader, CURLOPT_POST, 1);
-        curl_setopt($cheader, CURLOPT_POSTFIELDS, $posts_fiels);
-        curl_setopt($cheader, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt( $cheader, CURLOPT_SSL_VERIFYHOST, false );
-		curl_setopt( $cheader, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt($cheader, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-        $curl_results = curl_exec($cheader);
-        curl_close ($cheader);
-
-		$results = json_decode( $curl_results, true );
-		$results = json_encode( self::_get_global_counts_google( $results ) );
+	    $response = wp_remote_request( 'https://clients6.google.com/rpc', $args );
+	    $plusones = json_decode( $response['body'], true );
+		$results  = json_encode( self::_get_global_counts_google( $plusones, $response ) );
 		
 		header( 'Content-Type: application/javascript; charset=utf-8' );
 		echo $_REQUEST[ 'callback' ] . "({$results})";
 		exit(1);
 	}
 
-	private static function _get_global_counts_google( $results )
+	/**
+	 * Quantity shares google plus
+	 * 
+	 * @since 1.0
+	 * @param Array $results
+	 * @return Array
+	 */
+	private static function _get_global_counts_google( $results, $response )
 	{
-		$global_count = $results[0]['result']['metadata']['globalCounts'];
+		if ( is_wp_error( $response ) )
+			return array( 'count' => 0 );
 
-		if ( empty( $global_count ) OR is_null( $global_count ) )
+		$global_count = $results['result']['metadata']['globalCounts'];
+
+		if ( empty( $global_count ) || is_null( $global_count ) )
 			return array( 'count' => 0 );
 
 		return $global_count;
 	}
 
+	/**
+	 * Update post meta share posts
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
 	public static function global_counts_social_share()
 	{
 		$post_id         = Utils_Helper::request( 'reference', false, 'intval' );

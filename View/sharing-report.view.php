@@ -4,18 +4,26 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Views Sharing Report
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Sharing_Report_View
 {
+	/**
+	 * Display page sharing report
+	 * 
+	 * @since 1.0
+	 * @param Object $post
+	 * @param String $prev_page
+	 * @param String $next_page
+	 * @return void
+	 */
 	public static function render_sharing_report( $posts, $prev_page, $next_page )
 	{
 		?>
@@ -30,7 +38,7 @@ class Sharing_Report_View
 			<h3>Não existe mais resultados</h3>
 			<a href="javascript:window.history.go(-1);">Voltar</a>
 			<?php
-					return;
+					return false;
 				endif;
 			?>
 			<table class="widefat jm-ssb-sharing-report-table">

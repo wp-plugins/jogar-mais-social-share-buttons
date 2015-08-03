@@ -4,21 +4,22 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
- * @version 1.0.0
+ * @version 1.0.2
  */
 
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Utils_Helper
 {
 	/**
+	 * Escape string conter XSS attack
+	 * 
 	 * @since 1.0
-	 * @param Escape string conter XSS attack
+	 * @param String $string
 	 * @return String
 	 */
 	public static function esc_html( $string = '' )
@@ -37,9 +38,13 @@ class Utils_Helper
 	}
 
 	/**
-	* @since 1.0
-	* @param request event
-	* @return String
+	 * Sanitize value from methods post or get
+	 * 
+	 * @since 1.0
+	 * @param String $key Relative as request method
+	 * @param Mixed Int/String/Array $default return this function
+	 * @param String $sanitize Relative function
+	 * @return String
 	*/
 	public static function request( $key, $default = '', $sanitize = 'esc_html' )
 	{
@@ -50,21 +55,26 @@ class Utils_Helper
 	}
 
 	/**
-	* @since 1.0
-	* @param Sanitize requests, strings
-	* @return String
+	 * Sanitize requests 
+	 * 
+	 * @since 1.0
+	 * @param String $value Relative sanitize
+	 * @param String $function_name Relative function to use
+	 * @return String
 	*/
-	public static function sanitize_type( $value, $name_function )
+	public static function sanitize_type( $value, $function_name )
 	{
-		if ( ! is_callable( $name_function ) || 'esc_html' === $name_function )
+		if ( ! is_callable( $function_name ) || 'esc_html' === $function_name )
 			return self::esc_html( $value );
 
-		return call_user_func( $name_function, $value );
+		return call_user_func( $function_name, $value );
 	}
 
 	/**
+	 * Post title
+	 * 
 	 * @since 1.0
-	 * @param Title posts
+	 * @param null
 	 * @return String title posts
 	 */
 	public static function get_title()
@@ -80,8 +90,10 @@ class Utils_Helper
 	}
 
 	/**
+	 * Post ID
+	 * 
 	 * @since 1.0
-	 * @param Post ID
+	 * @param null
 	 * @return Integer
 	 */
 	public static function get_id()
@@ -91,12 +103,14 @@ class Utils_Helper
 		if ( isset( $post->ID ) )
 			return $post->ID;
 
-		//return get_the_id();
+		return 0;
 	}
 
 	/**
+	 * Permalinks posts
+	 * 
 	 * @since 1.0
-	 * @param Permalinks posts
+	 * @param null
 	 * @return String
 	 */
 	public static function get_permalink()
@@ -112,8 +126,10 @@ class Utils_Helper
 	}
 
 	/**
+	 * Thumbnail posts
+	 * 
 	 * @since 1.0
-	 * @param Thumbnail posts
+	 * @param null
 	 * @return String thumbnail
 	 */
 	public static function get_image()
@@ -132,9 +148,11 @@ class Utils_Helper
 	}
 
 	/**
+	 * Get content posts
+	 * 
 	 * @since 1.0
-	 * @param Get content global $post
-	 * @return String content
+	 * @param null
+	 * @return String content post
 	 */
 	public static function body_mail()
 	{
@@ -153,20 +171,22 @@ class Utils_Helper
 	}
 
 	/**
+	 * Plugin base name
+	 * 
 	 * @since 1.0
-	 * @param Plugin base file
-	 * @return String
+	 * @param null
+	 * @return String link base file
 	 */
 	public static function base_name()
 	{
-		$plugin_base = plugin_basename( plugin_dir_path( __DIR__ ) . Init::PLUGIN_SLUG . '.php' );
-
-		return $plugin_base;
+		return plugin_basename( plugin_dir_path( __DIR__ ) . Init::PLUGIN_SLUG . '.php' );
 	}
 
 	/**
+	 * Descode html entityes UTF-8
+	 * 
 	 * @since 1.0
-	 * @param Convert entityes
+	 * @param String $string
 	 * @return String
 	 */
 	public static function html_decode( $string )
@@ -175,54 +195,48 @@ class Utils_Helper
 	}
 
 	/**
+	 * Plugin file url in assets directory
+	 * 
 	 * @since 1.0
-	 * @param Replaces
+	 * @param String $file
+	 * @param String $path
 	 * @return String
 	 */
-	public static function replace( $search, $replace, $subject )
+	public static function plugin_url( $file, $path = 'assets/' )
 	{
-		return str_replace( $search, $replace, $subject );
+		return plugins_url( $path . $file, __DIR__ );
 	}
 
 	/**
+	 * Plugin file path in assets directory
+	 * 
 	 * @since 1.0
-	 * @param Plugin file url in assets directory
-	 * @return String
-	 */
-	public static function plugin_url( $file )
-	{
-		$file_url = plugins_url( 'assets/' . $file, __DIR__ );
-
-		return $file_url;
-	}
-
-	/**
-	 * @since 1.0
-	 * @param Plugin file path in assets directory
+	 * @param String $file
 	 * @return String
 	 */
 	public static function file_path( $file )
 	{
-		$path = plugin_dir_path( dirname( __FILE__ ) ) . Settings::DS . 'assets/' . $file;
-
-		return $path;
+		return plugin_dir_path( dirname( __FILE__ ) ) . Settings::DS . 'assets/' . $file;
 	}
 
 	/**
+	 * Generate file time style and scripts
+	 * 
 	 * @since 1.0
-	 * @param Generate file time style and scripts
+	 * @param Int $path
 	 * @return Integer
 	 */
 	public static function filetime( $path )
 	{
-		$file_time = date( 'dmYHi', filemtime( $path ) );
-
-		return $file_time;
+		return date( 'dmYHi', filemtime( $path ) );
 	}
 
 	/**
+	 * Get option unique and sanitize
+	 * 
 	 * @since 1.0
-	 * @param Get option unique and sanitize
+	 * @param String $option Relative option name
+	 * @param String $sanitize Relative function
 	 * @return String
 	 */
 	public static function option( $option, $sanitize = 'esc_html' )
@@ -237,8 +251,12 @@ class Utils_Helper
 	}
 
 	/**
+	 * response error server json
+	 * 
 	 * @since 1.0
-	 * @param response error server json
+	 * @param Int $code
+	 * @param String $message
+	 * @param Boolean $echo
 	 * @return json
 	 */
 	public static function error_server_json( $code, $message = 'Message Error', $echo = true )
@@ -258,8 +276,10 @@ class Utils_Helper
 	}
 
 	/**
+	 * Convert array in objects
+	 * 
 	 * @since 1.0
-	 * @param Convert array in objects
+	 * @param Array $arguments
 	 * @return Object
 	 */
 	public static function array_to_object( array $arguments = array() )
@@ -268,5 +288,20 @@ class Utils_Helper
         	$object[$key] = (object) $value;
 
 		return (object) $object;
+	}
+
+	/**
+	 * Retrieves the url to the admin area for a given site.
+	 * 
+	 * @since 1.0
+	 * @param String $path Relative to the admin url. Default empty.
+	 * @return String Admin url link
+	 */
+	public static function admin_url( $path = '' )
+	{
+		$request = self::esc_html( $_SERVER['REQUEST_URI'] );
+		$path    = basename( "{$request}{$path}" );
+
+		return get_admin_url( null, $path );
 	}
 }

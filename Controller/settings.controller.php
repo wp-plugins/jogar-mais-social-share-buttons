@@ -10,14 +10,18 @@
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 Init::uses( 'ajax', 'Controller' );
 
 class Settings_Controller
 {
+	/**
+	* Initialize the plugin by setting localization, filters, and administration functions.
+	*
+	* @since 1.0.3
+	*/
 	public function __construct()
 	{
 		register_activation_hook( Settings::FILE, array( &$this, 'activate' ) );
@@ -33,8 +37,10 @@ class Settings_Controller
 	}
 
 	/**
+	 * Adds links page plugin action
+	 * 
 	 * @since 1.0
-	 * @param Adds links page plugin action
+	 * @param Array $links
 	 * @return Array links action plugins
 	 */
 	public function plugin_link( $links )
@@ -47,8 +53,10 @@ class Settings_Controller
 	}
 
 	/**
+	 * Enqueue scripts and styles
+	 * 
 	 * @since 1.0
-	 * @param Enqueue scripts and styles
+	 * @param Null
 	 * @return Void
 	 */
 	public function scripts()
@@ -81,8 +89,10 @@ class Settings_Controller
 	}
 
 	/**
+	 *  Enqueue scripts and styles for admin page
+	 * 
 	 * @since 1.0
-	 * @param Enqueue scripts and styles for admin page
+	 * @param Null
 	 * @return Void
 	 */
 	public function admin_style()
@@ -96,8 +106,10 @@ class Settings_Controller
 	}
 
 	/**
+	 * Register menu page and submenus
+	 * 
 	 * @since 1.0
-	 * @param Register menu page plugin
+	 * @param Null
 	 * @return void
 	 */
 	public function menu_page()
@@ -131,8 +143,10 @@ class Settings_Controller
 	}
 
 	/**
+	 * Register Activation Hook
+	 * 
 	 * @since 1.0
-	 * @param Register Activation Hook
+	 * @param Null
 	 * @return Void
 	 */
 	public function activate()
@@ -141,8 +155,10 @@ class Settings_Controller
 	}
 
 	/**
+	 * Register Deactivation Hook
+	 * 
 	 * @since 1.0
-	 * @param Register Deactivation Hook
+	 * @param Null
 	 * @return Void
 	 */
 	public function deactivate()

@@ -5,7 +5,7 @@
 /*
 Plugin Name: Social Share Buttons
 Plugin URI: http://jogarmais.com.br
-Version: 1.0.5
+Version: 1.1.0
 Author: Victor Freitas
 Author URI: http://jogarmais.com.br
 License: GPL2
@@ -35,9 +35,8 @@ Description: Insere botões de compartilhamento das redes sociais. Os botões s�
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Init
 {

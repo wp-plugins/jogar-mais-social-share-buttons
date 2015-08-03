@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: share, social, buttons, share buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.2.3
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,12 +44,23 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 6. screenshot-6.png
 7. screenshot-7.png
 8. screenshot-8.png
+9. screenshot-9.png
 
 * Sharing buttons
 * Settings panel
 * Set for your sharing icons
 
 == Changelog ==
+
+= 2.0.0 =
+
+New: Theme
+New: Optimize icons mobile
+New: Icons style
+Fix: Bug fixes
+
+= 1.0.5 =
+Fix: Bug fixes
 
 = 1.0.3 =
 New: Adds submenu page
@@ -75,5 +86,10 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.5 =
+= 2.0.0 =
+
+New: Theme
+New: Optimize icons mobile
+New: Icons style
 Fix: Bug fixes
+

@@ -4,21 +4,23 @@
  * @package Social Share Buttons | Admin
  * @author  Victor Freitas
  * @subpackage View Admin Page
- * @version 1.0.3
+ * @version 1.1.0
  */
 
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Setting_View extends Share_View
 {
 	/**
+	 * Display page setting
+	 * 
 	 * @since 1.0
-	 * @param Show options admin page
+	 * @param Null
+	 * @return Void Display page
 	 */
 	public static function render_settings_page()
 	{
@@ -26,7 +28,7 @@ class Setting_View extends Share_View
 	?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
-			<p><?php echo Settings::PLUGIN_DESC; ?></p>
+			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
 			<span class="jm-ssb-settings-title">Configurações</span>
 			<div class="jm-ssb-settings-wrap">
 				<form action="options.php" method="post">
@@ -91,21 +93,22 @@ class Setting_View extends Share_View
 								</th>
 								<td>
 									<?php
+									
 									foreach ( self::_icons_settings() as $key => $button ) :
 
 										printf( '<label for="%s">', $button->class );
-										printf( '<img src="' . Utils_Helper::plugin_url( "icons/%s" ) . '" class="%s">', $button->icon, $button->class );
+										printf( '<img src="' . Utils_Helper::plugin_url( 'icons/%s' ) . '" class="%s">', $button->icon, $button->class );
 										printf( '<input id="%s" type="checkbox" name="jm_ssb[' . Settings::PLUGIN_PREFIX_UNDERSCORE . '_%s]" value="%s" %s>',
 											$button->class,
 											$button->name,
 											$button->name,
-											checked( $button->name, Utils_Helper::option( '_' . $button->name ), false )
+											checked( $button->name, Utils_Helper::option( "_{$button->name}" ), false )
 										);
 										echo '</label>';
 
 									endforeach;
 									?>
-								 <p class="description">Opções disponíveis apenas para o tema princípal.</p>
+								 <em class="description">Opções disponíveis apenas para o tema princípal.</em>
 								</td>
 							</tr>
 							<tr>
@@ -124,21 +127,38 @@ class Setting_View extends Share_View
 									Opções de aparência
 								</th>
 								<td>
-									<label for="setting-buttons-theme-main">
-										<input id="setting-buttons-theme-main" type="radio"
-										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
-											   value="0"
-											   <?php checked( 0, $model->desktop ); ?>>
-										Tema princípal
-									</label>
-									<hr>
-									<label for="setting-buttons-theme-secondary">
-										<input id="setting-buttons-theme-secondary" type="radio"
-										       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
-											   value="1"
-											   <?php checked( 1, $model->desktop ); ?>>
-										<span title="Marcando esta opção o tema princípal será exibido automáticamente para usuários em dispositivos mobile">Tema secundário</span>
-									</label>
+									<p>
+										<label for="setting-buttons-theme-main">
+											<input id="setting-buttons-theme-main" type="radio"
+											       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
+												   value="0"
+												   <?php checked( 0, $model->desktop ); ?>>
+											Tema princípal
+										</label>
+									</p>
+									<p>
+										<label for="setting-buttons-theme-secondary">
+											<input id="setting-buttons-theme-secondary" type="radio"
+											       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
+												   value="1"
+												   <?php checked( 1, $model->desktop ); ?>>
+											<span>
+												Tema convencinal <em>(Facebook; Google Plus; Twitter; Linkedin; WhatsApp)</em>
+											</span>
+										</label>
+									</p>
+									<p>
+										<label for="setting-buttons-theme-total-counter">
+											<input id="setting-buttons-theme-total-counter" type="radio"
+											       name="jm_ssb[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_desktop]"
+												   value="2"
+												   <?php checked( 2, $model->desktop ); ?>>
+											<span>
+												Tema com contador geral <em>(Facebook; Twitter; Google Plus; WhatsApp; Linkedin; Pinterest)</em>
+											</span>
+										</label>
+									</p>
+									<p class="description">Todos os temas tem suporte para responsivo</p>
 								</td>
 							</tr>
 						</tbody>
@@ -155,8 +175,11 @@ class Setting_View extends Share_View
 	}
 
 	/**
+	 * Display page setting
+	 * 
 	 * @since 1.0
-	 * @param Show options admin page - extra settings
+	 * @param Null
+	 * @return Void Display page
 	 */
 	public static function render_extra_settings_page()
 	{
@@ -164,7 +187,7 @@ class Setting_View extends Share_View
 	?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
-			<p><?php echo Settings::PLUGIN_DESC; ?></p>
+			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
 			<span class="jm-ssb-settings-title">Configurações Extras</span>
 			<div class="jm-ssb-settings-wrap">
 				<form action="options.php" method="post">
@@ -178,6 +201,7 @@ class Setting_View extends Share_View
 									<input id="icons-size" step="1" min="15" max="60" type="number"
 									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_icons_style_size]"
 										   value="<?php echo $model->icons_size; ?>">px
+									<em class="description">Apenas para o tema princípal</em>
 								</td>
 							</tr>
 							<tr>
@@ -231,28 +255,57 @@ class Setting_View extends Share_View
 	}
 
 	/**
+	 * Display page setting
+	 * 
 	 * @since 1.0
-	 * @param Show options admin page
+	 * @param Null
+	 * @return Void Display page
 	 */
 	public static function render_page_faq()
 	{
 	?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
-			<p><?php echo Settings::PLUGIN_DESC; ?></p>
-			<span class="jm-ssb-settings-title">Opções de uso</span>
-			<div class="jm-ssb-settings-wrap">		
-				<blockquote>Via shortcode: <code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code> //Retorna todos os botões || Obs.: As classes são opcionais</blockquote>
-				<blockquote>Via shortcode: <code>[JMSSBWHATSAPP class=""]</code> //Retorna apenas o botão do WhatsApp</blockquote>
-				<blockquote>Via metódo PHP: <code>JM\Share_Buttons\Share_View::jm_ssb()</code> //Retorna todos os botões</blockquote>
+			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
+			<span class="jm-ssb-settings-title">
+				Opções de uso
+			</span>
+			<div class="jm-ssb-settings-wrap">
+				<blockquote>
+					<strong>Via shortcode: </strong>
+					<code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code>
+					//Retorna todos os botões //Classes são opcionais
+				</blockquote>
+				<blockquote>
+					<strong>Via shortcode: </strong>
+					<code>[JMSSBWHATSAPP class=""]</code>
+					//Retorna apenas o botão do WhatsApp //Classe é opcional
+				</blockquote>
+				<blockquote>
+					<strong>Via metódo PHP: </strong>
+					<code>JM\Share_Buttons\Share_View::jm_ssb()</code>
+					//Retorna todos os botões do tema princípal
+				</blockquote>
+				<blockquote>
+					<strong>Via metódo PHP: </strong>
+					<code>JM\Share_Buttons\Share_View::theme_secondary()</code>
+					//Retorna os botões do tema secundário
+				</blockquote>
+				<blockquote>
+					<strong>Via metódo PHP: </strong>
+					<code>JM\Share_Buttons\Share_View::theme_total_counter()</code>
+					//Retorna os botões do tema contador geral
+				</blockquote>
 			</div>
 		</div>
 	<?php
 	}
 
 	/**
+	 * Generate data all social icons
+	 * 
 	 * @since 1.0
-	 * @param Generate data all social icons display
+	 * @param Null
 	 * @return Object
 	 */
 	protected static function _icons_settings()

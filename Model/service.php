@@ -10,9 +10,8 @@
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Service
 {
@@ -29,16 +28,11 @@ class Service
 	*
 	* @since 1.0
 	* @var string
-	* @return string
 	*/
 	private $share_count_facebook;
-
 	private $share_count_twitter;
-
 	private $share_count_google;
-
 	private $share_count_linkedin;
-
 	private $share_count_pinterest;
 
 	/**
@@ -46,18 +40,18 @@ class Service
 	*
 	* @since 1.0
 	* @var string
-	* @return string
 	*/
 	const POST_META_SHARE_COUNT_FACEBOOK = 'jm-share-count-facebook';
-
 	const POST_META_SHARE_COUNT_TWITTER = 'jm-share-count-twitter';
-
 	const POST_META_SHARE_COUNT_GOOGLE = 'jm-share-count-google';
-
 	const POST_META_SHARE_COUNT_LINKEDIN = 'jm-share-count-linkedin';
-
 	const POST_META_SHARE_COUNT_PINTEREST = 'jm-share-count-pinterest';
 
+	/**
+	 * Initialize the plugin by setting localization, filters, and administration functions.
+	 *
+	 * @since 1.0
+	 */
 	public function __construct( $ID = false )
 	{
 		if ( false !== $ID )
@@ -83,7 +77,7 @@ class Service
 	 * Get Property share count per name
 	 *
 	 * @since 1.0
-	 * @return mixed The value of the attribute
+	 * @return mixed String/Integer The value of the attribute
 	*/
 	private function _get_meta_property( $prop_name )
 	{

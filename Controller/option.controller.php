@@ -10,9 +10,8 @@
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 //View
 Init::uses( 'share', 'View' );
@@ -23,7 +22,7 @@ Init::uses( 'settings', 'Model' );
 class Option_Controller
 {
 	/**
-	 * Adds needed actions
+	 * Adds needed actions initialize class
 	 *
 	 * @since 1.0
 	 * @return void
@@ -36,8 +35,10 @@ class Option_Controller
 	}
 
 	/**
+	 * Register options plugin
+	 * 
 	 * @since 1.0
-	 * @param Register options plugin
+	 * @param Null
 	 * @return void
 	 */
 	public function register_options()
@@ -57,8 +58,10 @@ class Option_Controller
 	}
 
 	/**
+	 * Register options social media plugin
+	 * 
 	 * @since 1.0
-	 * @param Register options plugin
+	 * @param Null
 	 * @return void
 	 */
 	public function register_options_social_media()
@@ -81,8 +84,10 @@ class Option_Controller
 	}
 
 	/**
+	 * Register options plugin extra configurations
+	 * 
 	 * @since 1.0
-	 * @param Register options plugin style configurations
+	 * @param Null
 	 * @return void
 	 */
 	public function register_options_extra_settings()

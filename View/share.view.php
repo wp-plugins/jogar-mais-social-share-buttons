@@ -4,32 +4,34 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Social Icons Display
- * @version 1.0.3
+ * @version 1.1.0
  */
 
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Share_View extends Core
 {
 	/**
+	 * Generate all icons sharing
+	 * 
 	 * @since 1.0
-	 * @param Generate all icons sharing
-	 * @return string/HTML
+	 * @param Array $atts
+	 * @return HTML
 	 *
 	 */
 	public static function links( $atts = array() )
 	{
-		$model    = new Settings();
-		$options  = $model->get_options();
-		$services = parent::_get_services();
+		$model = new Settings();
 
-		if ( $model->desktop && ! wp_is_mobile() )
-			return self::_theme_two();
+		if ( 1 === $model->desktop )
+			return self::theme_secondary();
+
+		if ( 2 === $model->desktop )
+			return self::theme_total_counter();
 
 		extract(
 			shortcode_atts(
@@ -43,18 +45,29 @@ class Share_View extends Core
 			)
 		);
 
-		$buttons_content = self::_start_buttons_content( Utils_Helper::get_permalink(), Utils_Helper::esc_html( $class_ul ), $model->class );
+		$options            = $model->get_options();
+		$services           = parent::_get_elements();
+		$prefix             = Settings::PLUGIN_PREFIX;
+		$class_default      = "{$prefix}-shared ";
+		$class_default_icon = "{$prefix}-icon ";
+		$class_icon         = Utils_Helper::esc_html( $class_icon );
+		$class_link         = Utils_Helper::esc_html( $class_link );
+		$class_li           = Utils_Helper::esc_html( $class_li );
+		$buttons_content    = self::_start_buttons_content(
+			Utils_Helper::get_permalink(),
+			Utils_Helper::esc_html( $class_ul ),
+			$model->class
+		);
 
 		foreach ( $services as $key => $social ) :
 
 			if ( ! in_array( $social->name, (array) $options ) )
 				continue;
 
-			$attr_link  = self::_add_link( $social->name, $social->link );
-
-			$buttons_content .= '<div class="' . Settings::PLUGIN_PREFIX . '-shared ' . $social->class . ' ' . Utils_Helper::esc_html( $class_li ) . '">';
-			$buttons_content .= '<a ' . $attr_link . $social->popup . 'class="' . Utils_Helper::esc_html( $class_link ) . '" title="' . $social->title . '">';
-			$buttons_content .= '<span class="' . Settings::PLUGIN_PREFIX . '-icon ' . Settings::PLUGIN_PREFIX . '-' . $social->img . ' ' . Utils_Helper::esc_html( $class_icon ) . '"></span>';
+			$attr_href        = self::_add_attr_link( $social->name, $social->link );
+			$buttons_content .= "<div class=\"{$class_default} {$social->class} {$class_li}\">";
+			$buttons_content .= "<a {$attr_href} {$social->popup} class=\"{$class_link}\" title=\"{$social->title}\">";
+			$buttons_content .= "<i class=\"{$class_default_icon} {$prefix}-{$social->img} {$class_icon}\"></i>";
 			$buttons_content .= '</a>';
 			$buttons_content .= self::_add_counter( $social->name );
 			$buttons_content .= '</div>';
@@ -67,125 +80,194 @@ class Share_View extends Core
 	}
 
 	/**
+	 * Display icons theme secondary ( Facebook; Google Plus; Twitter; Linkedin )
+	 * 
 	 * @since 1.0
-	 * @param Display icons Facebook, Google Plus and Twitter
-	 * @return String/HTML
+	 * @param Null
+	 * @return HTML 
 	 *
 	 */
-	private static function _theme_two()
+	public static function theme_secondary()
 	{
-		$ajax_nonce = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
-		$services   = parent::_get_services();
-
-		$buttons_content  = '<div class="' . Settings::PLUGIN_PREFIX . '-container-theme-two" data-element-' . Settings::PLUGIN_PREFIX . ' data-attr-nonce="' . $ajax_nonce . '"';
-		$buttons_content .= ' data-attr-reference="' . Utils_Helper::get_id() . '" data-element-url="' . Utils_Helper::get_permalink() . '">';
-		$buttons_content .= self::_change_button( $services->facebook );
-		$buttons_content .= self::_change_button( $services->google_plus );
-		$buttons_content .= self::_change_button( $services->twitter );
-		$buttons_content .= self::_change_button( $services->linkedin );
+		$nonce            = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
+		$services         = parent::_get_elements();
+		$prefix           = Settings::PLUGIN_PREFIX;
+		$post_id          = Utils_Helper::get_id();
+		$permalink        = Utils_Helper::get_permalink();
+		$buttons_content  = "<div class=\"{$prefix}-container-theme-two\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
+		$buttons_content .= " data-attr-reference=\"{$post_id}\" data-element-url=\"{$permalink}\">";
+		$buttons_content .= self::_change_button( $services->facebook, $prefix );
+		$buttons_content .= self::_change_button( $services->google_plus, $prefix );
+		$buttons_content .= self::_change_button( $services->twitter, $prefix );
+		$buttons_content .= self::_change_button( $services->whatsapp, $prefix );
+		$buttons_content .= self::_change_button( $services->linkedin, $prefix );
 		$buttons_content .= '</div>';
 
 		return $buttons_content;
 	}
 
 	/**
+	 * Create HTML dinamic from icons
+	 * 
 	 * @since 1.0
-	 * @param Create HTML from icons dinamic
-	 * @return String/HTML
+	 * @param Array $reference
+	 * @param String $prefix
+	 * @return HTML
 	 *
 	 */
-	private static function _change_button( $reference_name = array() )
+	private static function _change_button( $reference = array(), $prefix )
 	{
-		$social_name = strtolower( $reference_name->name );
+		$element  = strtolower( $reference->name );
+		$content  = "<div class=\"jm-ssb-theme-two {$element}-share\">";		
+		$content .= "<a data-attr-url=\"{$reference->link}\" {$reference->popup} title=\"{$reference->title}\">";
+		$content .= "<i class=\"{$prefix}-icons-align {$prefix}-{$reference->img}\"></i>";
+		$content .= ( $element == 'twitter' ) ? 'tweetar' : 'Compartilhar';
+		$content .= '</a>';
+		$content .= "<span class=\"count\" data-counter-{$element}>...</span>";
+		$content .= '</div>';
 
-		$create_buttons_content  = '<div class="jm-ssb-theme-two ' . $social_name . '-share">';		
-		$create_buttons_content .= '<a data-attr-url="' . $reference_name->link . '" ' . $reference_name->popup . ' title="' . $reference_name->title . '">';
-		$create_buttons_content .= '<span class="icons-align ' . $reference_name->img . '"></span>';
-		$create_buttons_content .= ( $social_name == 'twitter' ) ? 'tweetar' : 'Compartilhar';
-		$create_buttons_content .= '</a>';
-		$create_buttons_content .= '<span class="count" data-counter-' . $social_name . '>...</span>';
-		$create_buttons_content .= '</div>';
-
-		return $create_buttons_content;
-
+		return $content;
 	}
 
 	/**
+	 * Display icons theme total counter ( Facebook; Google Plus; Twitter; Linkedin; whatsapp )
+	 * 
 	 * @since 1.0
-	 * @param Generate icon sharing for WhatsApp shortcode
+	 * @param Null
+	 * @return HTML 
+	 *
+	 */
+	public static function theme_total_counter()
+	{
+		$nonce            = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
+		$services         = parent::_get_elements();
+		$prefix           = Settings::PLUGIN_PREFIX;
+		$post_id          = Utils_Helper::get_id();
+		$permalink        = Utils_Helper::get_permalink();
+		$buttons_content  = "<div class=\"{$prefix}-theme-total-share\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
+		$buttons_content .= " data-attr-reference=\"{$post_id}\" data-element-url=\"{$permalink}\">";	
+		$buttons_content .= "<div class=\"{$prefix}-total-share-counter\">";
+		$buttons_content .= '<aside data-counter-total-share>...</aside>';
+		$buttons_content .= '<aside>SHARES</aside>';
+		$buttons_content .= '<aside class="slash">|</aside>';
+		$buttons_content .= '</div>';
+		$buttons_content .= self::_change_button_theme_total_counter( $services->facebook, $prefix );
+		$buttons_content .= self::_change_button_theme_total_counter( $services->twitter, $prefix );
+		$buttons_content .= self::_change_button_theme_total_counter( $services->google_plus, $prefix );
+		$buttons_content .= self::_change_button_theme_total_counter( $services->whatsapp, $prefix );
+		$buttons_content .= self::_change_button_theme_total_counter( $services->linkedin, $prefix );
+		$buttons_content .= self::_change_button_theme_total_counter( $services->pinterest, $prefix );
+		$buttons_content .= '</div>';
+
+		return $buttons_content;
+	}
+
+	/**
+	 * Create HTML dinamic from button total share counter
+	 * 
+	 * @since 1.0
+	 * @param Array $reference
+	 * @param String $prefix
+	 * @return HTML
+	 *
+	 */
+	private static function _change_button_theme_total_counter( $reference = array(), $prefix )
+	{
+		$element  = strtolower( $reference->name );
+		$content  = "<div class=\"{$prefix}-total-share\">";
+		$content .= "<div class=\"{$prefix}-total-share-btn {$element}\">";
+		$content .= "<a data-attr-url=\"{$reference->link}\" {$reference->popup} title=\"{$reference->title}\">";
+		$content .= "<i class=\"{$prefix}-{$reference->img}\"></i>";
+		$content .= ( $element == 'facebook' ) ? "<span>{$element}</span>" : '';
+		$content .= '</a>';
+		$content .= '</div>';
+		$content .= '</div>';
+
+		return $content;
+	}
+
+	/**
+	 * Generate icon sharing for WhatsApp shortcode
+	 * 
+	 * @since 1.0
+	 * @param Array $atts
 	 * @return Void
 	 */
 	public static function whatsapp( $atts = array() )
 	{
-		$plugins_url = Utils_Helper::plugin_url( 'icons/' );
-		$services    = parent::_get_services();
-
-		extract(
-			shortcode_atts(
-				array(
-					'class' => '',
-				),
-				$atts, 'JMSSBWHATSAPP'
-			)
+		$shortcode = shortcode_atts(
+			array( 'class' => '' ),
+			$atts,
+			'JMSSBWHATSAPP'
 		);
 
-		printf( '<div class="%s-whatsapp-unique %s">
-					<a href="%s" title="%s">
-						<span class="icon-whatsapp"></span>
-					</a>
-				</div>',
-				Settings::PLUGIN_PREFIX,
-				Utils_Helper::esc_html( $class ),
-				$services->whatsapp->link,
-				$services->whatsapp->title
-		);
+		$elements  = parent::_get_elements();
+		$prefix    = Settings::PLUGIN_PREFIX;
+		$class     = Utils_Helper::esc_html( $shortcode['class'] );
+		$content   = "<div class=\"{$prefix}-whatsapp-unique {$class}\">";
+		$content  .= "<a href=\"{$elements->whatsapp->link}\" title=\"{$elements->whatsapp->title}\">";
+		$content  .= '<i class="icon-whatsapp"></i>';
+		$content  .= '</a>';
+		$content  .= '</div>';
+
+		return $content;
 	}
 
 	/**
+	 * Create custom class from icons
+	 * 
 	 * @since 1.0
-	 * @param Create method from icons
-	 * @return Mixed String/Array
+	 * @param Array $atts
+	 * @return Array
 	 */
-	public static function jm_ssb( $atts = '' )
+	public static function jm_ssb( $atts = array() )
 	{
-		$attrs = array( 'class_ul' => $atts );
-
-		if ( is_array( $atts ) ) :
-			$class_ul   = ( isset( $atts[0] ) ) ? $atts[0] : '';
-			$class_li   = ( isset( $atts[1] ) ) ? $atts[1] : '';
-			$class_link = ( isset( $atts[2] ) ) ? $atts[2] : '';
-			$class_icon = ( isset( $atts[3] ) ) ? $atts[3] : '';
-			$attrs      = array(
-				'class_ul'   => $class_ul,
-				'class_li'   => $class_li,
-				'class_link' => $class_link,
-				'class_icon' => $class_icon,
-			);
-		endif;
+		$class_ul   = ( isset( $atts[0] ) ) ? $atts[0] : '';
+		$class_li   = ( isset( $atts[1] ) ) ? $atts[1] : '';
+		$class_link = ( isset( $atts[2] ) ) ? $atts[2] : '';
+		$class_icon = ( isset( $atts[3] ) ) ? $atts[3] : '';
+		$attrs      = array(
+			'class_ul'   => $class_ul,
+			'class_li'   => $class_li,
+			'class_link' => $class_link,
+			'class_icon' => $class_icon,
+		);
 
 		return self::links( $attrs );
 	}
 
 	/**
+	 * Change size from icons
+	 * 
 	 * @since 1.0
-	 * @param Change size from icons
-	 * @return String
+	 * @param Null
+	 * @return String HTML
 	 */
 	public static function icons_style()
 	{
-		$model      = new Settings();
-		$icons_size = $model->icons_size;
+		$model    = new Settings();
+		$size     = $model->icons_size;
+		$prefix   = Settings::PLUGIN_PREFIX;
+		$sizeCalc = $size + 4;
+		$style    = "<style type=\"text/css\" media=\"screen\">\n";
+		$style   .= ".{$prefix}-shared a .{$prefix}-icon{ width: {$size}px; height: {$size}px; background-size: cover; font-size: {$size}px; }\n";
+		$style   .= ".{$prefix}-shared a .{$prefix}-icon-tumblr{ position: relative; top: 1px; }\n";
+		$style   .= ".{$prefix}-shared a .{$prefix}-icon-tumblr:before{ font-size: {$sizeCalc}px; }\n";
+		$style   .= ".{$prefix}-shared a .{$prefix}-icon-email:before{ font-size: {$sizeCalc}px; }\n";
+		$style   .= "</style>\n";
 
-		if ( ( $icons_size != 32 && $icons_size ) && 'off' !== $model->disable_css )
-			printf( '<style>.' . Settings::PLUGIN_PREFIX . '-shared a .' . Settings::PLUGIN_PREFIX . '-icon{width: %spx; height: %spx; background-size: cover;}</style>' . "\n", $icons_size, $icons_size );
+		if ( ( $size != 32 && $size ) && 'off' !== $model->disable_css )
+			echo $style;
 	}
 
 	/**
+	 * Set social name for counter shares
+	 * 
 	 * @since 1.0
-	 * @param Set social name for counter shares
+	 * @param Null
 	 * @return Array
 	 */
-	private static function _social_name_active()
+	private static function _elements_active()
 	{
 		$social_name = array(
 			'Facebook',
@@ -199,53 +281,57 @@ class Share_View extends Core
 	}
 
 	/**
+	 * Adds attribute class counters social
+	 * 
 	 * @since 1.0
-	 * @param Adds attribute counters social
+	 * @param String $social_name
 	 * @return String
 	 */
-	private static function _add_counter( $social_name )
+	private static function _add_counter( $element )
 	{
-		$count_content = '';
+		$content = '';
 
-		if ( in_array( $social_name, self::_social_name_active() ) )
-			$count_content = '<span data-counter-' . strtolower( $social_name ) . ' class="' . Settings::PLUGIN_PREFIX . '-counter">...</span>';
+		if ( in_array( $element, self::_elements_active() ) )
+			$content = '<span data-counter-' . strtolower( $element ) . ' class="' . Settings::PLUGIN_PREFIX . '-counter">...</span>';
 
-		return $count_content;
+		return $content;
 	}
 
 	/**
+	 * Verfy and return links from icons
+	 * 
 	 * @since 1.0
-	 * @param Verfy and return links from icons
+	 * @param String $social_name
+	 * @param String $social_link
 	 * @return String
 	 */
-	private static function _add_link( $social_name, $social_link )
+	private static function _add_attr_link( $element, $element_link )
 	{
-		$attr_link = "data-attr-url=\"{$social_link}\" ";
+		$attr_link = "data-attr-url=\"{$element_link}\" ";
 
-		if ( $social_name === 'Whatsapp' || $social_name === 'Sms' )
-			$attr_link = "href=\"{$social_link}\" ";
+		if ( $element === 'Whatsapp' || $element === 'Sms' )
+			$attr_link = "href=\"{$element_link}\" ";
 
 		return $attr_link;
 	}
 
 	/**
+	 * Verfy and return first buttons content
+	 * 
 	 * @since 1.0
-	 * @param Verfy and return first buttons content
+	 * @param String $permalink
+	 * @param String $class_ul
+	 * @param String $class_option
 	 * @return String
 	 */
 	private static function _start_buttons_content( $permalink, $class_ul = '', $class_option = '' )
 	{
-		$ajax_nonce = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
- 
-		if ( '' !== $class_ul )
-			$class_ul = " {$class_ul}";
+		$nonce    = wp_create_nonce( Ajax_Controller::AJAX_VERIFY_NONCE_COUNTER );
+		$post_id  = Utils_Helper::get_id();
+		$prefix   = Settings::PLUGIN_PREFIX;
+		$content  = "<div data-element-{$prefix} data-attr-reference=\"{$post_id}\" data-attr-nonce=\"{$nonce}\"";
+		$content .= " data-element-url=\"{$permalink}\" class=\"{$prefix}-social {$class_ul} {$class_option}\">";
 
-		if ( '' !== $class_option )
-			$class_option = " {$class_option}";
-
-		$start_buttons_content  = "<div data-element-" . Settings::PLUGIN_PREFIX . " data-attr-reference=\"" . Utils_Helper::get_id() . "\" data-attr-nonce=\"{$ajax_nonce}\"";
-		$start_buttons_content .= " data-element-url=\"{$permalink}\" class=\"" . Settings::PLUGIN_PREFIX . "-social{$class_ul}{$class_option}\">";
-
-		return $start_buttons_content;
+		return $content;
 	}
 }

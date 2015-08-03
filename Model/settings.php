@@ -10,9 +10,8 @@
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Settings
 {
@@ -20,237 +19,227 @@ class Settings
 	 * Total Options
 	 *
 	 * @since 1.0
-	 * @var string
-	 * @return array
+	 * @var Array
 	 */
 	private $total_options;
 	
 	/**
-	 * Option
+	 * Excerpt value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $excerpt;
 	
 	/**
-	 * Option
+	 * Single value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $single;
 	
 	/**
-	 * Option
+	 * Before value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $before;
 	
 	/**
-	 * Option
+	 * After value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $after;
 	
 	/**
-	 * Option
+	 * Pages value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $pages;
 	
 	/**
-	 * Option
+	 * Home value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $home;
 	
 	/**
-	 * Option
+	 * Class value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $class;
 	
 	/**
-	 * Option
+	 * Print friendly value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $printfriendly;
 	
 	/**
-	 * Option
+	 * Google value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $google;
 	
 	/**
-	 * Option
+	 * Pinterest value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $pinterest;
 	
 	/**
-	 * Option
+	 * Linkedin value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $linkedin;
 	
 	/**
-	 * Option
+	 * Facebook value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $facebook;
 	
 	/**
-	 * Option
+	 * Whatsapp value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $whatsapp;
 	
 	/**
-	 * Option
+	 * Sms value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $sms;
 	
 	/**
-	 * Option
+	 * Twitter value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $twitter;
 	
 	/**
-	 * Option
+	 * Tumblr value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $tumblr;
 	
 	/**
-	 * Option
+	 * Gmail value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $gmail;
 	
 	/**
-	 * Option
+	 * Email value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $email;
 	
 	/**
-	 * Option
+	 * Disabled css value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $disable_css;
 	
 	/**
-	 * Option
+	 * Icons size value verify option
 	 *
 	 * @since 1.0
-	 * @var string
-	 * @return string
+	 * @var Integer
 	 */
 	private $icons_size;
 	
 	/**
-	 * Option
+	 * Icons style value verify option
 	 *
 	 * @since 1.0
 	 * @var Integer
-	 * @return Integer
 	 */
 	private $icons_style;
 	
 	/**
-	 * Option
+	 * Is desktop value verify option
 	 *
 	 * @since 1.0
 	 * @var Integer
-	 * @return Integer
 	 */
 	private $desktop;
 	
 	/**
-	 * Option
+	 * Twitter username value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $twitter_username;
 	
 	/**
-	 * Option
+	 * UTM Tracking value verify option
 	 *
 	 * @since 1.0
 	 * @var string
-	 * @return string
 	 */
 	private $tracking;
 
+	/**
+	 * Plugin general prefix
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
 	const PLUGIN_PREFIX = 'jm-ssb';
-
 	const PLUGIN_PREFIX_UNDERSCORE = 'jm_ssb';
 
+	/**
+	 * Directory separator AND File name 
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
 	const DS = DIRECTORY_SEPARATOR;
-
 	const FILE = __FILE__;
 
+	/**
+	 * Description and name plugin
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
 	const PLUGIN_NAME = 'Social Share Buttons';
-
 	const PLUGIN_DESC = 'Adiciona os botões de compartilhamento automáticamente em posts e páginas';
 
 	public function __construct()
@@ -279,7 +268,7 @@ class Settings
 	 *
 	 * @since 1.0
 	 * @param string $prop_name The attribute name
-	 * @return mixed The value of the attribute
+	 * @return mixed String/Integer The value of the attribute
 	 */
 	private function _get_property( $prop_name )
 	{
@@ -419,25 +408,29 @@ class Settings
 		return $this->$prop_name;
 	}
 
-/**
+	/**
+ 	 * Merge array all options
+ 	 * 	 
 	 * @since 1.0
-	 * @param Show this options plugins
-	 * @return Array all options this plugin
+	 * @param Null
+	 * @return Array
 	 */
 	private function _merge_options()
 	{
 		$options = array_merge(
-			  (array) get_option( 'jm_ssb' )
-			, (array) get_option( 'jm_ssb_settings' )
-			, (array) get_option( 'jm_ssb_style_settings' )
+			(array) get_option( 'jm_ssb' ),
+			(array) get_option( 'jm_ssb_settings' ),
+			(array) get_option( 'jm_ssb_style_settings' )
 		);
 
 		return $options;
 	}
 
 	/**
+	 * Get all options
+	 * 
 	 * @since 1.0
-	 * @param Return this options
+	 * @param Null
 	 * @return Array
 	 */
 	public function get_options()
@@ -446,8 +439,10 @@ class Settings
 	}
 
 	/**
+	 * Get option unique and sanitize
+	 * 
 	 * @since 1.0
-	 * @param Get option unique and sanitize
+	 * @param String $option Relative option name
 	 * @return String
 	 */
 	private function option( $option, $sanitize = 'esc_html' )

@@ -4,15 +4,14 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.0.1
+ * @version 1.0.3
  */
 
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 //View
 Init::uses( 'sharing-report', 'View' );
@@ -21,8 +20,20 @@ Init::uses( 'service', 'Model' );
 
 class Sharing_Report_Controller
 {
+	/**
+	 * Number for posts per page
+	 * 
+	 * @since 1.0
+	 * @var Integer
+	 */
 	const POSTS_PER_PAGE = 20;
 
+	/**
+	 * Name for transient function
+	 * 
+	 * @since 1.0
+	 * @var string
+	 */
 	const JM_TRANSIENT = 'jm-transient-sharing-report';
 
 	public function __construct()
@@ -30,6 +41,13 @@ class Sharing_Report_Controller
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
 	}
 
+	/**
+	 * Search in database results relative share posts 
+	 * 
+	 * @since 1.0
+	 * @param Int $page
+	 * @return Object
+	 */
 	public function get_sharing_report( $page )
 	{
 		global $wpdb;
@@ -105,6 +123,13 @@ class Sharing_Report_Controller
 		return $cache[$page];
 	}
 
+	/**
+	 * Create submenu page
+	 * 
+	 * @since 1.0
+	 * @param null
+	 * @return Void
+	 */
 	public function menu()
 	{
 	  	add_submenu_page(
@@ -117,6 +142,13 @@ class Sharing_Report_Controller
 	  	);
 	}
 
+	/**
+	 * Set report page view
+	 * 
+	 * @since 1.0
+	 * @param null
+	 * @return Void
+	 */
 	public function report()
 	{
 		$page      = Utils_Helper::request( 'report_page', 1, 'intval' );
@@ -127,6 +159,14 @@ class Sharing_Report_Controller
 		Sharing_Report_View::render_sharing_report( $posts, $prev_page, $next_page );
 	}
 
+	/**
+	 * Next page sharing report
+	 * 
+	 * @since 1.0
+	 * @param Int $page
+	 * @param Int $rows
+	 * @return String
+	 */
 	public function get_next_link( $page, $rows )
 	{
 		if ( $rows < self::POSTS_PER_PAGE )
@@ -134,9 +174,16 @@ class Sharing_Report_Controller
 
 		$page += 1;
 
-		return get_admin_url( null, 'admin.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
+		return Utils_Helper::admin_url( "&report_page={$page}" );
 	}
 
+	/**
+	 * Prev page sharing report
+	 * 
+	 * @since 1.0
+	 * @param Int $page
+	 * @return String
+	 */
 	public function get_prev_link( $page )
 	{
 		if ( $page == 1 )
@@ -144,6 +191,6 @@ class Sharing_Report_Controller
 
 		$page -= 1;
 
-		return get_admin_url( null, 'admin.php?page='. Init::PLUGIN_SLUG . '-sharing-report&report_page=' ) . $page;
+		return Utils_Helper::admin_url( "&report_page={$page}" );
 	}
 }

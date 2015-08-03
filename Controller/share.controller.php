@@ -10,12 +10,16 @@
 namespace JM\Share_Buttons;
 
 // Avoid that files are directly loaded
-if ( ! function_exists( 'add_action' ) ) :
+if ( ! function_exists( 'add_action' ) )
 	exit(0);
-endif;
 
 class Share_Controller
 {
+	/**
+	* Initialize the plugin by setting localization, filters, and administration functions.
+	*
+	* @since 1.0.3
+	*/
 	public function __construct()
 	{
 		add_shortcode( 'JMSSB', array( 'JM\Share_Buttons\Share_View', 'links' ) );
@@ -26,8 +30,10 @@ class Share_Controller
 	}
 
 	/**
+	 * Verifies that is active buttons to the_excerpt
+	 * 
 	 * @since 1.0
-	 * @param Verifies that is active buttons to the_excerpt
+	 * @param Null
 	 * @return Void
 	 */
 	public function custom_excerpt()
@@ -37,8 +43,10 @@ class Share_Controller
 	}
 
 	/**
+	 * The content check insertions
+	 * 
 	 * @since 1.0
-	 * @param The content check insertions
+	 * @param Null
 	 * @return string
 	 */
 	protected function _check_new_content()
@@ -58,9 +66,11 @@ class Share_Controller
 	}
 
 	/**
+	 * The content after it is finished processing
+	 * 
 	 * @since 1.0
-	 * @param The content after it is finished processing
-	 * @return String the_content single, pages, home
+	 * @param String $the_content
+	 * @return String content single, pages, home
 	 */
 	public function content( $the_content )
 	{
@@ -98,9 +108,11 @@ class Share_Controller
 	}
 
 	/**
+	 * Make sure is activated the sharing buttons in singles
+	 * 
 	 * @since 1.0
-	 * @param Make sure is activated the sharing buttons in singles
-	 * @return Bool
+	 * @param Null
+	 * @return Boolean
 	 */
 	protected function _is_single()
 	{
@@ -111,9 +123,11 @@ class Share_Controller
 	}
 
 	/**
+	 * Make sure is activated the sharing buttons in pages
+	 * 
 	 * @since 1.0
-	 * @param Make sure is activated the sharing buttons in pages
-	 * @return Bool
+	 * @param Null
+	 * @return Boolean
 	 */
 	protected function _is_page()
 	{
@@ -124,9 +138,11 @@ class Share_Controller
 	}
 
 	/**
+	 * make sure is activated the sharing buttons in home
+	 * 
 	 * @since 1.0
-	 * @param make sure is activated the sharing buttons in home
-	 * @return Bool
+	 * @param Null
+	 * @return Boolean
 	 */
 	protected function _is_home()
 	{
@@ -137,8 +153,10 @@ class Share_Controller
 	}
 
 	/**
+	 * Get unique option result
+	 * 
 	 * @since 1.0
-	 * @param Option
+	 * @param String $Option
 	 * @return string
 	 */
 	private function option( $option )
