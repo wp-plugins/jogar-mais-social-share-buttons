@@ -12,11 +12,14 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		this.google           = this.byCounter( 'google' );
 		this.pinterest        = this.byCounter( 'pinterest' );
 		this.linkedin         = this.byCounter( 'linkedin' );
+		this.totalShare       = this.byCounter( 'total-share' );
+		this.totalCounter     = 0;
 		this.facebookCounter  = 0;
 		this.twitterCounter   = 0;
 		this.googleCounter    = 0;
 		this.linkedinCounter  = 0;
 		this.pinterestCounter = 0;
+		this.max              = 5;
 		this.doubleMax        = 10;
 		this.init();
 	};
@@ -100,7 +103,13 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 	CounterSocialShare.fn._done = function(request, response) {
 		var number              = this.getNumberByData( response );
 		this[request.reference] = number;
+		this.max               -= 1;
+		this.totalCounter      += parseFloat( number );
 		this[request.element].text( number );
+
+		if ( !this.max ) {
+			this.totalShare.text( this.totalCounter );
+		}
 
 		if ( !this.doubleMax ) {
 			this.sendRequest();
