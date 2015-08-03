@@ -52,7 +52,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 == Changelog ==
 
-= 2.0.0 =
+= 1.1.0 =
 
 New: Theme
 New: Optimize icons mobile
@@ -86,7 +86,7 @@ Initial release
 
 == Upgrade Notice ==
 
-= 2.0.0 =
+= 1.1.0 =
 
 New: Theme
 New: Optimize icons mobile
