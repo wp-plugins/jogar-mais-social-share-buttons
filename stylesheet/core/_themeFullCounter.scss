@@ -132,17 +132,3 @@
 		display: none;
 	}
 }
-
-@media ( max-width: 768px ) and ( orientation : landscape ) {
-
-    .jm-ssb-theme-total-share {
-        display: initial;
-        float: right;
-        position: relative;
-        top: 0;
-    }
-
-	.jm-ssb-total-share span {
-		display: inline-block;
-	}
-}
