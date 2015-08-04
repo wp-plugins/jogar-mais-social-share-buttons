@@ -84,9 +84,67 @@
     background-color: #f9f9f9;
 }
 .widefat .jm-ssb-sharing-report-center {
-    text-align: center;
+    left: 18px;
+    position: relative;
+}
+.jm-ssb-sharing-report-table thead th:first-child {
+    width: 50%;
+}
+.widefat .jm-ssb-sharing-report-center:last-child {
+    left: 8px;
 }
 .jm-ssb-sharing-report-table thead th:last-child,
 .jm-ssb-sharing-report-table tbody td:last-child {
     font-weight: bolder;
+}
+
+.jm-ssb-icons-default {
+    display: none;
+}
+
+.jm-ssb-icon {
+    border-radius: 3px;
+    color: $colorWhite;
+    display: inline-block;
+    font-size: 28px;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.jm-ssb-icon-gmail {
+    color: $gmailColor;
+    font-size: 30px;
+}
+
+@mixin icon( $class, $content, $color ) {
+
+    .jm-ssb-icon-#{$class} {
+        background-color: $color;
+
+        &:before {
+            content: "#{$content}";
+        }
+    }
+}
+
+@include icon( facebook, "\ea8c", $fbColor );
+@include icon( google, "\ea88", $gpColor );
+@include icon( twitter, "\ea91", $ttColor );
+@include icon( whatsapp, "\e610", $whatsColor );
+@include icon( linkedin, "\eac9", $inColor );
+@include icon( pinterest, "\e600", $pinColor );
+@include icon( tumblr, "\e60d", $tColor );
+@include icon( gmail, "\e60e", $colorWhite );
+@include icon( email, "\e605", $emailColor );
+@include icon( printer, "\e607", $printColor );
+
+.option-theme-secondary,
+.option-theme-total-counter {
+    display: none;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }

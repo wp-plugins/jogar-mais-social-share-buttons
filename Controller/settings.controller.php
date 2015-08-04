@@ -24,10 +24,9 @@ class Settings_Controller
 	*/
 	public function __construct()
 	{
-		register_activation_hook( Settings::FILE, array( &$this, 'activate' ) );
-		register_deactivation_hook( Settings::FILE, array( &$this, 'deactivate' ) );
 		add_filter( 'plugin_action_links_' . Utils_Helper::base_name(), array( &$this, 'plugin_link' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_style' ) );
 		add_action( 'admin_menu', array( &$this, 'menu_page' ) );		
 		add_action( 'wp_ajax_nopriv_get_plus_google', array( 'JM\Share_Buttons\Ajax_Controller', 'get_plus_google' ) );
@@ -89,6 +88,24 @@ class Settings_Controller
 	}
 
 	/**
+	 * Enqueue scripts on admin
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	public function admin_scripts()
+	{
+		wp_enqueue_script(
+			Settings::PLUGIN_PREFIX . '-theme-scripts',
+			Utils_Helper::plugin_url( 'javascripts/admin/script-admin.min.js' ),
+			array( 'jquery' ),
+			Utils_Helper::filetime( Utils_Helper::file_path( 'javascripts/admin/script-admin.min.js' ) ),
+			true
+		);
+	}
+
+	/**
 	 *  Enqueue scripts and styles for admin page
 	 * 
 	 * @since 1.0
@@ -140,29 +157,5 @@ class Settings_Controller
 	  		Init::PLUGIN_SLUG . '-faq',
 	  		array( 'JM\Share_Buttons\Setting_View', 'render_page_faq' )
 	  	);
-	}
-
-	/**
-	 * Register Activation Hook
-	 * 
-	 * @since 1.0
-	 * @param Null
-	 * @return Void
-	 */
-	public function activate()
-	{
-
-	}
-
-	/**
-	 * Register Deactivation Hook
-	 * 
-	 * @since 1.0
-	 * @param Null
-	 * @return Void
-	 */
-	public function deactivate()
-	{
-
 	}
 }

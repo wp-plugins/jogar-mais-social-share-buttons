@@ -94,11 +94,12 @@ class Option_Controller
 	{
 		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page', 'jm_ssb_style_settings' );
 		$new_options_settings = array(
-			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'     => 'on',
-			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size' => 32,
-			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style'      => 'default',
-			Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'      => '',
-			Settings::PLUGIN_PREFIX_UNDERSCORE . '_tracking'         => '?utm_source=share_buttons&utm_medium=social_media&utm_campaign=social_share',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'      => 'on',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'  => 32,
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style'       => 'default',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'       => '',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_tracking'          => '?utm_source=share_buttons&utm_medium=social_media&utm_campaign=social_share',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_report_cache_time' => 10,
 		);
 		add_option( 'jm_ssb_style_settings', $new_options_settings );
 	}

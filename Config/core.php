@@ -29,10 +29,15 @@ class Core
 	 */
 	public function __construct()
 	{
+		register_activation_hook( Init::FILE, array( __CLASS__, 'activate' ) );
+		register_deactivation_hook( Init::FILE, array( __CLASS__, 'deactivate' ) );
+		register_uninstall_hook( Init::FILE, array( __CLASS__, 'uninstall' ) );
+
 		$settings     = new Settings_Controller();
 		$share        = new Share_Controller();
 		$option       = new Option_Controller();
 		$share_report = new Sharing_Report_Controller();
+
 	}
 
 	/**
@@ -202,5 +207,51 @@ class Core
 		);
 
 		return $arguments;
+	}
+
+	/**
+	 * Register Activation Hook
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	public static function activate()
+	{
+
+	}
+
+	/**
+	 * Register Deactivation Hook
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	public static function deactivate()
+	{
+
+	}
+
+	/**
+	 * Register Uninstall Hook
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	public static function uninstall()
+	{
+		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE );
+		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
+		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
+		delete_transient( Sharing_Report_Controller::JM_TRANSIENT );
+		
+		//For multisite
+		if ( is_multisite() ) :
+			delete_site_option( Settings::PLUGIN_PREFIX_UNDERSCORE );
+			delete_site_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
+			delete_site_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
+		endif;
 	}
 }

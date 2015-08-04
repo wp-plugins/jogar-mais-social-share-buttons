@@ -26,12 +26,14 @@ class Sharing_Report_View
 	 */
 	public static function render_sharing_report( $posts, $prev_page, $next_page )
 	{
+		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
+
 		?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
 			<p class="description">Relatório de Compartilhamento dos Posts</p>
 			<p></p>
-			<p class="description">Esta página tem um cache de 10 minutos</p>
+			<p class="description">Esta página tem um cache de <?php echo Utils_Helper::option( '_report_cache_time', 'intval', 10 ); ?> minuto(s)</p>
 			<?php
 				if ( ! $posts ) :
 			?>
@@ -41,29 +43,50 @@ class Sharing_Report_View
 					return false;
 				endif;
 			?>
-			<table class="widefat jm-ssb-sharing-report-table">
+			<table class="widefat fixed jm-ssb-sharing-report-table">
 				<thead>
 					<tr>
-						<th scope="col">
-							<span>Título</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'title' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'title', $page_url ); ?>">
+								<span>Título</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
-						<th scope="col" class="jm-ssb-sharing-report-center">
-							<span>Facebook</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'facebook' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'facebook', $page_url ); ?>">
+								<span>Facebook</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
-						<th scope="col" class="jm-ssb-sharing-report-center">
-							<span>Twitter</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'twitter' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'twitter', $page_url ); ?>">
+								<span>Twitter</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
-						<th scope="col" class="jm-ssb-sharing-report-center">
-							<span>Google+</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'google' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'google', $page_url ); ?>">
+								<span>Google+</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
-						<th scope="col" class="jm-ssb-sharing-report-center">
-							<span>Linkedin</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'linkedin' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'linkedin', $page_url ); ?>">
+								<span>Linkedin</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
-						<th scope="col" class="jm-ssb-sharing-report-center">
-							<span>Pinterest</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'pinterest' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'pinterest', $page_url ); ?>">
+								<span>Pinterest</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
-						<th scope="col" class="jm-ssb-sharing-report-center">
-							<span>Total</span>
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'total' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'total', $page_url ); ?>">
+								<span>Total</span>
+								<span class="sorting-indicator"></span>
+							</a>
 						</th>
 					</tr>
 				</thead>
@@ -73,8 +96,8 @@ class Sharing_Report_View
 						<td>
 							<strong>
 								<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_blank"
-								   title="<?php echo esc_attr( $post->post_title ); ?>">
-								   <?php echo esc_html( $post->post_title ); ?>
+								   title="<?php echo esc_attr( $post->title ); ?>">
+								   <?php echo esc_html( $post->title ); ?>
 								</a>
 							</strong>
 						</td>

@@ -216,6 +216,14 @@ class Settings
 	private $tracking;
 
 	/**
+	 * Report cache time value verify option
+	 *
+	 * @since 1.0
+	 * @var Integer
+	 */
+	private $report_cache_time;
+
+	/**
 	 * Plugin general prefix
 	 *
 	 * @since 1.0
@@ -231,7 +239,6 @@ class Settings
 	 * @var string
 	 */
 	const DS = DIRECTORY_SEPARATOR;
-	const FILE = __FILE__;
 
 	/**
 	 * Description and name plugin
@@ -396,7 +403,12 @@ class Settings
 
 			case 'tracking' :
 				if ( ! isset( $this->tracking ) )
-					$this->tracking = $this->option( '_tracking' );
+					$this->tracking = $this->option( '_tracking', 'esc_html', '?utm_source=share_buttons&utm_medium=social_media&utm_campaign=social_share' );
+				break;
+
+			case 'report_cache_time' :
+				if ( ! isset( $this->report_cache_time ) )
+					$this->report_cache_time = $this->option( '_report_cache_time', 'intval', 10 );
 				break;
 
 			default :
@@ -445,13 +457,13 @@ class Settings
 	 * @param String $option Relative option name
 	 * @return String
 	 */
-	private function option( $option, $sanitize = 'esc_html' )
+	private function option( $option, $sanitize = 'esc_html', $default = '' )
 	{
 		$options = $this->get_options();
 
 		if ( isset( $options[self::PLUGIN_PREFIX_UNDERSCORE . $option] ) )
 			return Utils_Helper::sanitize_type( $options[self::PLUGIN_PREFIX_UNDERSCORE . $option], $sanitize );
 
-		return '';
+		return $default;
 	}
 }

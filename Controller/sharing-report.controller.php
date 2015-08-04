@@ -46,27 +46,30 @@ class Sharing_Report_Controller
 	 * 
 	 * @since 1.0
 	 * @param Int $page
+	 * @param String $orderby
+	 * @param String $order
 	 * @return Object
 	 */
-	public function get_sharing_report( $page )
+	public function get_sharing_report( $page, $orderby, $order )
 	{
 		global $wpdb;
 
-		$offset = ( ( $page - 1 ) * self::POSTS_PER_PAGE );
-		$cache  = get_transient( self::JM_TRANSIENT );
+		$offset     = ( ( $page - 1 ) * self::POSTS_PER_PAGE );
+		$cache      = get_transient( self::JM_TRANSIENT );
+		$cache_time = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
 
-		if ( false !== $cache && isset( $cache[$page] ) )
-			return $cache[$page];
+		if ( false !== $cache && isset( $cache[$page][$orderby][$order] ) )
+			return $cache[$page][$orderby][$order];
 
 		$query = $wpdb->prepare(
 			"SELECT
 			    posts.ID,
-				posts.post_title,
-			    COALESCE( meta1.meta_value, 0 ) AS facebook,
-			    COALESCE( meta2.meta_value, 0 ) AS twitter,
-			    COALESCE( meta3.meta_value, 0 ) AS google,
-			    COALESCE( meta4.meta_value, 0 ) AS linkedin,
-			    COALESCE( meta5.meta_value, 0 ) AS pinterest,
+				posts.post_title                     AS title,
+			    CAST( meta1.meta_value AS UNSIGNED ) AS facebook,
+			    CAST( meta2.meta_value AS UNSIGNED ) AS twitter,
+			    CAST( meta3.meta_value AS UNSIGNED ) AS google,
+			    CAST( meta4.meta_value AS UNSIGNED ) AS linkedin,
+			    CAST( meta5.meta_value AS UNSIGNED ) AS pinterest,
 				(
 			        COALESCE( meta1.meta_value, 0 ) +
 			        COALESCE( meta2.meta_value, 0 ) +
@@ -75,37 +78,37 @@ class Sharing_Report_Controller
 			        COALESCE( meta5.meta_value, 0 )
 			    ) AS total
 
-			FROM $wpdb->posts posts
+			FROM $wpdb->posts AS posts
 
-			LEFT JOIN $wpdb->postmeta meta1 ON
+			LEFT JOIN $wpdb->postmeta AS meta1 ON
 				( meta1.post_id  = posts.ID )
 			AND ( meta1.meta_key = '%s' )
 
-			LEFT JOIN $wpdb->postmeta meta2 ON
+			LEFT JOIN $wpdb->postmeta AS meta2 ON
 				( meta2.post_id  = posts.ID )
 			AND ( meta2.meta_key = '%s' )
 
-			LEFT JOIN $wpdb->postmeta meta3 ON
+			LEFT JOIN $wpdb->postmeta AS meta3 ON
 				( meta3.post_id  = posts.ID )
 			AND ( meta3.meta_key = '%s' )
 
-			LEFT JOIN $wpdb->postmeta meta4 ON
+			LEFT JOIN $wpdb->postmeta AS meta4 ON
 				( meta4.post_id  = posts.ID )
 			AND ( meta4.meta_key = '%s' )
 
-			LEFT JOIN $wpdb->postmeta meta5 ON
+			LEFT JOIN $wpdb->postmeta AS meta5 ON
 				( meta5.post_id  = posts.ID )
 			AND ( meta5.meta_key = '%s' )
 
 			WHERE posts.post_type   = 'post'
 			AND   posts.post_status = 'publish'
 			AND   COALESCE( meta1.meta_value, 0 ) +
-			      COALESCE( meta2.meta_value, 0 ) +
-			      COALESCE( meta3.meta_value, 0 ) +
-			      COALESCE( meta4.meta_value, 0 ) +
-			      COALESCE( meta5.meta_value, 0 ) > 0
+		          COALESCE( meta2.meta_value, 0 ) +
+		          COALESCE( meta3.meta_value, 0 ) +
+		          COALESCE( meta4.meta_value, 0 ) +
+		          COALESCE( meta5.meta_value, 0 ) > 0
 
-			ORDER BY total DESC
+			ORDER BY {$orderby} {$order}
 
 			LIMIT {$offset}, %d",
 			Service::POST_META_SHARE_COUNT_FACEBOOK,
@@ -116,11 +119,11 @@ class Sharing_Report_Controller
 			self::POSTS_PER_PAGE
 		);
 
-		$cache[$page] = $wpdb->get_results( $query );
+		$cache[$page][$orderby][$order] = $wpdb->get_results( $query );
 
-		set_transient( self::JM_TRANSIENT, $cache, 10 * MINUTE_IN_SECONDS );
+		set_transient( self::JM_TRANSIENT, $cache, $cache_time * MINUTE_IN_SECONDS );
 
-		return $cache[$page];
+		return $cache[$page][$orderby][$order];
 	}
 
 	/**
@@ -151,12 +154,50 @@ class Sharing_Report_Controller
 	 */
 	public function report()
 	{
-		$page      = Utils_Helper::request( 'report_page', 1, 'intval' );
-		$posts     = $this->get_sharing_report( $page );
-		$next_page = $this->get_next_link( $page, count( $posts ) );
-		$prev_page = $this->get_prev_link( $page );
+		$page       = Utils_Helper::request( 'report_page', 1, 'intval' );
+		$orderby    = Utils_Helper::request( 'orderby', 'total', 'sanitize_sql_orderby' );
+		$order_type = Utils_Helper::request( 'order', 'desc', 'sanitize_sql_orderby' );
+		$reference  = $this->verify_sql_orderby( $orderby, 'total' );
+		$order      = $this->verify_sql_order( $order_type, 'desc' );
+		$posts      = $this->get_sharing_report( $page, $reference, $order );
+		$next_page  = $this->get_next_link( $page, count( $posts ) );
+		$prev_page  = $this->get_prev_link( $page );
 
 		Sharing_Report_View::render_sharing_report( $posts, $prev_page, $next_page );
+	}
+
+	/**
+	 * Verify sql orderby param
+	 * 
+	 * @since 1.0
+	 * @param String $orderby
+	 * @param String $default
+	 * @return String
+	 */
+	private function verify_sql_orderby( $orderby, $default = '' )
+	{
+			$permissions = array( 'title', 'facebook', 'twitter', 'google', 'linkedin', 'pinterest', 'total' );
+
+			if ( in_array( $orderby, $permissions ) )
+				return $orderby;
+
+		return $default;
+	}
+
+	/**
+	 * Verify sql order param
+	 * 
+	 * @since 1.0
+	 * @param String $order
+	 * @param String $default
+	 * @return String
+	 */
+	private function verify_sql_order( $order, $default = '' )
+	{
+		if ( $order === 'desc' || $order === 'asc' )
+			return strtoupper( $order );
+
+		return $default;
 	}
 
 	/**
@@ -167,14 +208,21 @@ class Sharing_Report_Controller
 	 * @param Int $rows
 	 * @return String
 	 */
-	public function get_next_link( $page, $rows )
+	private function get_next_link( $page, $rows )
 	{
+		$orderby  = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
+		$order    = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
+		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
+
 		if ( $rows < self::POSTS_PER_PAGE )
 			return '#';
 
 		$page += 1;
 
-		return Utils_Helper::admin_url( "&report_page={$page}" );
+		if ( $order )
+			return get_admin_url( null, "{$page_url}&orderby={$orderby}&order={$order}&report_page={$page}" );
+
+		return get_admin_url( null, "{$page_url}&report_page={$page}" );
 	}
 
 	/**
@@ -184,13 +232,20 @@ class Sharing_Report_Controller
 	 * @param Int $page
 	 * @return String
 	 */
-	public function get_prev_link( $page )
+	private function get_prev_link( $page )
 	{
-		if ( $page == 1 )
+		$orderby  = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
+		$order    = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
+		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
+
+		if ( 1 === $page )
 			return '#';
 
 		$page -= 1;
 
-		return Utils_Helper::admin_url( "&report_page={$page}" );
+		if ( $order )
+			return get_admin_url( null, "{$page_url}&orderby={$orderby}&order={$order}&report_page={$page}" );
+
+		return get_admin_url( null, "{$page_url}&report_page={$page}" );
 	}
 }

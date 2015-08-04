@@ -42,6 +42,8 @@ class Init
 {
 	const PLUGIN_SLUG = 'jm-ssb';
 
+	const FILE = __FILE__;
+
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *

@@ -239,7 +239,7 @@ class Utils_Helper
 	 * @param String $sanitize Relative function
 	 * @return String
 	 */
-	public static function option( $option, $sanitize = 'esc_html' )
+	public static function option( $option, $sanitize = 'esc_html', $default = '' )
 	{
 		$model   = new Settings();
 		$options = $model->get_options();
@@ -247,7 +247,7 @@ class Utils_Helper
 		if ( isset( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . $option] ) )
 			return self::sanitize_type( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . $option], $sanitize );
 
-		return '';
+		return $default;
 	}
 
 	/**
@@ -291,17 +291,54 @@ class Utils_Helper
 	}
 
 	/**
-	 * Retrieves the url to the admin area for a given site.
+	 * Retrieves the url to the admin area for orderby page.
 	 * 
 	 * @since 1.0
-	 * @param String $path Relative to the admin url. Default empty.
+	 * @param String $reference Relative orderby
+	 * @param String $page_url Relative url orderby params
 	 * @return String Admin url link
 	 */
-	public static function admin_url( $path = '' )
+	public static function get_url_orderby_page( $reference = '', $page_url )
 	{
-		$request = self::esc_html( $_SERVER['REQUEST_URI'] );
-		$path    = basename( "{$request}{$path}" );
+		$orderby = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
+		$order   = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
+		$paged   = Utils_Helper::request( 'report_page', 0, 'intval' );
+		$order   = ( $order === 'asc' ) ? 'desc' : 'asc';
 
-		return get_admin_url( null, $path );
+		if ( ! $orderby && ! $paged )
+			return get_admin_url( null, "{$page_url}&orderby={$reference}&order=asc" );
+
+		if ( ( $orderby && ! $paged ) && ( $orderby !== $reference ) )
+			return get_admin_url( null, "{$page_url}&orderby={$reference}&order=asc" );
+
+		if ( ( $orderby && ! $paged ) && ( $orderby === $reference ) )
+			return get_admin_url( null, "{$page_url}&orderby={$reference}&order={$order}" );
+
+		if ( ( $orderby && $paged ) && ( $orderby === $reference ) )
+			return get_admin_url( null, "{$page_url}&report_page={$paged}&orderby={$reference}&order={$order}" );
+
+		if ( ( $orderby && $paged ) && ( $orderby !== $reference ) )
+			return get_admin_url( null, "{$page_url}&report_page={$paged}&orderby={$reference}&order=asc" );
+
+		if ( ! $orderby && $paged )
+			return get_admin_url( null, "{$page_url}&report_page={$paged}&orderby={$reference}&order=asc" );
+	}
+
+	/**
+	 * Retrieves the class name sortable
+	 * 
+	 * @since 1.0
+	 * @param String $reference Relative orderby
+	 * @return String class name sortable pagination
+	 */
+	public static function sortable_order( $reference = '' )
+	{
+		$orderby = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
+		$order   = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
+
+		if ( $order && $reference === $orderby )
+			return "sorted {$order}";
+
+		return 'sortable desc';
 	}
 }

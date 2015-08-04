@@ -25,16 +25,28 @@ class Setting_View extends Share_View
 	public static function render_settings_page()
 	{
 		$model = new Settings();
+		$icons = array(
+			0 => 'facebook',
+			1 => 'twitter',
+			2 => 'google',
+			3 => 'whatsapp',
+			4 => 'linkedin',
+			5 => 'pinterest',
+			6 => 'tumblr',
+			7 => 'gmail',
+			8 => 'email',
+			9 => 'printer'
+		);
 	?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
 			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
-			<span class="jm-ssb-settings-title">Configurações</span>
-			<div class="jm-ssb-settings-wrap">
+			<span class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-title">Configurações</span>
+			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">
 				<form action="options.php" method="post">
 					<table class="form-table table-configurations" data-table-configurations>
 						<tbody>
-							<tr class="jm-ssb-settings-placements">
+							<tr class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-placements">
 								<th scope="row">
 									<label>Locais disponíveis</label>
 								</th>
@@ -126,7 +138,7 @@ class Setting_View extends Share_View
 								<th scope="row">
 									Opções de aparência
 								</th>
-								<td>
+								<td class="setting-buttons-themes">
 									<p>
 										<label for="setting-buttons-theme-main">
 											<input id="setting-buttons-theme-main" type="radio"
@@ -135,6 +147,11 @@ class Setting_View extends Share_View
 												   <?php checked( 0, $model->desktop ); ?>>
 											Tema princípal
 										</label>
+										<span  class="<?php echo Settings::PLUGIN_PREFIX; ?>-icons-default">
+										<?php foreach( $icons as $key => $reference ) : ?>
+											<i class="<?php echo Settings::PLUGIN_PREFIX; ?>-icon <?php echo Settings::PLUGIN_PREFIX; ?>-icon-<?php echo $reference; ?>"></i>
+										<?php endforeach; ?>
+										</span>
 									</p>
 									<p>
 										<label for="setting-buttons-theme-secondary">
@@ -143,9 +160,12 @@ class Setting_View extends Share_View
 												   value="1"
 												   <?php checked( 1, $model->desktop ); ?>>
 											<span>
-												Tema convencinal <em>(Facebook; Google Plus; Twitter; Linkedin; WhatsApp)</em>
+												Tema 2 <em>(Facebook; Google Plus; Twitter; Linkedin; WhatsApp)</em>
 											</span>
 										</label>
+										<span class="option-theme-secondary">
+											<img src="<?php echo plugins_url( '/assets/images/theme-2.png', __DIR__ ); ?>" width="614" height="30">
+										</span>
 									</p>
 									<p>
 										<label for="setting-buttons-theme-total-counter">
@@ -154,10 +174,13 @@ class Setting_View extends Share_View
 												   value="2"
 												   <?php checked( 2, $model->desktop ); ?>>
 											<span>
-												Tema com contador geral <em>(Facebook; Twitter; Google Plus; WhatsApp; Linkedin; Pinterest)</em>
+												Tema 3 <em>(Facebook; Twitter; Google Plus; WhatsApp; Linkedin; Pinterest)</em>
 											</span>
 										</label>
 									</p>
+									<span class="option-theme-total-counter">
+										<img src="<?php echo plugins_url( '/assets/images/theme-3.png', __DIR__ ); ?>" width="231" height="30">
+									</span>
 									<p class="description">Todos os temas tem suporte para responsivo</p>
 								</td>
 							</tr>
@@ -188,8 +211,8 @@ class Setting_View extends Share_View
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
 			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
-			<span class="jm-ssb-settings-title">Configurações Extras</span>
-			<div class="jm-ssb-settings-wrap">
+			<span class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-title">Configurações Extras</span>
+			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">
 				<form action="options.php" method="post">
 					<table class="form-table table-extras" data-table-extras>
 						<tbody>
@@ -202,6 +225,17 @@ class Setting_View extends Share_View
 									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_icons_style_size]"
 										   value="<?php echo $model->icons_size; ?>">px
 									<em class="description">Apenas para o tema princípal</em>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="report-cache-time">Tempo de cache</label>
+								</th>
+								<td>
+									<input id="report-cache-time" step="1" min="1" max="60" type="number"
+									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_report_cache_time]"
+										   value="<?php echo $model->report_cache_time; ?>"> Minuto(s)
+									<em class="description">Defina o tempo em minutos que terá o cache na página relatório de compartilhamento</em>
 								</td>
 							</tr>
 							<tr>
@@ -220,12 +254,14 @@ class Setting_View extends Share_View
 								<th scope="row">
 									<label for="tracking-analytics">UTM de tracking</label>
 								</th>
-								<td>
+								<td>									
 									<input id="tracking-analytics" class="large-text" type="text"
 										   placeholder="Adicione UTM tracking (Analytics)"
 									       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_tracking]"
 										   value="<?php echo $model->tracking; ?>">
-									<p class="description">Utilize o encode <code>&amp;</code> para adicionar parâmetros em seu tracking. (Facebook; Google Plus; Whatsapp; Pinterest; Linkedin)</p>
+									<p class="description">
+										Utilize o encode <code>&amp;</code> para adicionar parâmetros em seu tracking. (Facebook; Google Plus; Whatsapp; Pinterest; Linkedin)
+									</p>
 								</td>
 							</tr>
 							<tr>
@@ -267,10 +303,10 @@ class Setting_View extends Share_View
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
 			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
-			<span class="jm-ssb-settings-title">
+			<span class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-title">
 				Opções de uso
 			</span>
-			<div class="jm-ssb-settings-wrap">
+			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">
 				<blockquote>
 					<strong>Via shortcode: </strong>
 					<code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code>
