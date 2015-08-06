@@ -1,52 +1,54 @@
 .jm-ssb-total-share-counter {
-	 font-style: italic;
 	float: left;
+	font-style: italic;
 	height: 28px;
-	left: 5px;
+    margin-right: 50px;
 	position: relative;
 	top: -5px;
 
   aside {
+	border: 0;
 	bottom: 0;
 	display: block;
 	font-size: 12px;
 	font-weight: 700;
+	font: inherit;
 	height: 15px;
 	left: 0;
+	line-height: 1;
+	margin: 0;
+	padding: 0;
 	right: 0;
 	text-align: center;
+	vertical-align: baseline;
 	width: 60px;
-    border: 0;
-    font: inherit;
-    margin: 0;
-    padding: 0;
-    vertical-align: baseline;
-    line-height: 1;
 
 	&:first-child {
-		position: absolute;
 		color: #727372;
 		font-size: 22px;
+		position: absolute;
 		top: 0;
 	}
 		
 	&:nth-child(2) {
-		position: absolute;
 		color: #000;
 		font-size: 10px;
 		line-height: 2.5;
+		position: absolute;
 	}
 
   }
+
   .slash {
 	-ms-transform: rotate(20deg); 
+	-webkit-transform: rotate(20deg);
 	color: #BDBDBD;
 	font-size: 27px;
-	left: 23px;
+	left: 46px;
 	margin: 0 12px;
-	top: 4px;
-  	position: relative;
-    -webkit-transform: rotate(20deg);
-    transform: rotate(20deg);
+	position: relative;
+	top: 0;
+	transform: rotate(20deg);
+	width: 2px;
   }
 }

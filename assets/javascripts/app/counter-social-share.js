@@ -7,12 +7,12 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		this.reference        = this.container.data( 'attr-reference' );
 		this.nonce            = this.container.data( 'attr-nonce' );
 		this.url              = this.container.data( 'element-url' );
-		this.facebook         = this.byCounter( 'facebook' );
-		this.twitter          = this.byCounter( 'twitter' );
-		this.google           = this.byCounter( 'google' );
-		this.pinterest        = this.byCounter( 'pinterest' );
-		this.linkedin         = this.byCounter( 'linkedin' );
-		this.totalShare       = this.byCounter( 'total-share' );
+		this.facebook         = this.container.byData( 'counter-facebook' );
+		this.twitter          = this.container.byData( 'counter-twitter' );
+		this.google           = this.container.byData( 'counter-google' );
+		this.pinterest        = this.container.byData( 'counter-pinterest' );
+		this.linkedin         = this.container.byData( 'counter-linkedin' );
+		this.totalShare       = this.container.byData( 'counter-total-share' );
 		this.totalCounter     = 0;
 		this.facebookCounter  = 0;
 		this.twitterCounter   = 0;
@@ -54,7 +54,7 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 			{
 				reference : 'googleCounter',
 				element   : 'google',
-				url       : SHARE.Utils.getUrlAjax(),
+				url       : this.container.getUrlAjax(),
 				data      : this.getParamsGoogle()
 			},
 			{
@@ -139,7 +139,7 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 	CounterSocialShare.fn.sendRequest = function() {
 		jQuery.ajax({
 	       method : 'POST',
-	       url    : SHARE.Utils.getUrlAjax(),
+	       url    : this.container.getUrlAjax(),
 	       data   : {
 	       	action          : 'global_counts_social_share',
 		    reference       : this.reference,
@@ -151,9 +151,5 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		    nonce           : this.nonce
 	       }
 	   });
-	};
-
-	CounterSocialShare.fn.byCounter = function(name) {
-		return this.container.find( '[data-counter-' + name + ']' );
 	};
 });

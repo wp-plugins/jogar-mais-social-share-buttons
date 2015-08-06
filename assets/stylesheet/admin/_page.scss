@@ -1,5 +1,5 @@
 .jm-ssb-settings-wrap {
-    background: #f6fbfd;
+    background: $bg-body;
     padding: 5px 10px;
 
     .description {
@@ -10,15 +10,15 @@
 
 .jm-ssb-settings-placements td,
 .jm-ssb-icons-settings td label {
-    background-color: #ebebeb;
-    background-image: -webkit-linear-gradient(#f9f9f9, #ebebeb);
-    background-image: -o-linear-gradient(#f9f9f9, #ebebeb);
-    background-image: linear-gradient(#f9f9f9, #ebebeb);
+    background-color: $colorGrey;
+    background-image: -webkit-linear-gradient( $colorLightGray, $colorGrey );
+    background-image: -o-linear-gradient( $colorLightGray, $colorGrey );
+    background-image: linear-gradient( $colorLightGray, $colorGrey );
     border: 1px solid #ccc;
 }
 
 .jm-ssb-settings-title {
-    background-color: #EDEDED;
+    background-color: $colorGrey;
     border-bottom-width: 1px;
     border-color: #ccc;
     border-left: 0;
@@ -81,7 +81,7 @@
 }
 
 .jm-ssb-sharing-report-table tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
+    background-color: $colorLightGray;
 }
 .widefat .jm-ssb-sharing-report-center {
     left: 18px;

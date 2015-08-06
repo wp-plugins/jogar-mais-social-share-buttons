@@ -50,7 +50,7 @@ class Sharing_Report_Controller
 	 * @param String $order
 	 * @return Object
 	 */
-	public function get_sharing_report( $page, $orderby, $order )
+	private function _get_sharing_report( $page, $orderby, $order )
 	{
 		global $wpdb;
 
@@ -157,11 +157,11 @@ class Sharing_Report_Controller
 		$page       = Utils_Helper::request( 'report_page', 1, 'intval' );
 		$orderby    = Utils_Helper::request( 'orderby', 'total', 'sanitize_sql_orderby' );
 		$order_type = Utils_Helper::request( 'order', 'desc', 'sanitize_sql_orderby' );
-		$reference  = $this->verify_sql_orderby( $orderby, 'total' );
-		$order      = $this->verify_sql_order( $order_type, 'desc' );
-		$posts      = $this->get_sharing_report( $page, $reference, $order );
-		$next_page  = $this->get_next_link( $page, count( $posts ) );
-		$prev_page  = $this->get_prev_link( $page );
+		$reference  = $this->_verify_sql_orderby( $orderby, 'total' );
+		$order      = $this->_verify_sql_order( $order_type, 'desc' );
+		$posts      = $this->_get_sharing_report( $page, $reference, $order );
+		$next_page  = $this->_get_next_link( $page, count( $posts ) );
+		$prev_page  = $this->_get_prev_link( $page );
 
 		Sharing_Report_View::render_sharing_report( $posts, $prev_page, $next_page );
 	}
@@ -174,7 +174,7 @@ class Sharing_Report_Controller
 	 * @param String $default
 	 * @return String
 	 */
-	private function verify_sql_orderby( $orderby, $default = '' )
+	private function _verify_sql_orderby( $orderby, $default = '' )
 	{
 			$permissions = array( 'title', 'facebook', 'twitter', 'google', 'linkedin', 'pinterest', 'total' );
 
@@ -192,7 +192,7 @@ class Sharing_Report_Controller
 	 * @param String $default
 	 * @return String
 	 */
-	private function verify_sql_order( $order, $default = '' )
+	private function _verify_sql_order( $order, $default = '' )
 	{
 		if ( $order === 'desc' || $order === 'asc' )
 			return strtoupper( $order );
@@ -208,7 +208,7 @@ class Sharing_Report_Controller
 	 * @param Int $rows
 	 * @return String
 	 */
-	private function get_next_link( $page, $rows )
+	private function _get_next_link( $page, $rows )
 	{
 		$orderby  = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
 		$order    = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
@@ -232,7 +232,7 @@ class Sharing_Report_Controller
 	 * @param Int $page
 	 * @return String
 	 */
-	private function get_prev_link( $page )
+	private function _get_prev_link( $page )
 	{
 		$orderby  = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
 		$order    = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );

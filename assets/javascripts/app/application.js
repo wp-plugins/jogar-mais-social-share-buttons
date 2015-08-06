@@ -1,24 +1,28 @@
 Module( 'SHARE.Application', function( Application ) {
 	Application.fn.initialize = function( container ) {
-		this.container        = container;
-		this.buttonsContainer = jQuery( '[data-element-jm-ssb]' );
-
-		this.jmPopupOpen();
-		SHARE.isMobile( this.container );
-		SHARE.CounterSocialShare( this.buttonsContainer );
+		this.container      = container;
+		this.buttonsGeneral = this.container.find( '[data-element-jm-ssb]' );
+		this.init();
 	};
 
-	Application.fn.jmPopupOpen = function() {
+	Application.fn.init = function() {
+		this.popupOpen();
+		SHARE.isMobile( this.container );
+		SHARE.CounterSocialShare( this.buttonsGeneral );
+		SHARE.HideElements( this.container );
+	};
+
+	Application.fn.popupOpen = function() {
 		var self = this;
 		
 		this.container.on( 'click', '[data-action=open-popup]', function(event) {
 			event.preventDefault();
 
-			var target = jQuery( this )
-			  , width  = '600'
-			  , height = '400';
+			var target = jQuery( event.currentTarget )
+			  , width  = '685'
+			  , height = '500';
 
-			self.jmPopupCenter(
+			self.popupCenter(
 				target.data( 'attr-url' ),
 				'Compartilhar',
 				width,
@@ -27,7 +31,7 @@ Module( 'SHARE.Application', function( Application ) {
 		});
 	};
 
-	Application.fn.jmPopupCenter = function( url, title, width, height ) {
+	Application.fn.popupCenter = function( url, title, width, height ) {
 		var left
 		  , top;
 		width  = ( width  || screen.width );
@@ -36,10 +40,9 @@ Module( 'SHARE.Application', function( Application ) {
 		top    = ( screen.height * 0.5 ) - ( height * 0.5 );
 
 		return window.open(
-			url,
-			title,
-			'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',toolbar=no,left=' + left + ',top=' + top
+			  url
+			, title
+			, 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',toolbar=no,left=' + left + ',top=' + top
 		);
 	};
-
 });

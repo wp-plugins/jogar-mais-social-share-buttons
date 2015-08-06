@@ -22,6 +22,7 @@
 		cursor: pointer;
 		display: inline-block;
 		float: left;
+		font-size: 11px;
 		height: 22px;
 		line-height: 23px;
 		text-align: center;
@@ -46,11 +47,13 @@
 		border-radius: 4px;
 		box-shadow: 0 0 0 1px #e0e0e0 inset;
 		color: #333;
+	    font-size: 11px;
 		float: left;
 		height: 24px;
 		line-height: 25px;
 		margin-left: 8px;
 		min-width: 45px;
+		padding: 0;
 		position: relative;
 		transition: 0.2s;
 	}
@@ -85,9 +88,6 @@
 		}
 	}
 
-// -----------------------------------------------------
-// -- icon social
-// -----------------------------------------------------
 @mixin icon( $class, $content, $color ) {
 
 	.#{$class}-share a {
@@ -113,10 +113,6 @@
 
 }
 
-// -----------------------------------------------------
-// -- Mobile
-// -----------------------------------------------------
-
 @media ( min-width: 768px ) {
 
 	.whatsapp-share {
@@ -124,7 +120,7 @@
 	}
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1024px) {
 
 	.jm-ssb-container-theme-two .count {
 		display: none;

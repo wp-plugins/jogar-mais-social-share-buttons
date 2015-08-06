@@ -15,144 +15,111 @@
 	a {
 		cursor: pointer;
 		display: inline-block;
+	}
 
-		.jm-ssb-icon {
-			@include border-radius( 3px );
-			@include filter( brightness( 105% ) );
-			background-size: cover;
-			border-radius: 5px;
-			display: inline-block;
-			font-size: 32px;
-			height: 32px;
-			margin-right: 2px;
-			text-align: center;
-			width: 32px;
-			color: $colorWhite;
-		}
+	a .jm-ssb-icon {
+		@include border-radius( 3px );
+		@include filter( brightness( 105% ) );
+		background-size: cover;
+		border-radius: 5px;
+		color: $colorWhite;
+		display: inline-block;
+		font-size: 32px;
+		height: 32px;
+		margin-right: 2px;
+		text-align: center;
+		width: 32px;
+	}
 
-		.jm-ssb-icon-sheet {
-			@include border-radius( 6px 0 );
-		}
+	a .jm-ssb-icon-sheet {
+		@include border-radius( 6px 0 );
+	}
 
-		.jm-ssb-icon-radius {
-			@include border-radius( 4px );
-		}
+	a .jm-ssb-icon-radius {
+		@include border-radius( 4px );
+	}
 
-		.jm-ssb-icon-facebook:before {
-			color: $fbColor;
-			content: "\e602";
-		}
+	@mixin icon( $class, $color, $content ) {
 
-		.jm-ssb-icon-twitter:before {
-			color: $ttColor;
-			content: "\e604";
-		}
-
-		.jm-ssb-icon-google:before {
-			color: $gpColor;
-			content: "\e601";
-		}
-
-		.jm-ssb-icon-whatsapp {
-			background-color: $whatsColor;
+		a .jm-ssb-icon-#{$class} {
+			color: $color;
 
 			&:before {
-				content: "\e610";
+				content: "#{$content}";
 			}
 		}
+	}
 
-		.jm-ssb-icon-sms {
-			background-image: url( '../icons/sms.svg' );
-			position: relative;
-			top: 1px;
-		}
+	@include icon( facebook, $fbColor, '\e602' );
+	@include icon( twitter, $ttColor, '\e604' );
+	@include icon( google, $gpColor, '\e601' );
+	@include icon( pinterest, $pinColor, '\e608' );
+	@include icon( linkedin, $inColor, '\e606' );
+	@include icon( gmail, $gmailColor, '\e60e' );
 
-		.jm-ssb-icon-pinterest:before {
-			color: $pinColor;
-			content: "\e608";
-		}
+	a .jm-ssb-icon-whatsapp {
+		background-color: $whatsColor;
+		color: $colorWhite;
 
-		.jm-ssb-icon-linkedin:before {
-			color: $inColor;
-			content: "\e606";
+		&:before {
+			content: "\e610";
 		}
+	}
 
-		.jm-ssb-icon-tumblr:before {
-			color: $tColor;
-			content: "\e60f";
-			font-size: 38px;
-			position: relative;
-			top: -1px;
-		}
+	a .jm-ssb-icon-tumblr:before {
+		color: $tColor;
+		content: "\e60f";
+		font-size: 38px;
+		position: relative;
+		top: -1px;
+	}
 
-		.jm-ssb-icon-gmail:before {
-			color: $gmailColor;
-			content: "\e60e";
-		}
+	a .jm-ssb-icon-email:before {
+		color: $emailColor;
+		content: "\e605";
+		font-size: 36px;
+		position: relative;
+		top: -1px;
+	}
 
-		.jm-ssb-icon-email:before {
-			color: $emailColor;
-			content: "\e605";
-			font-size: 36px;
-			position: relative;
-			top: -1px;
-		}
+	a .jm-ssb-icon-printfriendly:before {
+		@include border-radius( 4px );
+		background-color: $printColor;
+		color: #676464;
+		content: "\e607";
+		left: 4px;
+		position: relative;
+	}
 
-		.jm-ssb-icon-printfriendly:before {
-			@include border-radius( 4px );
-			background-color: $printColor;
-			color: #676464;
-			content: "\e607";
-			left: 4px;
-			position: relative;
-		}
+	a .jm-ssb-icon-sms {
+		background-image: url( '../icons/sms.svg' );
+		position: relative;
+		top: 1px;
+	}
 
 	 &:hover {
 	 	@include filter( brightness( 80% ) );
-		}
 	}
-	&:hover .jm-ssb-counter {
+
+	&:hover > .jm-ssb-counter {
 		left: 50%;		
 		opacity: 1;
-	}	
+	}
 }
 
-.jm-ssb-whatsapp,
-.jm-ssb-sms {
-	display: none;
-}
-
-// -----------------------------------------------------
-// -- Mobile
-// -----------------------------------------------------
-
-@media screen and (max-width: 768px) {
+@media screen and ( min-width: 768px ) {
 
 	.jm-ssb-whatsapp,
-	.jm-ssb-sms,
-	.icon-whatsapp {
-		display: inline-block;
-	}
-
-	.jm-ssb-email,
-	.jm-ssb-gmail,
-	.jm-ssb-print-friendly {
+	.jm-ssb-sms {
 		display: none;
 	}
 }
 
-.jm-ssb-whatsapp-unique {
+@media screen and ( max-width: 768px ) {
 
-	a {
-		border-bottom: 0 !important;
-		text-decoration: none !important;
-	}
-
-	.icon-whatsapp {
-		background-image: url( '../icons/whatsapp.svg' );
-		background-size: cover;
-		border-radius: 3px;
-		height: 28px;
-		width: 28px;
+	.jm-ssb-print-friendly,
+	.jm-ssb-email,
+	.jm-ssb-gmail {
+		display: none;
 	}
 }
