@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Views Sharing Report
- * @version 1.0.1
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -18,7 +18,7 @@ class Sharing_Report_View
 	/**
 	 * Display page sharing report
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @param Object $post
 	 * @param String $prev_page
 	 * @param String $next_page
@@ -46,8 +46,8 @@ class Sharing_Report_View
 			<table class="widefat fixed jm-ssb-sharing-report-table">
 				<thead>
 					<tr>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'title' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'title', $page_url ); ?>">
+						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'post_title' ); ?>">
+							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'post_title', $page_url ); ?>">
 								<span>Título</span>
 								<span class="sorting-indicator"></span>
 							</a>
@@ -95,9 +95,9 @@ class Sharing_Report_View
 					<tr>
 						<td>
 							<strong>
-								<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" target="_blank"
-								   title="<?php echo esc_attr( $post->title ); ?>">
-								   <?php echo esc_html( $post->title ); ?>
+								<a href="<?php echo esc_url( get_permalink( $post->post_id ) ); ?>" target="_blank"
+								   title="<?php echo esc_attr( $post->post_title ); ?>">
+								   <?php echo esc_html( $post->post_title ); ?>
 								</a>
 							</strong>
 						</td>
@@ -125,12 +125,12 @@ class Sharing_Report_View
 			</table>
 			<div class="tablenav bottom">
 				<div class="tablenav-pages">
-					<a class="prev-page <?php echo ( ( $prev_page === '#' ) ? 'disabled' : '' ); ?>" rel="prev" title="Página anterior"
-					   href="<?php echo $prev_page; ?>">
+					<a href="<?php echo $prev_page; ?>" rel="prev" title="Página anterior"
+					   class="prev-page <?php echo Utils_Helper::class_disable_pagination( $prev_page ); ?>">
 						&laquo;
 					</a>
-					<a class="next-page <?php echo ( ( $next_page === '#' ) ? 'disabled' : '' ); ?>" rel="next" title="Próxima página"
-					   href="<?php echo $next_page; ?>">
+					<a href="<?php echo $next_page; ?>" rel="next" title="Próxima página"
+					   class="next-page <?php echo Utils_Helper::class_disable_pagination( $next_page ); ?>">
 						&raquo;
 					</a>
 				</div>

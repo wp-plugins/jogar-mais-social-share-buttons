@@ -5,8 +5,8 @@ Contributors: victorfreitas
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E
 Tags: share, social, buttons, share buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
-Tested up to: 4.2.3
-Stable tag: 1.1.1
+Tested up to: 4.2.4
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,9 @@ Implement the sharing buttons of the major social networks, including the Whats 
 
 Implement the sharing buttons of the major social networks, including the Whats App on your website or blog. The buttons are inserted automatically or can be called via shortcode or PHP method.
 
-* Add before, after the content of posts or both: "The contents of this comment is the responsibility of: {AUTHOR}"
+* Adds before, after the contents post or both
+
+* Create a new table to store the sharing number of posts
 
 * Store some options with the data that will be used to show, hide, stylize and remove specific buttons.
 
@@ -51,6 +53,10 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 * Set for your sharing icons
 
 == Changelog ==
+
+= 1.2.0 =
+
+* Fix: Improving performance in SQL queries
 
 = 1.1.1 =
 
@@ -95,7 +101,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 == Upgrade Notice ==
 
-= 1.1.1 =
+= 1.2.0 =
 
-* Fix: Bug fixes
+* Fix: Improving performance in SQL queries
 

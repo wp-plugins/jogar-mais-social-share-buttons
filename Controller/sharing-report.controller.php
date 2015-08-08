@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.0.3
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -15,8 +15,6 @@ if ( ! function_exists( 'add_action' ) )
 
 //View
 Init::uses( 'sharing-report', 'View' );
-//Model
-Init::uses( 'service', 'Model' );
 
 class Sharing_Report_Controller
 {
@@ -44,7 +42,8 @@ class Sharing_Report_Controller
 	/**
 	 * Search in database results relative share posts 
 	 * 
-	 * @since 1.0
+	 * @since 1.2
+	 * @global $wpdb
 	 * @param Int $page
 	 * @param String $orderby
 	 * @param String $order
@@ -57,66 +56,16 @@ class Sharing_Report_Controller
 		$offset     = ( ( $page - 1 ) * self::POSTS_PER_PAGE );
 		$cache      = get_transient( self::JM_TRANSIENT );
 		$cache_time = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
+		$table      = $wpdb->prefix . Settings::TABLE_NAME;
 
 		if ( false !== $cache && isset( $cache[$page][$orderby][$order] ) )
 			return $cache[$page][$orderby][$order];
 
 		$query = $wpdb->prepare(
-			"SELECT
-			    posts.ID,
-				posts.post_title                     AS title,
-			    CAST( meta1.meta_value AS UNSIGNED ) AS facebook,
-			    CAST( meta2.meta_value AS UNSIGNED ) AS twitter,
-			    CAST( meta3.meta_value AS UNSIGNED ) AS google,
-			    CAST( meta4.meta_value AS UNSIGNED ) AS linkedin,
-			    CAST( meta5.meta_value AS UNSIGNED ) AS pinterest,
-				(
-			        COALESCE( meta1.meta_value, 0 ) +
-			        COALESCE( meta2.meta_value, 0 ) +
-			        COALESCE( meta3.meta_value, 0 ) +
-			        COALESCE( meta4.meta_value, 0 ) +
-			        COALESCE( meta5.meta_value, 0 )
-			    ) AS total
-
-			FROM $wpdb->posts AS posts
-
-			LEFT JOIN $wpdb->postmeta AS meta1 ON
-				( meta1.post_id  = posts.ID )
-			AND ( meta1.meta_key = '%s' )
-
-			LEFT JOIN $wpdb->postmeta AS meta2 ON
-				( meta2.post_id  = posts.ID )
-			AND ( meta2.meta_key = '%s' )
-
-			LEFT JOIN $wpdb->postmeta AS meta3 ON
-				( meta3.post_id  = posts.ID )
-			AND ( meta3.meta_key = '%s' )
-
-			LEFT JOIN $wpdb->postmeta AS meta4 ON
-				( meta4.post_id  = posts.ID )
-			AND ( meta4.meta_key = '%s' )
-
-			LEFT JOIN $wpdb->postmeta AS meta5 ON
-				( meta5.post_id  = posts.ID )
-			AND ( meta5.meta_key = '%s' )
-
-			WHERE posts.post_type   = 'post'
-			AND   posts.post_status = 'publish'
-			AND   COALESCE( meta1.meta_value, 0 ) +
-		          COALESCE( meta2.meta_value, 0 ) +
-		          COALESCE( meta3.meta_value, 0 ) +
-		          COALESCE( meta4.meta_value, 0 ) +
-		          COALESCE( meta5.meta_value, 0 ) > 0
-
-			ORDER BY {$orderby} {$order}
-
-			LIMIT {$offset}, %d",
-			Service::POST_META_SHARE_COUNT_FACEBOOK,
-			Service::POST_META_SHARE_COUNT_TWITTER,
-			Service::POST_META_SHARE_COUNT_GOOGLE,
-			Service::POST_META_SHARE_COUNT_LINKEDIN,
-			Service::POST_META_SHARE_COUNT_PINTEREST,
-			self::POSTS_PER_PAGE
+			"SELECT * FROM `{$table}`
+			 ORDER BY {$orderby} {$order}
+			 LIMIT {$offset}, %d",
+			 self::POSTS_PER_PAGE
 		);
 
 		$cache[$page][$orderby][$order] = $wpdb->get_results( $query );
@@ -148,7 +97,7 @@ class Sharing_Report_Controller
 	/**
 	 * Set report page view
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param null
 	 * @return Void
 	 */
@@ -169,14 +118,14 @@ class Sharing_Report_Controller
 	/**
 	 * Verify sql orderby param
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param String $orderby
 	 * @param String $default
 	 * @return String
 	 */
 	private function _verify_sql_orderby( $orderby, $default = '' )
 	{
-			$permissions = array( 'title', 'facebook', 'twitter', 'google', 'linkedin', 'pinterest', 'total' );
+			$permissions = array( 'post_title', 'facebook', 'twitter', 'google', 'linkedin', 'pinterest', 'total' );
 
 			if ( in_array( $orderby, $permissions ) )
 				return $orderby;
@@ -203,7 +152,7 @@ class Sharing_Report_Controller
 	/**
 	 * Next page sharing report
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @param Int $page
 	 * @param Int $rows
 	 * @return String
@@ -228,7 +177,7 @@ class Sharing_Report_Controller
 	/**
 	 * Prev page sharing report
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @param Int $page
 	 * @return String
 	 */
@@ -247,5 +196,42 @@ class Sharing_Report_Controller
 			return get_admin_url( null, "{$page_url}&orderby={$orderby}&order={$order}&report_page={$page}" );
 
 		return get_admin_url( null, "{$page_url}&report_page={$page}" );
+	}
+
+	/**
+	 * Create table sharing reports.
+	 * 
+	 * @since 1.0
+	 * @global $wpdb
+	 * @param Null
+	 * @global $wpdb
+	 * @return Void
+	 */
+	public function create_table()
+	{
+		global $wpdb;
+		
+		$charset    = $wpdb->get_charset_collate();
+		$table_name = $wpdb->prefix . Settings::TABLE_NAME;
+
+		$sql = "
+			CREATE TABLE IF NOT EXISTS $table_name (
+				id         BIGINT(20) NOT NULL AUTO_INCREMENT,
+				post_id    BIGINT(20) UNSIGNED NOT NULL,
+				post_title TEXT       NOT NULL,
+				facebook   BIGINT(20) UNSIGNED NOT NULL,
+				twitter    BIGINT(20) UNSIGNED NOT NULL,
+				google     BIGINT(20) UNSIGNED NOT NULL,
+				linkedin   BIGINT(20) UNSIGNED NOT NULL,
+				pinterest  BIGINT(20) UNSIGNED NOT NULL,
+				total      BIGINT(20) UNSIGNED NOT NULL,
+				PRIMARY KEY id ( id ),
+				UNIQUE( post_id )
+			)   {$charset};";
+		
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		dbDelta( $sql );
+		Utils_Helper::add_or_update_option( Settings::TABLE_NAME . '_db_version' );
 	}
 }

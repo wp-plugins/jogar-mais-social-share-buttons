@@ -3,7 +3,7 @@
  *
  * @package Social Share Buttons | Functions
  * @author  Victor Freitas
- * @version 1.0.3
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -23,27 +23,36 @@ Init::uses( 'utils', 'Helper' );
 class Core
 {
 	/**
+	 * Intance class share report controller
+	 * 
+	 * @since 1.0
+	 * @var Object
+	 */
+	private static $share_report;
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
-	 * @since 1.0
+	 * @since 1.1
 	 */
 	public function __construct()
 	{
 		register_activation_hook( Init::FILE, array( __CLASS__, 'activate' ) );
 		register_deactivation_hook( Init::FILE, array( __CLASS__, 'deactivate' ) );
 		register_uninstall_hook( Init::FILE, array( __CLASS__, 'uninstall' ) );
+		add_action( 'plugins_loaded', array( __CLASS__, 'sharing_report_update_db_check' ) );
 
-		$settings     = new Settings_Controller();
-		$share        = new Share_Controller();
-		$option       = new Option_Controller();
-		$share_report = new Sharing_Report_Controller();
+		$settings           = new Settings_Controller();
+		$share              = new Share_Controller();
+		$option             = new Option_Controller();
+		self::$share_report = new Sharing_Report_Controller();
 
 	}
 
 	/**
 	 * Generate object all social icons
 	 * 
-	 * @since 1.0
+	 * @since 1.3
 	 * @param String $title
 	 * @param String $url
 	 * @param String $tracking
@@ -165,7 +174,7 @@ class Core
 	/**
 	 * Encode all items from data services
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param Null
 	 * @return Object
 	 */
@@ -212,13 +221,13 @@ class Core
 	/**
 	 * Register Activation Hook
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @param Null
 	 * @return Void
 	 */
 	public static function activate()
 	{
-
+		self::$share_report->create_table();
 	}
 
 	/**
@@ -236,12 +245,14 @@ class Core
 	/**
 	 * Register Uninstall Hook
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param Null
 	 * @return Void
 	 */
 	public static function uninstall()
 	{
+		global $wpdb;
+
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE );
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
@@ -253,5 +264,25 @@ class Core
 			delete_site_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
 			delete_site_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
 		endif;
+
+		$table = $wpdb->prefix . Sharing_Report_Controller::TABLE_NAME;
+		$sql   = $wpdb->prepare( "DROP TABLE %s", $table );
+
+		$wpdb->query( $sql );
+	}
+
+	/**
+	 * Verify database version and update database
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	public static function sharing_report_update_db_check()
+	{
+		$option = get_site_option( Settings::TABLE_NAME . '_db_version' );
+
+	    if ( $option !== Settings::SHARING_REPORT_DB_VERSION )
+	        self::activate();
 	}
 }

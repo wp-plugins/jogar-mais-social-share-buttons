@@ -4,7 +4,7 @@
  * @package Social Share Buttons | Settings
  * @author  Victor Freitas
  * @subpackage Settings Model
- * @version 1.0.1
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -231,6 +231,23 @@ class Settings
 	 */
 	const PLUGIN_PREFIX = 'jm-ssb';
 	const PLUGIN_PREFIX_UNDERSCORE = 'jm_ssb';
+
+
+	/**
+	 * Sharing report db version
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
+	const SHARING_REPORT_DB_VERSION = '1.0';
+
+	/**
+	 * Sharing report table name
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
+	const TABLE_NAME = 'sharing_report';
 
 	/**
 	 * Directory separator AND File name 

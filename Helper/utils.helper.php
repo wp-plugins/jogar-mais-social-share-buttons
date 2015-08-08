@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
- * @version 1.0.2
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -340,5 +340,37 @@ class Utils_Helper
 			return "sorted {$order}";
 
 		return 'sortable desc';
+	}
+
+	/**
+	 * Disable pagination in attribute class
+	 * 
+	 * @since 1.0
+	 * @param String $disabled
+	 * @return String
+	 */
+	public static function class_disable_pagination( $disabled )
+	{
+		if ( '#' == $disabled )
+			return 'disabled';
+
+		return '';
+	}
+
+	/**
+	 * Verify option exists and update option
+	 * 
+	 * @since 1.0
+	 * @param String $option_name
+	 * @return String
+	 */
+	public static function add_or_update_option( $option_name )
+	{
+		$option = get_site_option( $option_name );
+
+		if ( $option )
+			return update_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
+
+		return add_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
 	}
 }

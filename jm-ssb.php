@@ -5,7 +5,7 @@
 /*
 Plugin Name: Social Share Buttons
 Plugin URI: http://jogarmais.com.br
-Version: 1.1.1
+Version: 1.2.0
 Author: Victor Freitas
 Author URI: http://jogarmais.com.br
 License: GPL2
