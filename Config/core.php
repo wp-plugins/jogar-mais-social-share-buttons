@@ -265,8 +265,8 @@ class Core
 			delete_site_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
 		endif;
 
-		$table = $wpdb->prefix . Sharing_Report_Controller::TABLE_NAME;
-		$sql   = $wpdb->prepare( "DROP TABLE %s", $table );
+		$table = $wpdb->prefix . Settings::TABLE_NAME;
+		$sql   = "DROP TABLE `{$table}`";
 
 		$wpdb->query( $sql );
 	}
