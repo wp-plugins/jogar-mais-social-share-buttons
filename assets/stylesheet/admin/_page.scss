@@ -6,6 +6,10 @@
         display: table;
         width: 100%;
     }
+
+    .jm-ssb-faq {
+        margin: -8px 0 5px;
+    }
 }
 
 .jm-ssb-settings-placements td,
@@ -147,4 +151,74 @@
     display: none;
     margin-bottom: 15px;
     margin-top: 15px;
+}
+
+.jm-ssb-pre {
+    display: inline;
+    font-family: monospace;
+    white-space: pre-line;
+}
+
+.jm-ssb-code {
+    background-color: #444343;
+    color: #F4F4F4;
+    height: 195px;
+    padding: 10px;
+    position: relative;
+    top: 5px;
+    width: 100%;
+
+    .code-align {
+        left: 15px;
+        position: absolute;
+        top: 0;
+        font-family: monospace;
+    }
+
+    .nc {
+        color: #f92672;
+    }
+
+    .s1 {
+        color: #e6db74;
+    }
+
+    .k {
+        color: #66d9ef;
+    }
+
+    .mi {
+        color: #ae81ff;
+    }
+
+    .sp {
+        position: relative;
+        top: -10px;
+    }
+
+    .alr {
+        left: 30px;
+        position: relative;
+        top: -15px;
+    }
+
+    .gn {
+        color: #a6e22e;
+    }
+}
+
+.jm-ssb-code-shortcode {
+    height: 10px;
+    line-height: 16px;
+
+    .code-align {
+        top: 7px;
+    }
+}
+
+span.tablenav-pages-navspan.disabled {
+    background: #eee;
+    background: rgba(0,0,0,.05);
+    color: #a0a5aa;
+    padding: 3px 10px 7px;
 }

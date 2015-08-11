@@ -1,9 +1,9 @@
 <?php
 /**
  *
- * @package Social Share Buttons | Register Options
+ * @package Social Share Buttons
  * @author  Victor Freitas
- * @subpackage Social Buttons Options Admin Page
+ * @subpackage Options Admin Page
  * @since 1.0.3
  */
 
@@ -19,7 +19,7 @@ Init::uses( 'setting', 'View' );
 //Model
 Init::uses( 'settings', 'Model' );
 
-class Option_Controller
+class Options_Controller
 {
 	/**
 	 * Adds needed actions initialize class
@@ -86,7 +86,7 @@ class Option_Controller
 	/**
 	 * Register options plugin extra configurations
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @param Null
 	 * @return void
 	 */
@@ -95,6 +95,7 @@ class Option_Controller
 		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page', 'jm_ssb_style_settings' );
 		$new_options_settings = array(
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'      => 'on',
+			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_script'     => 'on',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style_size'  => 32,
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_icons_style'       => 'default',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_twitter_via'       => '',

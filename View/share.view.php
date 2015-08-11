@@ -24,15 +24,28 @@ class Share_View extends Core
 	 *
 	 */
 	public static function links( $atts = array() )
-	{
-		$model = new Settings();
+	{	$primary = ( isset( $atts['primary_button'] ) ? $atts['primary_button'] : '' );
+		$model   = new Settings();
 
-		if ( 1 === $model->desktop )
+		if ( 1 === $model->desktop && ! $primary )
 			return self::theme_secondary();
 
-		if ( 2 === $model->desktop )
+		if ( 2 === $model->desktop &&  ! $primary )
 			return self::theme_total_counter();
 
+		return self::_primary_buttons( $atts, $model );
+	}
+
+	/**
+	 * Primary buttons
+	 * 
+	 * @since 1.0
+	 * @param Array $args
+	 * @return String/HTML
+	 *
+	 */
+	private static function _primary_buttons( $atts = array(), $model )
+	{
 		extract(
 			shortcode_atts(
 				array(
@@ -78,7 +91,6 @@ class Share_View extends Core
 
 		return $buttons_content;
 	}
-
 	/**
 	 * Display icons theme secondary ( Facebook; Google Plus; Twitter; Linkedin )
 	 * 
@@ -222,18 +234,30 @@ class Share_View extends Core
 	 */
 	public static function jm_ssb( $atts = array() )
 	{
-		$class_ul   = ( isset( $atts[0] ) ) ? $atts[0] : '';
-		$class_li   = ( isset( $atts[1] ) ) ? $atts[1] : '';
-		$class_link = ( isset( $atts[2] ) ) ? $atts[2] : '';
-		$class_icon = ( isset( $atts[3] ) ) ? $atts[3] : '';
+		$model      = new Settings();
+		$theme      = ( isset( $atts['theme'] ) )      ? $atts['theme']      : '';
+		$class_ul   = ( isset( $atts['class_ul'] ) )   ? $atts['class_ul']   : '';
+		$class_li   = ( isset( $atts['class_li'] ) )   ? $atts['class_li']   : '';
+		$class_link = ( isset( $atts['class_link'] ) ) ? $atts['class_link'] : '';
+		$class_icon = ( isset( $atts['class_icon'] ) ) ? $atts['class_icon'] : '';
 		$attrs      = array(
-			'class_ul'   => $class_ul,
-			'class_li'   => $class_li,
-			'class_link' => $class_link,
-			'class_icon' => $class_icon,
+			'class_ul'   => Utils_Helper::esc_class( $class_ul ),
+			'class_li'   => Utils_Helper::esc_class( $class_li ),
+			'class_link' => Utils_Helper::esc_class( $class_link ),
+			'class_icon' => Utils_Helper::esc_class( $class_icon ),
 		);
 
+		if ( ! $theme )
+			return self::_primary_buttons( $attrs, $model );
+
+		if ( 2 == $theme )
+			return self::theme_secondary();
+
+		if ( 3 == $theme )
+			return self::theme_total_counter();		
+
 		return self::links( $attrs );
+
 	}
 
 	/**
@@ -309,7 +333,7 @@ class Share_View extends Core
 	{
 		$attr_link = "data-attr-url=\"{$element_link}\" ";
 
-		if ( $element === 'Whatsapp' || $element === 'Sms' )
+		if ( 'Whatsapp' === $element || 'Sms' === $element || 'off' === Utils_Helper::option( '_remove_script' ) )
 			$attr_link = "href=\"{$element_link}\" ";
 
 		return $attr_link;
@@ -330,7 +354,7 @@ class Share_View extends Core
 		$post_id  = Utils_Helper::get_id();
 		$prefix   = Settings::PLUGIN_PREFIX;
 		$content  = "<div data-element-{$prefix} data-attr-reference=\"{$post_id}\" data-attr-nonce=\"{$nonce}\"";
-		$content .= " data-element-url=\"{$permalink}\" class=\"{$prefix}-social {$class_ul} {$class_option}\">";
+		$content .= " data-element-url=\"{$permalink}\" class=\"{$prefix}-social {$class_ul} {$class_option}\">\n";
 
 		return $content;
 	}

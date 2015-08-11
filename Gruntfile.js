@@ -8,33 +8,52 @@ module.exports = function(grunt) {
 		    },
 		    site : {
 				src : [
-					'<%= package.webroot %>/libs/*.js',
-					'<%= package.webroot %>/app/*.js',
-					'<%= package.webroot %>/boot.js'
+					'<%= package.scriptroot %>/libs/*.js',
+					'<%= package.scriptroot %>/app/*.js',
+					'<%= package.scriptroot %>/boot.js'
 				],
-				dest : '<%= package.webroot %>/script.min.js',
+				dest : '<%= package.scriptroot %>/script.min.js',
 		    },
 		    admin : {
 				src : [
-					'<%= package.webroot %>/libs/*.js',
-					'<%= package.webroot %>/admin/application.js',
-					'<%= package.webroot %>/admin/script-admin.js',
-					'<%= package.webroot %>/boot.js'
+					'<%= package.scriptroot %>/libs/*.js',
+					'<%= package.scriptroot %>/admin/application.js',
+					'<%= package.scriptroot %>/admin/script-admin.js',
+					'<%= package.scriptroot %>/boot.js'
 				],
-				dest : '<%= package.webroot %>/admin/script-admin.min.js',
+				dest : '<%= package.scriptroot %>/admin/script-admin.min.js',
 		    },
   		},
+
+		compass : {
+			site : {
+				options : {
+					sassDir     : '<%= package.cssroot %>',
+					cssDir      : '<%= package.cssroot %>',
+					environment : 'production'
+				},
+				files : {
+					'style.css' : '<%= package.cssroot %>/style.scss',
+					'admin.css' : '<%= package.cssroot %>/admin.scss'
+				}
+			},
+		},
+
 
   		uglify : {
 			site : {
 				files : {
-					'<%= concat.site.dest %>' : '<%= concat.site.dest %>',
+					'<%= concat.site.dest %>'  : '<%= concat.site.dest %>',
 					'<%= concat.admin.dest %>' : '<%= concat.admin.dest %>'
 				}
 			}
     	},
 
 		watch: {
+			css : {
+				files : ['assets/stylesheet/**/*.scss'],
+				tasks : ['compass']
+			},
 		    script : {
 		    	files : ['<%= concat.site.src %>', '<%= concat.admin.src %>'],
 		    	tasks : ['concat', 'uglify']
@@ -47,7 +66,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
+	grunt.loadNpmTasks( 'grunt-contrib-compass' );
 
 	grunt.registerTask( 'jsmin', ['concat', 'uglify'] );
-	grunt.registerTask( 'deploy', ['jsmin'] );
+	grunt.registerTask( 'deploy', ['jsmin', 'compass'] );
 };

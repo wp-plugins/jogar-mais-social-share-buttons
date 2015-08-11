@@ -149,7 +149,7 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		    count_linkedin  : this.linkedinCounter,
 		    count_pinterest : this.pinterestCounter,
 		    nonce           : this.nonce
-	       }
+	      }
 	   });
 	};
 });

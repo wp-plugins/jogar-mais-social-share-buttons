@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Social Share Buttons | Ajax
+ * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Ajax Controller
  * @version 1.2.0
@@ -151,7 +151,7 @@ class Ajax_Controller
 	{
 		global $wpdb;
 
-		$query     = $wpdb->prepare( "SELECT COUNT(1) FROM {$table} WHERE `post_id` = %d", $data['post_id'] );
+		$query     = $wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE `post_id` = %d", $data['post_id'] );
 		$row_count = $wpdb->get_var( $query );
 		$row_count = intval( $row_count );
 

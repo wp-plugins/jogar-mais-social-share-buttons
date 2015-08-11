@@ -1,7 +1,7 @@
 Module( 'SHARE.Application', function( Application ) {
 	Application.fn.initialize = function( container ) {
 		this.container      = container;
-		this.buttonsGeneral = this.container.find( '[data-element-jm-ssb]' );
+		this.buttonsGeneral = this.container.byData( 'element-jm-ssb' );
 		this.init();
 	};
 

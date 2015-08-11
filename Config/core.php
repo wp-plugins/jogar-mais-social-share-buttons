@@ -3,7 +3,7 @@
  *
  * @package Social Share Buttons | Functions
  * @author  Victor Freitas
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 namespace JM\Share_Buttons;
@@ -14,9 +14,9 @@ if ( ! function_exists( 'add_action' ) )
 
 //Controller
 Init::uses( 'settings', 'Controller' );
-Init::uses( 'option', 'Controller' );
-Init::uses( 'share', 'Controller' );
-Init::uses( 'sharing-report', 'Controller' );
+Init::uses( 'options', 'Controller' );
+Init::uses( 'shares', 'Controller' );
+Init::uses( 'sharing-reports', 'Controller' );
 //Utils
 Init::uses( 'utils', 'Helper' );
 
@@ -33,7 +33,7 @@ class Core
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
-	 * @since 1.1
+	 * @since 1.2
 	 */
 	public function __construct()
 	{
@@ -43,9 +43,9 @@ class Core
 		add_action( 'plugins_loaded', array( __CLASS__, 'sharing_report_update_db_check' ) );
 
 		$settings           = new Settings_Controller();
-		$share              = new Share_Controller();
-		$option             = new Option_Controller();
-		self::$share_report = new Sharing_Report_Controller();
+		$share              = new Shares_Controller();
+		$option             = new Options_Controller();
+		self::$share_report = new Sharing_Reports_Controller();
 
 	}
 
@@ -256,7 +256,7 @@ class Core
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE );
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
-		delete_transient( Sharing_Report_Controller::JM_TRANSIENT );
+		delete_transient( Settings::JM_TRANSIENT );
 		
 		//For multisite
 		if ( is_multisite() ) :

@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 namespace JM\Share_Buttons;
@@ -35,6 +35,27 @@ class Utils_Helper
 		$string = htmlentities( $string, ENT_QUOTES );
 
 		return $string;
+	}
+
+	/**
+	 * Escape string conter XSS attack
+	 * 
+	 * @since 1.0
+	 * @param String $string
+	 * @return String
+	 */
+	public static function esc_class( $class = '' )
+	{
+		$class = (string) $class;
+
+		if ( ! strlen( $class ) )
+			return '';
+
+        $class = self::esc_html( $class );
+        $class = preg_replace( "/[^a-zA-Z0-9_\s-]/", "", $class );
+        $class = preg_replace( "/[\s-]+/", "-", $class );
+
+        return $class;
 	}
 
 	/**
@@ -343,21 +364,6 @@ class Utils_Helper
 	}
 
 	/**
-	 * Disable pagination in attribute class
-	 * 
-	 * @since 1.0
-	 * @param String $disabled
-	 * @return String
-	 */
-	public static function class_disable_pagination( $disabled )
-	{
-		if ( '#' == $disabled )
-			return 'disabled';
-
-		return '';
-	}
-
-	/**
 	 * Verify option exists and update option
 	 * 
 	 * @since 1.0
@@ -372,5 +378,19 @@ class Utils_Helper
 			return update_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
 
 		return add_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
+	}
+
+	/**
+	 * Format number
+	 * 
+	 * @since 1.0
+	 * @param Integer $number
+	 * @return String
+	 */
+	public static function number_format( $number )
+	{
+		$number = intval( $number );
+
+		return number_format( $number, 0, '.', '.' );
 	}
 }

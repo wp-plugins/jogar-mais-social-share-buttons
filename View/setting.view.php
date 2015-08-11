@@ -4,7 +4,7 @@
  * @package Social Share Buttons | Admin
  * @author  Victor Freitas
  * @subpackage View Admin Page
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -18,7 +18,7 @@ class Setting_View extends Share_View
 	/**
 	 * Display page setting
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param Null
 	 * @return Void Display page
 	 */
@@ -35,7 +35,7 @@ class Setting_View extends Share_View
 			6 => 'tumblr',
 			7 => 'gmail',
 			8 => 'email',
-			9 => 'printer'
+			9 => 'printer',
 		);
 	?>
 		<div class="wrap">
@@ -200,7 +200,7 @@ class Setting_View extends Share_View
 	/**
 	 * Display page setting
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param Null
 	 * @return Void Display page
 	 */
@@ -277,6 +277,19 @@ class Setting_View extends Share_View
 									</label>
 								</td>
 							</tr>
+							<tr>
+								<th scope="row">
+									<label for="disable-script">Desabilitar Scripts</label>
+								</th>
+								<td>
+									<label for="disable-script">
+										<input id="disable-script" type="checkbox" value="off"
+										       name="jm_ssb_style_settings[<?php echo Settings::PLUGIN_PREFIX_UNDERSCORE; ?>_remove_script]"
+											   <?php checked( 'off', $model->disable_script ); ?>>
+										Marque para desabilitar
+									</label>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<?php
@@ -293,7 +306,7 @@ class Setting_View extends Share_View
 	/**
 	 * Display page setting
 	 * 
-	 * @since 1.0
+	 * @since 1.3
 	 * @param Null
 	 * @return Void Display page
 	 */
@@ -309,28 +322,59 @@ class Setting_View extends Share_View
 			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">
 				<blockquote>
 					<strong>Via shortcode: </strong>
-					<code>[JMSSB class_ul="" class_li="" class_link="" class_icon=""]</code>
-					//Retorna todos os botões //Classes são opcionais
-				</blockquote>
-				<blockquote>
+					<div class="jm-ssb-pre">
+						<div class="jm-ssb-code jm-ssb-code-shortcode">
+							<div class="code-align"><span class="gn">[JMSSB primary_button="true" class_ul="my-class" class_li="my-class" class_link="my-class" class_icon="my-class"]</span></div>
+						</div>
+					</div>
+					<strong>Via PHP</strong>
+					<div class="jm-ssb-pre">
+						<div class="jm-ssb-code jm-ssb-code-shortcode">
+							<div class="code-align"><span class="k">echo</span> do_shortcode( <span class="s1">'[JMSSB primary_button="true" class_ul="" class_li="" class_link="" class_icon=""]'</span> );</div>
+						</div>
+					</div>
+					<p class="description jm-ssb-faq">Retorna todos os botões e o uso das classes é opcional</p>
 					<strong>Via shortcode: </strong>
-					<code>[JMSSBWHATSAPP class=""]</code>
-					//Retorna apenas o botão do WhatsApp //Classe é opcional
+					<div class="jm-ssb-pre">
+						<div class="jm-ssb-code jm-ssb-code-shortcode">
+							<div class="code-align"><span class="gn">[JMSSBWHATSAPP class="my-class"]</span></div>
+						</div>
+					</div>
+					<strong>Via PHP</strong>
+					<div class="jm-ssb-pre">
+						<div class="jm-ssb-code jm-ssb-code-shortcode">
+							<div class="code-align"><span class="k">echo</span> do_shortcode( <span class="s1">'[JMSSBWHATSAPP class="my-class"]'</span> );</div>
+						</div>
+					</div>
+					<p class="description jm-ssb-faq">Retorna apenas o botão do WhatsApp e o uso da classe é opcional</p>
 				</blockquote>
 				<blockquote>
 					<strong>Via metódo PHP: </strong>
-					<code>JM\Share_Buttons\Share_View::jm_ssb()</code>
-					//Retorna todos os botões do tema princípal
-				</blockquote>
-				<blockquote>
-					<strong>Via metódo PHP: </strong>
-					<code>JM\Share_Buttons\Share_View::theme_secondary()</code>
-					//Retorna os botões do tema secundário
-				</blockquote>
-				<blockquote>
-					<strong>Via metódo PHP: </strong>
-					<code>JM\Share_Buttons\Share_View::theme_total_counter()</code>
-					//Retorna os botões do tema contador geral
+						<div class="jm-ssb-pre">
+							<div class="jm-ssb-code">
+								<div class="code-align">
+									$args <span class="nc">=</span> <span class="k">array</span>(
+										<span class="s1">&nbsp;&nbsp;&nbsp;'theme'</span>      <span class="nc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=></span> <span class="mi">&nbsp;2</span>,
+										<span class="s1">&nbsp;&nbsp;&nbsp;'class_ul'</span>   <span class="nc">&nbsp;&nbsp;=></span> <span class="s1">'my-custom-class'</span>,
+										<span class="s1">&nbsp;&nbsp;&nbsp;'class_li'</span>   <span class="nc">&nbsp;&nbsp;=></span> <span class="s1">'my-custom-class'</span>,
+										<span class="s1">&nbsp;&nbsp;&nbsp;'class_link'</span> <span class="nc">=></span> <span class="s1">'my-custom-class'</span>,
+										<span class="s1">&nbsp;&nbsp;&nbsp;'class_icon'</span> <span class="nc">=></span> <span class="s1">'my-custom-class'</span>,
+									);
+									<span class="sp">
+										<span class="nc">if</span> ( <span class="k">class_exists</span>( <span class="s1">'JM\Share_Buttons\Share_View'</span> ) )
+										<span class="alr">
+											<span class="k">echo</span> <span class="mi">JM\Share_Buttons\</span><span class="k">Share_View</span><span class="nc">::</span>jm_ssb( $args );
+										</span>
+									</span>
+								</div>
+							</div>
+						</div>
+					<p class="description jm-ssb-faq">Retorna os botões de compartilhamento de acordo com os parâmetros</p>	
+					<div class="method-args">
+						<dt><strong>$args</strong> &nbsp; (<i>Array</i>)  (<i>opcional</i>)<dt>
+						<dt> Opcões de tema: <i>1, 2 ou 3</i></dt>
+						<dt> Default: <i>empty</i></dt>
+					</div>
 				</blockquote>
 			</div>
 		</div>
@@ -340,7 +384,7 @@ class Setting_View extends Share_View
 	/**
 	 * Generate data all social icons
 	 * 
-	 * @since 1.0
+	 * @since 1.2
 	 * @param Null
 	 * @return Object
 	 */

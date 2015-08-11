@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Views Sharing Report
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 namespace JM\Share_Buttons;
@@ -18,7 +18,7 @@ class Sharing_Report_View
 	/**
 	 * Display page sharing report
 	 * 
-	 * @since 1.1
+	 * @since 1.2
 	 * @param Object $post
 	 * @param String $prev_page
 	 * @param String $next_page
@@ -37,7 +37,7 @@ class Sharing_Report_View
 			<?php
 				if ( ! $posts ) :
 			?>
-			<h3>Não existe mais resultados</h3>
+			<h3>Não existe resultados</h3>
 			<a href="javascript:window.history.go(-1);">Voltar</a>
 			<?php
 					return false;
@@ -102,22 +102,22 @@ class Sharing_Report_View
 							</strong>
 						</td>
 						<td class="jm-ssb-sharing-report-center">
-							<?php echo intval( $post->facebook ); ?>
+							<?php echo Utils_Helper::number_format( $post->facebook ); ?>
 						</td>
 						<td class="jm-ssb-sharing-report-center">
-							<?php echo intval( $post->twitter ); ?>
+							<?php echo Utils_Helper::number_format( $post->twitter ); ?>
 						</td>
 						<td class="jm-ssb-sharing-report-center">
-							<?php echo intval( $post->google ); ?>
+							<?php echo Utils_Helper::number_format( $post->google ); ?>
 						</td>
 						<td class="jm-ssb-sharing-report-center">
-							<?php echo intval( $post->linkedin ); ?>
+							<?php echo Utils_Helper::number_format( $post->linkedin ); ?>
 						</td>
 						<td class="jm-ssb-sharing-report-center">
-							<?php echo intval( $post->pinterest ); ?>
+							<?php echo Utils_Helper::number_format( $post->pinterest ); ?>
 						</td>
 						<td class="jm-ssb-sharing-report-center">
-							<?php echo intval( $post->total ); ?>
+							<?php echo Utils_Helper::number_format( $post->total ); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -125,14 +125,28 @@ class Sharing_Report_View
 			</table>
 			<div class="tablenav bottom">
 				<div class="tablenav-pages">
+
+				<?php if ( $prev_page ) : ?>
 					<a href="<?php echo $prev_page; ?>" rel="prev" title="Página anterior"
-					   class="prev-page <?php echo Utils_Helper::class_disable_pagination( $prev_page ); ?>">
-						&laquo;
+					   class="prev-page">
+					   <span aria-hidden="true">«</span>
 					</a>
+				<?php endif; ?>
+
+				<?php if ( ! $prev_page ) : ?>
+					<span class="tablenav-pages-navspan disabled" aria-hidden="true">«</span>
+				<?php endif; ?>
+
+				<?php if ( $next_page ) : ?>
 					<a href="<?php echo $next_page; ?>" rel="next" title="Próxima página"
-					   class="next-page <?php echo Utils_Helper::class_disable_pagination( $next_page ); ?>">
-						&raquo;
+					   class="next-page">
+						<span aria-hidden="true">»</span>
 					</a>
+				<?php endif; ?>
+
+				<?php if ( ! $next_page ) : ?>								
+					<span class="tablenav-pages-navspan disabled" aria-hidden="true">»</span>
+				<?php endif; ?>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Social Icons Display
- * @version 1.0.3
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -13,12 +13,12 @@ namespace JM\Share_Buttons;
 if ( ! function_exists( 'add_action' ) )
 	exit(0);
 
-class Share_Controller
+class Shares_Controller
 {
 	/**
 	* Initialize the plugin by setting localization, filters, and administration functions.
 	*
-	* @since 1.0.3
+	* @since 1.2
 	*/
 	public function __construct()
 	{

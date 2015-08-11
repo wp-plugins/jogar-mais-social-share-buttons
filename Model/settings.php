@@ -4,7 +4,7 @@
  * @package Social Share Buttons | Settings
  * @author  Victor Freitas
  * @subpackage Settings Model
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 namespace JM\Share_Buttons;
@@ -174,6 +174,14 @@ class Settings
 	 * @var string
 	 */
 	private $disable_css;
+
+	/**
+	 * Disabled scripts value verify option
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
+	private $disable_script;
 	
 	/**
 	 * Icons size value verify option
@@ -265,6 +273,14 @@ class Settings
 	 */
 	const PLUGIN_NAME = 'Social Share Buttons';
 	const PLUGIN_DESC = 'Adiciona os botões de compartilhamento automáticamente em posts e páginas';
+
+	/**
+	 * Name for transient function
+	 * 
+	 * @since 1.0
+	 * @var string
+	 */
+	const JM_TRANSIENT = 'jm-transient-sharing-report';
 
 	public function __construct()
 	{
@@ -396,6 +412,11 @@ class Settings
 			case 'disable_css' :
 				if ( ! isset( $this->disable_css ) )
 					$this->disable_css = $this->option( '_remove_style' );
+				break;
+
+			case 'disable_script' :
+				if ( ! isset( $this->disable_script ) )
+					$this->disable_script = $this->option( '_remove_script' );
 				break;
 
 			case 'icons_size' :

@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.2.0
+ * @version 1.2.2
  */
 
 namespace JM\Share_Buttons;
@@ -16,7 +16,7 @@ if ( ! function_exists( 'add_action' ) )
 //View
 Init::uses( 'sharing-report', 'View' );
 
-class Sharing_Report_Controller
+class Sharing_Reports_Controller
 {
 	/**
 	 * Number for posts per page
@@ -26,14 +26,6 @@ class Sharing_Report_Controller
 	 */
 	const POSTS_PER_PAGE = 20;
 
-	/**
-	 * Name for transient function
-	 * 
-	 * @since 1.0
-	 * @var string
-	 */
-	const JM_TRANSIENT = 'jm-transient-sharing-report';
-
 	public function __construct()
 	{
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
@@ -42,7 +34,7 @@ class Sharing_Report_Controller
 	/**
 	 * Search in database results relative share posts 
 	 * 
-	 * @since 1.2
+	 * @since 1.3
 	 * @global $wpdb
 	 * @param Int $page
 	 * @param String $orderby
@@ -54,12 +46,15 @@ class Sharing_Report_Controller
 		global $wpdb;
 
 		$offset     = ( ( $page - 1 ) * self::POSTS_PER_PAGE );
-		$cache      = get_transient( self::JM_TRANSIENT );
+		$cache      = get_transient( Settings::JM_TRANSIENT );
 		$cache_time = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
 		$table      = $wpdb->prefix . Settings::TABLE_NAME;
 
 		if ( false !== $cache && isset( $cache[$page][$orderby][$order] ) )
 			return $cache[$page][$orderby][$order];
+
+		if ( ! $wpdb->query( "SHOW TABLES LIKE '{$table}'" ) )
+			return;
 
 		$query = $wpdb->prepare(
 			"SELECT * FROM `{$table}`
@@ -70,7 +65,7 @@ class Sharing_Report_Controller
 
 		$cache[$page][$orderby][$order] = $wpdb->get_results( $query );
 
-		set_transient( self::JM_TRANSIENT, $cache, $cache_time * MINUTE_IN_SECONDS );
+		set_transient( Settings::JM_TRANSIENT, $cache, $cache_time * MINUTE_IN_SECONDS );
 
 		return $cache[$page][$orderby][$order];
 	}
@@ -152,7 +147,7 @@ class Sharing_Report_Controller
 	/**
 	 * Next page sharing report
 	 * 
-	 * @since 1.1
+	 * @since 1.2
 	 * @param Int $page
 	 * @param Int $rows
 	 * @return String
@@ -164,7 +159,7 @@ class Sharing_Report_Controller
 		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
 
 		if ( $rows < self::POSTS_PER_PAGE )
-			return '#';
+			return false;
 
 		$page += 1;
 
@@ -177,7 +172,7 @@ class Sharing_Report_Controller
 	/**
 	 * Prev page sharing report
 	 * 
-	 * @since 1.1
+	 * @since 1.2
 	 * @param Int $page
 	 * @return String
 	 */
@@ -188,7 +183,7 @@ class Sharing_Report_Controller
 		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
 
 		if ( 1 === $page )
-			return '#';
+			return false;
 
 		$page -= 1;
 
