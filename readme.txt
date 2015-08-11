@@ -63,7 +63,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 * New: Validations in the use of PHP method to call buttons
 * New: Option remove scripts the plugin in front
 * New: Option to time set cache reports of the page sharing of posts
-* New: Bug fixes
+* Fix: Bug fixes
 
 = 1.2.0 =
 
