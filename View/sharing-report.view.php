@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Views Sharing Report
- * @version 1.2.1
+ * @version 1.3.0
  */
 
 namespace JM\Share_Buttons;
@@ -18,138 +18,46 @@ class Sharing_Report_View
 	/**
 	 * Display page sharing report
 	 * 
-	 * @since 1.2
-	 * @param Object $post
-	 * @param String $prev_page
-	 * @param String $next_page
+	 * @since 1.3
+	 * @param Object $list_table
 	 * @return void
 	 */
-	public static function render_sharing_report( $posts, $prev_page, $next_page )
+	public static function render_sharing_report( $list_table )
 	{
-		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
-
+		$time_cache = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
 		?>
 		<div class="wrap">
 			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
-			<p class="description">Relatório de Compartilhamento dos Posts</p>
-			<p></p>
-			<p class="description">Esta página tem um cache de <?php echo Utils_Helper::option( '_report_cache_time', 'intval', 10 ); ?> minuto(s)</p>
-			<?php
-				if ( ! $posts ) :
-			?>
-			<h3>Não existe resultados</h3>
-			<a href="javascript:window.history.go(-1);">Voltar</a>
-			<?php
-					return false;
-				endif;
-			?>
-			<table class="widefat fixed jm-ssb-sharing-report-table">
-				<thead>
-					<tr>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'post_title' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'post_title', $page_url ); ?>">
-								<span>Título</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'facebook' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'facebook', $page_url ); ?>">
-								<span>Facebook</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'twitter' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'twitter', $page_url ); ?>">
-								<span>Twitter</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'google' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'google', $page_url ); ?>">
-								<span>Google+</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'linkedin' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'linkedin', $page_url ); ?>">
-								<span>Linkedin</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'pinterest' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'pinterest', $page_url ); ?>">
-								<span>Pinterest</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-						<th scope="col" class="<?php echo Utils_Helper::sortable_order( 'total' ); ?>">
-							<a href="<?php echo Utils_Helper::get_url_orderby_page( 'total', $page_url ); ?>">
-								<span>Total</span>
-								<span class="sorting-indicator"></span>
-							</a>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php foreach( $posts as $key => $post ) : ?>
-					<tr>
-						<td>
-							<strong>
-								<a href="<?php echo esc_url( get_permalink( $post->post_id ) ); ?>" target="_blank"
-								   title="<?php echo esc_attr( $post->post_title ); ?>">
-								   <?php echo esc_html( $post->post_title ); ?>
-								</a>
-							</strong>
-						</td>
-						<td class="jm-ssb-sharing-report-center">
-							<?php echo Utils_Helper::number_format( $post->facebook ); ?>
-						</td>
-						<td class="jm-ssb-sharing-report-center">
-							<?php echo Utils_Helper::number_format( $post->twitter ); ?>
-						</td>
-						<td class="jm-ssb-sharing-report-center">
-							<?php echo Utils_Helper::number_format( $post->google ); ?>
-						</td>
-						<td class="jm-ssb-sharing-report-center">
-							<?php echo Utils_Helper::number_format( $post->linkedin ); ?>
-						</td>
-						<td class="jm-ssb-sharing-report-center">
-							<?php echo Utils_Helper::number_format( $post->pinterest ); ?>
-						</td>
-						<td class="jm-ssb-sharing-report-center">
-							<?php echo Utils_Helper::number_format( $post->total ); ?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-				</tbody>
-			</table>
-			<div class="tablenav bottom">
-				<div class="tablenav-pages">
-
-				<?php if ( $prev_page ) : ?>
-					<a href="<?php echo $prev_page; ?>" rel="prev" title="Página anterior"
-					   class="prev-page">
-					   <span aria-hidden="true">«</span>
-					</a>
-				<?php endif; ?>
-
-				<?php if ( ! $prev_page ) : ?>
-					<span class="tablenav-pages-navspan disabled" aria-hidden="true">«</span>
-				<?php endif; ?>
-
-				<?php if ( $next_page ) : ?>
-					<a href="<?php echo $next_page; ?>" rel="next" title="Próxima página"
-					   class="next-page">
-						<span aria-hidden="true">»</span>
-					</a>
-				<?php endif; ?>
-
-				<?php if ( ! $next_page ) : ?>								
-					<span class="tablenav-pages-navspan disabled" aria-hidden="true">»</span>
-				<?php endif; ?>
-				</div>
+			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
+			<span class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-title">
+				Relatório de Compartilhamento
+				<span class="description information-cache">
+					Este relatório tem um cache de <?php echo $time_cache; ?> minuto(s)
+				</span>
+			</span>
+			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">
+				<?php
+					$list_table->prepare_items();
+					$list_table->display();
+				?>
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Insert link in column title in wp list table
+	 * 
+	 * @since 1.0
+	 * @param Integer $id
+	 * @param String $post_title
+	 * @return String
+	 */
+	public static function add_permalink_title( $id, $post_title )
+	{
+		$permalink = get_permalink( $id );
+		$html      = "<a class=\"row-title\" href=\"{$permalink}\">{$post_title}</a>";
+
+		return $html;
 	}
 }

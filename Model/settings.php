@@ -4,7 +4,7 @@
  * @package Social Share Buttons | Settings
  * @author  Victor Freitas
  * @subpackage Settings Model
- * @version 1.2.1
+ * @version 1.3.0
  */
 
 namespace JM\Share_Buttons;
@@ -281,6 +281,7 @@ class Settings
 	 * @var string
 	 */
 	const JM_TRANSIENT = 'jm-transient-sharing-report';
+	const JM_TRANSIENT_SELECT_COUNT = 'jm-transient-sharing-report-select-count';
 
 	public function __construct()
 	{

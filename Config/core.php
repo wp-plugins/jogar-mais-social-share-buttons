@@ -245,7 +245,8 @@ class Core
 	/**
 	 * Register Uninstall Hook
 	 * 
-	 * @since 1.2
+	 * @since 1.3
+	 * @global $wpdb
 	 * @param Null
 	 * @return Void
 	 */
@@ -256,6 +257,7 @@ class Core
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE );
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
 		delete_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
+		delete_transient( Settings::JM_TRANSIENT_SELECT_COUNT );
 		delete_transient( Settings::JM_TRANSIENT );
 		
 		//For multisite
@@ -267,6 +269,9 @@ class Core
 
 		$table = $wpdb->prefix . Settings::TABLE_NAME;
 		$sql   = "DROP TABLE `{$table}`";
+
+		if ( ! $wpdb->query( "SHOW TABLES LIKE '{$table}'" ) )
+			return;
 
 		$wpdb->query( $sql );
 	}

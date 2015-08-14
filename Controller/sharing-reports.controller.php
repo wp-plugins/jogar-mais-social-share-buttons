@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.2.2
+ * @version 1.3.0
  */
 
 namespace JM\Share_Buttons;
@@ -16,42 +16,67 @@ if ( ! function_exists( 'add_action' ) )
 //View
 Init::uses( 'sharing-report', 'View' );
 
-class Sharing_Reports_Controller
+if ( ! class_exists( 'WP_List_Table' ) )
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+
+if ( ! class_exists( 'WP_Screen' ) )
+	require_once( ABSPATH . 'wp-admin/includes/screen.php' );
+
+if ( ! class_exists( 'Walker_Category_Checklist' ) )
+	require_once(ABSPATH . 'wp-admin/includes/template.php' );
+
+class Sharing_Reports_Controller extends \WP_List_Table
 {
 	/**
 	 * Number for posts per page
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @var Integer
 	 */
-	const POSTS_PER_PAGE = 20;
+	const POSTS_PER_PAGE = 15;
+
+	/**
+	 * Number for cache time
+	 * 
+	 * @since 1.2
+	 * @var Integer
+	 */
+	private $cache_time;
 
 	public function __construct()
 	{
+		$this->cache_time = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
+
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
+		parent::__construct(
+			array(
+				'singular' => 'jm-ssb-sharing-report',
+				'plural'   => 'jm-ssb-sharing-reports',
+				'screen'   => 'interval-list',
+			)
+		);
 	}
 
 	/**
 	 * Search in database results relative share posts 
 	 * 
-	 * @since 1.3
+	 * @since 1.4
 	 * @global $wpdb
 	 * @param Int $page
 	 * @param String $orderby
 	 * @param String $order
 	 * @return Object
 	 */
-	private function _get_sharing_report( $page, $orderby, $order )
+	private function _get_sharing_report( $posts_per_page, $current_page, $orderby, $order )
 	{
 		global $wpdb;
 
-		$offset     = ( ( $page - 1 ) * self::POSTS_PER_PAGE );
+		$offset     = ( ( $current_page - 1 ) * self::POSTS_PER_PAGE );
 		$cache      = get_transient( Settings::JM_TRANSIENT );
-		$cache_time = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
 		$table      = $wpdb->prefix . Settings::TABLE_NAME;
 
-		if ( false !== $cache && isset( $cache[$page][$orderby][$order] ) )
-			return $cache[$page][$orderby][$order];
+		if ( false !== $cache && isset( $cache[$current_page][$orderby][$order] ) )
+			return $cache[$current_page][$orderby][$order];
 
 		if ( ! $wpdb->query( "SHOW TABLES LIKE '{$table}'" ) )
 			return;
@@ -59,15 +84,158 @@ class Sharing_Reports_Controller
 		$query = $wpdb->prepare(
 			"SELECT * FROM `{$table}`
 			 ORDER BY {$orderby} {$order}
-			 LIMIT {$offset}, %d",
-			 self::POSTS_PER_PAGE
+			 LIMIT %d OFFSET {$offset}",
+			 $posts_per_page
 		);
 
-		$cache[$page][$orderby][$order] = $wpdb->get_results( $query );
+		$cache[$current_page][$orderby][$order] = $wpdb->get_results( $query );
 
-		set_transient( Settings::JM_TRANSIENT, $cache, $cache_time * MINUTE_IN_SECONDS );
+		set_transient( Settings::JM_TRANSIENT, $cache, $this->cache_time * MINUTE_IN_SECONDS );
 
-		return $cache[$page][$orderby][$order];
+		return $cache[$current_page][$orderby][$order];
+	}
+
+	/**
+	 * Get total results in wp list table for records
+	 * 
+	 * @since 1.0
+	 * @global $wpdb
+	 * @param Null
+	 * @return Integer
+	 */
+	private function _total_results()
+	{
+		global $wpdb;
+
+		$cache = get_transient( Settings::JM_TRANSIENT_SELECT_COUNT );
+		$table = $wpdb->prefix . Settings::TABLE_NAME;
+
+		if ( false !== $cache )
+			return $cache;
+
+		if ( ! $wpdb->query( "SHOW TABLES LIKE '{$table}'" ) )
+			return;
+
+		$query        = "SELECT COUNT(*) FROM {$table}";
+		$row_count    = $wpdb->get_var( $query );
+		$total_result = intval( $row_count );
+
+		set_transient( Settings::JM_TRANSIENT_SELECT_COUNT, $total_result,  $this->cache_time * MINUTE_IN_SECONDS );
+
+		return $total_result;
+	}
+
+	/**
+	 * Insert results in column wp list table
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Mixed String/Integer
+	 */
+	public function column_default( $items, $column )
+	{
+		$column = strtolower( $column );
+
+		switch ( $column ) :
+
+			case 'title' :
+				return Sharing_Report_View::add_permalink_title( $items->post_id, $items->post_title );
+				break;
+
+			case 'facebook'  :
+			case 'twitter'   :
+			case 'google'    :
+			case 'linkedin'  :
+			case 'pinterest' :
+			case 'total'     :
+				return Utils_Helper::number_format( $items->$column );
+				break;
+
+		endswitch;
+	}
+
+	/**
+	 * Set column wp list table
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Array
+	 */
+	public function get_columns()
+	{
+		$columns = array(
+			'Title'     => __( 'Título do Post' ),
+			'Facebook'  => __( 'Facebook' ),
+			'Google'    => __( 'Google+' ),
+			'Twitter'   => __( 'Twitter' ),
+			'Linkedin'  => __( 'Linkedin' ),
+			'Pinterest' => __( 'Pinterest' ),
+			'Total'     => __( 'Total' ),
+		);
+
+		return $columns;
+	}
+
+	/**
+	 * Set orderby in column wp list table
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Array
+	 */
+	public function get_sortable_columns()
+	{
+		$sortable_columns = array(
+			'Title'     => array( 'post_title', false ),
+			'Facebook'  => array( 'facebook', false ),
+			'Google'    => array( 'google', false ),
+			'Twitter'   => array( 'twitter', false ),
+			'Linkedin'  => array( 'linkedin', false ),
+			'Pinterest' => array( 'pinterest', false ),
+			'Total'     => array( 'total', false ),
+		);
+
+		return $sortable_columns;
+	}
+
+	/**
+	 * Prepare item for record add in wp list table
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Array
+	 */
+	public function prepare_items()
+	{
+		$orderby               = Utils_Helper::request( 'orderby', 'total', 'sanitize_sql_orderby' );
+		$order_type            = Utils_Helper::request( 'order', 'desc', 'sanitize_sql_orderby' );
+		$reference             = $this->_verify_sql_orderby( $orderby, 'total' );
+		$order                 = $this->_verify_sql_order( $order_type, 'desc' );
+		$posts_per_page        = $this->get_items_per_page( 'jm_posts_per_page', self::POSTS_PER_PAGE );
+		$current_page          = $this->get_pagenum();
+		$total_results         = self::_total_results();
+		$this->_column_headers = $this->get_column_info();
+
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_results,
+				'per_page'    => $posts_per_page,
+			)
+		);
+		
+		$this->items = self::_get_sharing_report( $posts_per_page, $current_page, $reference, $order );
+	}
+
+	/**
+	 * Return message in wp list table case empty records
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return String
+	 */
+	public function no_items()
+	{
+		return __( 'Não existe relatório disponível no momento!' );
 	}
 
 	/**
@@ -81,8 +249,8 @@ class Sharing_Reports_Controller
 	{
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		'Relatório de compartilhamento | Social Share Buttons',
-	  		'Relatório de compartilhamento',
+	  		__( 'Relatório de compartilhamento | Social Share Buttons' ),
+	  		__( 'Relatório de compartilhamento' ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-sharing-report',
 	  		array( &$this, 'report' )
@@ -92,22 +260,13 @@ class Sharing_Reports_Controller
 	/**
 	 * Set report page view
 	 * 
-	 * @since 1.2
+	 * @since 1.3
 	 * @param null
 	 * @return Void
 	 */
 	public function report()
 	{
-		$page       = Utils_Helper::request( 'report_page', 1, 'intval' );
-		$orderby    = Utils_Helper::request( 'orderby', 'total', 'sanitize_sql_orderby' );
-		$order_type = Utils_Helper::request( 'order', 'desc', 'sanitize_sql_orderby' );
-		$reference  = $this->_verify_sql_orderby( $orderby, 'total' );
-		$order      = $this->_verify_sql_order( $order_type, 'desc' );
-		$posts      = $this->_get_sharing_report( $page, $reference, $order );
-		$next_page  = $this->_get_next_link( $page, count( $posts ) );
-		$prev_page  = $this->_get_prev_link( $page );
-
-		Sharing_Report_View::render_sharing_report( $posts, $prev_page, $next_page );
+		Sharing_Report_View::render_sharing_report( $this );
 	}
 
 	/**
@@ -145,58 +304,9 @@ class Sharing_Reports_Controller
 	}
 
 	/**
-	 * Next page sharing report
-	 * 
-	 * @since 1.2
-	 * @param Int $page
-	 * @param Int $rows
-	 * @return String
-	 */
-	private function _get_next_link( $page, $rows )
-	{
-		$orderby  = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
-		$order    = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
-		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
-
-		if ( $rows < self::POSTS_PER_PAGE )
-			return false;
-
-		$page += 1;
-
-		if ( $order )
-			return get_admin_url( null, "{$page_url}&orderby={$orderby}&order={$order}&report_page={$page}" );
-
-		return get_admin_url( null, "{$page_url}&report_page={$page}" );
-	}
-
-	/**
-	 * Prev page sharing report
-	 * 
-	 * @since 1.2
-	 * @param Int $page
-	 * @return String
-	 */
-	private function _get_prev_link( $page )
-	{
-		$orderby  = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
-		$order    = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
-		$page_url = 'admin.php?page=' . Init::PLUGIN_SLUG . '-sharing-report';
-
-		if ( 1 === $page )
-			return false;
-
-		$page -= 1;
-
-		if ( $order )
-			return get_admin_url( null, "{$page_url}&orderby={$orderby}&order={$order}&report_page={$page}" );
-
-		return get_admin_url( null, "{$page_url}&report_page={$page}" );
-	}
-
-	/**
 	 * Create table sharing reports.
 	 * 
-	 * @since 1.0
+	 * @since 1.1
 	 * @global $wpdb
 	 * @param Null
 	 * @global $wpdb

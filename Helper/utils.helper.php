@@ -4,7 +4,7 @@
  * @package Social Share Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
- * @version 1.2.1
+ * @version 1.3.0
  */
 
 namespace JM\Share_Buttons;
@@ -309,58 +309,6 @@ class Utils_Helper
         	$object[$key] = (object) $value;
 
 		return (object) $object;
-	}
-
-	/**
-	 * Retrieves the url to the admin area for orderby page.
-	 * 
-	 * @since 1.0
-	 * @param String $reference Relative orderby
-	 * @param String $page_url Relative url orderby params
-	 * @return String Admin url link
-	 */
-	public static function get_url_orderby_page( $reference = '', $page_url )
-	{
-		$orderby = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
-		$order   = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
-		$paged   = Utils_Helper::request( 'report_page', 0, 'intval' );
-		$order   = ( $order === 'asc' ) ? 'desc' : 'asc';
-
-		if ( ! $orderby && ! $paged )
-			return get_admin_url( null, "{$page_url}&orderby={$reference}&order=asc" );
-
-		if ( ( $orderby && ! $paged ) && ( $orderby !== $reference ) )
-			return get_admin_url( null, "{$page_url}&orderby={$reference}&order=asc" );
-
-		if ( ( $orderby && ! $paged ) && ( $orderby === $reference ) )
-			return get_admin_url( null, "{$page_url}&orderby={$reference}&order={$order}" );
-
-		if ( ( $orderby && $paged ) && ( $orderby === $reference ) )
-			return get_admin_url( null, "{$page_url}&report_page={$paged}&orderby={$reference}&order={$order}" );
-
-		if ( ( $orderby && $paged ) && ( $orderby !== $reference ) )
-			return get_admin_url( null, "{$page_url}&report_page={$paged}&orderby={$reference}&order=asc" );
-
-		if ( ! $orderby && $paged )
-			return get_admin_url( null, "{$page_url}&report_page={$paged}&orderby={$reference}&order=asc" );
-	}
-
-	/**
-	 * Retrieves the class name sortable
-	 * 
-	 * @since 1.0
-	 * @param String $reference Relative orderby
-	 * @return String class name sortable pagination
-	 */
-	public static function sortable_order( $reference = '' )
-	{
-		$orderby = Utils_Helper::request( 'orderby', false, 'sanitize_sql_orderby' );
-		$order   = Utils_Helper::request( 'order', false, 'sanitize_sql_orderby' );
-
-		if ( $order && $reference === $orderby )
-			return "sorted {$order}";
-
-		return 'sortable desc';
 	}
 
 	/**

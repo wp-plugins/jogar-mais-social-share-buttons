@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: share, social, buttons, share buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.3.0
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,11 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 * Set for your sharing icons
 
 == Changelog ==
+
+= 1.3.0 =
+
+* New: Adding WP List Table in the sharing report page
+* New: Small internal improvements
 
 = 1.2.1 =
 
@@ -112,11 +117,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 == Upgrade Notice ==
 
-= 1.2.1 =
+= 1.3.0 =
 
-* New: Tested WordPress version 4.3
-* New: Validations in the use of PHP method to call buttons
-* New: Option remove scripts the plugin in front
-* New: Option to time set cache reports of the page sharing of posts
-* New: Bug fixes
-
+* New: Adding WP List Table in the sharing report
+* New: Small internal improvements
