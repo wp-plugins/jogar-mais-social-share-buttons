@@ -59,7 +59,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 = 1.4.0 =
 
-* New: Preparing plugin for internationalization
+* New: Preparing for internationalization
 * New: Adding English translation
 * New: Adding Spanish translation
 * New: Change button style theme 3
@@ -126,7 +126,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 = 1.4.0 =
 
-* New: Preparing plugin for internationalization
+* New: Preparing for internationalization
 * New: Adding English translation
 * New: Adding Spanish translation
 * New: Change button style theme 3
