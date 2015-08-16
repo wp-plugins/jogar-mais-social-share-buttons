@@ -1,11 +1,11 @@
 <?php
 /**
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  */
 /*
-Plugin Name: Social Share Buttons
+Plugin Name: Social Sharing Buttons
 Plugin URI: http://jogarmais.com.br
-Version: 1.3.0
+Version: 1.4.0
 Author: Victor Freitas
 Author URI: http://jogarmais.com.br
 License: GPL2

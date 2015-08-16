@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Social Share Buttons | Settings
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Settings Model
  * @version 1.3.0
@@ -264,15 +264,6 @@ class Settings
 	 * @var string
 	 */
 	const DS = DIRECTORY_SEPARATOR;
-
-	/**
-	 * Description and name plugin
-	 *
-	 * @since 1.0
-	 * @var string
-	 */
-	const PLUGIN_NAME = 'Social Share Buttons';
-	const PLUGIN_DESC = 'Adiciona os botões de compartilhamento automáticamente em posts e páginas';
 
 	/**
 	 * Name for transient function

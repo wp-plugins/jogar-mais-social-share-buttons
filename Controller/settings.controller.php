@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Settings Controller
- * @version 1.2.0
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -121,8 +121,8 @@ class Settings_Controller
 	public function menu_page()
 	{
 		add_menu_page(
-			'Social Share Buttons',
-			'Share Buttons',
+			__( 'Social Sharing Buttons', Init::PLUGIN_SLUG ),
+			__( 'Sharing Buttons', Init::PLUGIN_SLUG ),
 			'manage_options',
 			Init::PLUGIN_SLUG,
 			array( 'JM\Share_Buttons\Setting_View', 'render_settings_page' ),
@@ -131,8 +131,8 @@ class Settings_Controller
 
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		'Extra Settings | Social Share Buttons',
-	  		'Configurações extra',
+	  		__( 'Configurações extra | Social Sharing Buttons', Init::PLUGIN_SLUG ),
+	  		__( 'Configurações extra', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-extra-settings',
 	  		array( 'JM\Share_Buttons\Setting_View', 'render_extra_settings_page' )
@@ -140,8 +140,8 @@ class Settings_Controller
 
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		'Opções de uso | Social Share Buttons',
-	  		'Opções de uso',
+	  		__( 'Opções de uso | Social Sharing Buttons', Init::PLUGIN_SLUG ),
+	  		__( 'Opções de uso', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-faq',
 	  		array( 'JM\Share_Buttons\Setting_View', 'render_page_faq' )

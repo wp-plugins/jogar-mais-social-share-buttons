@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Social Icons Display
- * @version 1.1.0
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -108,11 +108,11 @@ class Share_View extends Core
 		$permalink        = Utils_Helper::get_permalink();
 		$buttons_content  = "<div class=\"{$prefix}-container-theme-two\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
 		$buttons_content .= " data-attr-reference=\"{$post_id}\" data-element-url=\"{$permalink}\">";
-		$buttons_content .= self::_change_button( $services->facebook, $prefix );
-		$buttons_content .= self::_change_button( $services->google_plus, $prefix );
-		$buttons_content .= self::_change_button( $services->twitter, $prefix );
-		$buttons_content .= self::_change_button( $services->whatsapp, $prefix );
-		$buttons_content .= self::_change_button( $services->linkedin, $prefix );
+		$buttons_content .= self::_get_button( $services->facebook, $prefix );
+		$buttons_content .= self::_get_button( $services->google_plus, $prefix );
+		$buttons_content .= self::_get_button( $services->twitter, $prefix );
+		$buttons_content .= self::_get_button( $services->whatsapp, $prefix );
+		$buttons_content .= self::_get_button( $services->linkedin, $prefix );
 		$buttons_content .= '</div>';
 
 		return $buttons_content;
@@ -127,13 +127,13 @@ class Share_View extends Core
 	 * @return HTML
 	 *
 	 */
-	private static function _change_button( $reference = array(), $prefix )
+	private static function _get_button( $reference = array(), $prefix )
 	{
 		$element  = strtolower( $reference->name );
 		$content  = "<div class=\"jm-ssb-theme-two {$element}-share\">";		
 		$content .= "<a data-attr-url=\"{$reference->link}\" data-action=\"open-popup\" title=\"{$reference->title}\">";
 		$content .= "<i class=\"{$prefix}-icons-align {$prefix}-{$reference->img}\"></i>";
-		$content .= ( $element == 'twitter' ) ? 'tweetar' : 'Compartilhar';
+		$content .= ( $element == 'twitter' ) ? __( 'tweetar', Init::PLUGIN_SLUG ) : __( 'Compartilhar', Init::PLUGIN_SLUG );
 		$content .= '</a>';
 		$content .= "<span class=\"count\" data-counter-{$element}>...</span>";
 		$content .= '</div>';
@@ -161,14 +161,13 @@ class Share_View extends Core
 		$buttons_content .= "<div class=\"{$prefix}-total-share-counter\">";
 		$buttons_content .= '<aside data-counter-total-share>...</aside>';
 		$buttons_content .= '<aside>SHARES</aside>';
-		$buttons_content .= '<aside class="slash">|</aside>';
 		$buttons_content .= '</div>';
-		$buttons_content .= self::_change_button_theme_total_counter( $services->facebook, $prefix );
-		$buttons_content .= self::_change_button_theme_total_counter( $services->twitter, $prefix );
-		$buttons_content .= self::_change_button_theme_total_counter( $services->google_plus, $prefix );
-		$buttons_content .= self::_change_button_theme_total_counter( $services->whatsapp, $prefix );
-		$buttons_content .= self::_change_button_theme_total_counter( $services->linkedin, $prefix );
-		$buttons_content .= self::_change_button_theme_total_counter( $services->pinterest, $prefix );
+		$buttons_content .= self::_get_button_theme_total_counter( $services->facebook, $prefix );
+		$buttons_content .= self::_get_button_theme_total_counter( $services->twitter, $prefix );
+		$buttons_content .= self::_get_button_theme_total_counter( $services->google_plus, $prefix );
+		$buttons_content .= self::_get_button_theme_total_counter( $services->whatsapp, $prefix );
+		$buttons_content .= self::_get_button_theme_total_counter( $services->linkedin, $prefix );
+		$buttons_content .= self::_get_button_theme_total_counter( $services->pinterest, $prefix );
 		$buttons_content .= '</div>';
 
 		return $buttons_content;
@@ -183,14 +182,14 @@ class Share_View extends Core
 	 * @return HTML
 	 *
 	 */
-	private static function _change_button_theme_total_counter( $reference = array(), $prefix )
+	private static function _get_button_theme_total_counter( $reference = array(), $prefix )
 	{
 		$element  = strtolower( $reference->name );
 		$content  = "<div class=\"{$prefix}-total-share\">";
 		$content .= "<div class=\"{$prefix}-total-share-btn {$element}\">";
 		$content .= "<a data-attr-url=\"{$reference->link}\" data-action=\"open-popup\" title=\"{$reference->title}\">";
 		$content .= "<i class=\"{$prefix}-{$reference->img}\"></i>";
-		$content .= ( $element == 'facebook' ) ? "<span>{$element}</span>" : '';
+		$content .= ( $element == 'facebook' ) ? '<span>' . __( 'Compartilhar', Init::PLUGIN_SLUG ) . '</span>' : '';
 		$content .= '</a>';
 		$content .= '</div>';
 		$content .= '</div>';

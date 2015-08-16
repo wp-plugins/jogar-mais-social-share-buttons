@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.3.0
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -164,13 +164,13 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	public function get_columns()
 	{
 		$columns = array(
-			'Title'     => __( 'Título do Post' ),
-			'Facebook'  => __( 'Facebook' ),
-			'Google'    => __( 'Google+' ),
-			'Twitter'   => __( 'Twitter' ),
-			'Linkedin'  => __( 'Linkedin' ),
-			'Pinterest' => __( 'Pinterest' ),
-			'Total'     => __( 'Total' ),
+			'Title'     => __( 'Título', Init::PLUGIN_SLUG ),
+			'Facebook'  => __( 'Facebook', Init::PLUGIN_SLUG ),
+			'Google'    => __( 'Google+', Init::PLUGIN_SLUG ),
+			'Twitter'   => __( 'Twitter', Init::PLUGIN_SLUG ),
+			'Linkedin'  => __( 'Linkedin', Init::PLUGIN_SLUG ),
+			'Pinterest' => __( 'Pinterest', Init::PLUGIN_SLUG ),
+			'Total'     => __( 'Total', Init::PLUGIN_SLUG ),
 		);
 
 		return $columns;
@@ -235,7 +235,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	 */
 	public function no_items()
 	{
-		return __( 'Não existe relatório disponível no momento!' );
+		_e( 'Não existe relatório disponível no momento!', Init::PLUGIN_SLUG );
 	}
 
 	/**
@@ -249,8 +249,8 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	{
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		__( 'Relatório de compartilhamento | Social Share Buttons' ),
-	  		__( 'Relatório de compartilhamento' ),
+	  		__( 'Relatório de compartilhamento | Social Sharing Buttons', Init::PLUGIN_SLUG ),
+	  		__( 'Relatório de compartilhamento', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-sharing-report',
 	  		array( &$this, 'report' )

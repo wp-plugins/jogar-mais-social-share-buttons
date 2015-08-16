@@ -1,12 +1,12 @@
-=== Social Share Buttons by Victor Freitas ===
+=== Social Sharing Buttons by Victor Freitas ===
 
 Author URL: http://jogarmais.com.br
 Contributors: victorfreitas
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E
-Tags: share, social, buttons, share buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
+Tags: share, social, buttons, share buttons, Sharing Buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.3.0
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,13 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 * Set for your sharing icons
 
 == Changelog ==
+
+= 1.4.0 =
+
+* New: Preparing plugin for internationalization
+* New: Adding English translation
+* New: Adding Spanish translation
+* New: Change button style theme 3
 
 = 1.3.0 =
 
@@ -117,7 +124,9 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 == Upgrade Notice ==
 
-= 1.3.0 =
+= 1.4.0 =
 
-* New: Adding WP List Table in the sharing report
-* New: Small internal improvements
+* New: Preparing plugin for internationalization
+* New: Adding English translation
+* New: Adding Spanish translation
+* New: Change button style theme 3

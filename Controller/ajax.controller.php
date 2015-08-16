@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Ajax Controller
  * @version 1.2.0

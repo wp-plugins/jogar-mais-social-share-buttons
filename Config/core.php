@@ -1,9 +1,10 @@
 <?php
 /**
  *
- * @package Social Share Buttons | Functions
+ * @package Social Sharing Buttons
+ * @subpackage Functions
  * @author  Victor Freitas
- * @version 1.2.1
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -41,6 +42,7 @@ class Core
 		register_deactivation_hook( Init::FILE, array( __CLASS__, 'deactivate' ) );
 		register_uninstall_hook( Init::FILE, array( __CLASS__, 'uninstall' ) );
 		add_action( 'plugins_loaded', array( __CLASS__, 'sharing_report_update_db_check' ) );
+		add_action( 'plugins_loaded', array( __CLASS__, 'load_text_domain' ) );
 
 		$settings           = new Settings_Controller();
 		$share              = new Shares_Controller();
@@ -70,7 +72,7 @@ class Core
 			'facebook' => array(
 				'name'  => 'Facebook',
 				'link'  => "https://www.facebook.com/sharer/sharer.php?u={$url}{$tracking}",
-				'title' => 'Compartilhar no Facebook',
+				'title' => __( 'Compartilhar no Facebook', Init::PLUGIN_SLUG ),
 				'icon'  => 'facebook.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-facebook',
 				'popup' => $data_action,
@@ -78,8 +80,8 @@ class Core
 			),
 			'twitter' => array(
 				'name'  => 'Twitter',
-				'link'  => "https://twitter.com/share?url={$url}&text=Acabei de ver {$title} - Clique pra ver também {$caracter}&via={$twitter_via}",
-				'title' => 'Compartilhar no Twitter',
+				'link'  => "https://twitter.com/share?url={$url}&text=" . __( 'Acabei de ver', Init::PLUGIN_SLUG ) . " {$title} - " . __( 'Clique pra ver também', Init::PLUGIN_SLUG ) . " {$caracter}&via={$twitter_via}",
+				'title' => __( 'Compartilhar no Twitter', Init::PLUGIN_SLUG ),
 				'icon'  => 'twitter.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-twitter',
 				'popup' => $data_action,
@@ -88,7 +90,7 @@ class Core
 			'google_plus' => array(
 				'name'  => 'Google',
 				'link'  => "https://plus.google.com/share?url={$url}{$tracking}",
-				'title' => 'Compartilhar no Google+',
+				'title' => __( 'Compartilhar no Google+', Init::PLUGIN_SLUG ),
 				'icon'  => 'google_plus.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-google-plus',
 				'popup' => $data_action,
@@ -97,7 +99,7 @@ class Core
 			'whatsapp' => array(
 				'name'  => 'Whatsapp',
 				'link'  => "whatsapp://send?text={$title}{$caracter}{$url}{$tracking}",
-				'title' => 'Compartilhar no WhatsApp',
+				'title' => __( 'Compartilhar no WhatsApp', Init::PLUGIN_SLUG ),
 				'icon'  => 'whatsapp.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-whatsapp',
 				'popup' => '',
@@ -106,7 +108,7 @@ class Core
 			'sms' => array(
 				'name'  => 'Sms',
 				'link'  => "sms:?body={$sms_title}{$caracter}{$url}",
-				'title' => 'Enviar via SMS',
+				'title' => __( 'Enviar via SMS', Init::PLUGIN_SLUG ),
 				'icon'  => 'sms.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-sms',
 				'popup' => '',
@@ -115,7 +117,7 @@ class Core
 			'pinterest' => array(
 				'name'  => 'Pinterest',
 				'link'  => "https://pinterest.com/pin/create/button/?url={$url}{$tracking}&media={$thumbnail}&description={$title}",
-				'title' => 'Compartilhar no Pinterest',
+				'title' => __( 'Compartilhar no Pinterest', Init::PLUGIN_SLUG ),
 				'icon'  => 'pinterest.png',
 				'class' => Settings::PLUGIN_PREFIX . '-pinterest',
 				'popup' => $data_action,
@@ -124,7 +126,7 @@ class Core
 			'linkedin' => array(
 				'name'  => 'Linkedin',
 				'link'  => "https://www.linkedin.com/shareArticle?mini=true&url={$url}{$tracking}&title={$title}",
-				'title' => 'Compartilhar no Linkedin',
+				'title' => __( 'Compartilhar no Linkedin', Init::PLUGIN_SLUG ),
 				'icon'  => 'linkedin.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-linkedin',
 				'popup' => $data_action,
@@ -133,7 +135,7 @@ class Core
 			'tumblr' => array(
 				'name'  => 'Tumblr',
 				'link'  => 'http://www.tumblr.com/share',
-				'title' => 'Compartilhar no Tumblr',
+				'title' => __( 'Compartilhar no Tumblr', Init::PLUGIN_SLUG ),
 				'icon'  => 'tumblr.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-tumblr',
 				'popup' => $data_action,
@@ -142,7 +144,7 @@ class Core
 			'gmail' => array(
 				'name'  => 'Gmail',
 				'link'  => "https://mail.google.com/mail/u/0/?ui=2&view=cm&fs=1&tf=1&su={$title}&body={$content}\n{$url}",
-				'title' => 'Enviar via Gmail',
+				'title' => __( 'Enviar via Gmail', Init::PLUGIN_SLUG ),
 				'icon'  => 'gmail.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-gmail',
 				'popup' => $data_action,
@@ -151,7 +153,7 @@ class Core
 			'email' => array(
 				'name'  => 'Email',
 				'link'  => "mailto:?subject={$title}&body={$url}",
-				'title' => 'Enviar por email',
+				'title' => __( 'Enviar por email', Init::PLUGIN_SLUG ),
 				'icon'  => 'email.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-email',
 				'popup' => $data_action,
@@ -160,7 +162,7 @@ class Core
 			'printfriendly' => array(
 				'name'  => 'PrintFriendly',
 				'link'  => "http://www.printfriendly.com/print?url={$url}&partner=whatsapp",
-				'title' => 'Imprimir via Print Friendly',
+				'title' => __( 'Imprimir via Print Friendly', Init::PLUGIN_SLUG ),
 				'icon'  => 'printfriendly.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-print-friendly',
 				'popup' => $data_action,
@@ -268,10 +270,7 @@ class Core
 		endif;
 
 		$table = $wpdb->prefix . Settings::TABLE_NAME;
-		$sql   = "DROP TABLE `{$table}`";
-
-		if ( ! $wpdb->query( "SHOW TABLES LIKE '{$table}'" ) )
-			return;
+		$sql   = "DROP TABLE IF EXISTS `{$table}`";
 
 		$wpdb->query( $sql );
 	}
@@ -289,5 +288,19 @@ class Core
 
 	    if ( $option !== Settings::SHARING_REPORT_DB_VERSION )
 	        self::activate();
+	}
+
+	/**
+	 * Initialize text domain hook, plugin translate
+	 * 
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	public static function load_text_domain()
+	{
+		$plugin_dir = basename( dirname( Init::FILE ) );
+
+		load_plugin_textdomain( Init::PLUGIN_SLUG, false, "{$plugin_dir}/languages/" );
 	}
 }

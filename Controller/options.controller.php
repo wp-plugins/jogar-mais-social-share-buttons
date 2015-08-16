@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Options Admin Page
  * @since 1.0.3

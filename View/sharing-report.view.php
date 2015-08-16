@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Views Sharing Report
- * @version 1.3.0
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -27,12 +27,12 @@ class Sharing_Report_View
 		$time_cache = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
 		?>
 		<div class="wrap">
-			<h2><?php echo Settings::PLUGIN_NAME; ?></h2>
-			<p class="description"><?php echo Settings::PLUGIN_DESC; ?></p>
+			<h2><?php _e( 'Social Sharing Buttons', Init::PLUGIN_SLUG ); ?></h2>
+			<p class="description"><?php _e( 'Adiciona os botões de compartilhamento automáticamente em posts e páginas', Init::PLUGIN_SLUG ); ?></p>
 			<span class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-title">
-				Relatório de Compartilhamento
+				<?php _e( 'Relatório de Compartilhamento', Init::PLUGIN_SLUG ); ?>
 				<span class="description information-cache">
-					Este relatório tem um cache de <?php echo $time_cache; ?> minuto(s)
+					<?php printf( __( 'Este relatório tem um cache de %d minuto', Init::PLUGIN_SLUG ), $time_cache ); ?>(s)
 				</span>
 			</span>
 			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">

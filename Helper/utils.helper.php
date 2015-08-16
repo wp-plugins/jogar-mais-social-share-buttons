@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @package Social Share Buttons
+ * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
  * @version 1.3.0
@@ -235,9 +235,9 @@ class Utils_Helper
 	 * @param String $file
 	 * @return String
 	 */
-	public static function file_path( $file )
+	public static function file_path( $file = '', $path = 'assets/' )
 	{
-		return plugin_dir_path( dirname( __FILE__ ) ) . Settings::DS . 'assets/' . $file;
+		return plugin_dir_path( dirname( __FILE__ ) ) . $path . $file;
 	}
 
 	/**
