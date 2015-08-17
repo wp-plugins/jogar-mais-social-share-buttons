@@ -14,6 +14,10 @@ Implement the sharing buttons of the major social networks, including the Whats 
 
 == Description ==
 
+> **[Github](https://github.com/victorfreitas)** |
+> **[Twitter](https://twitter.com/_viktorfreitas "Follow on Twitter")** |
+> **[Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E "Support the development with a beer")**
+
 Implement the sharing buttons of the major social networks, including the Whats App on your website or blog. The buttons are inserted automatically or can be called via shortcode or PHP method.
 
 * Adds before, after the contents post or both
@@ -23,6 +27,10 @@ Implement the sharing buttons of the major social networks, including the Whats 
 * Store some options with the data that will be used to show, hide, stylize and remove specific buttons.
 
 * The networks support are: - Facebook; - Google Plus; - Twitter; - Linkedin; - Pinterest; - Thumbler; - Whatsapp; - SMS; - Gmail; - Mailto; - Print;
+
+== Useful ==
+
+* ["Remove WP Version" - WP Generator, Feeds, css, js](https://wordpress.org/plugins/jogar-mais-wp-security/)
 
 == Installation ==
 
@@ -35,6 +43,17 @@ Implement the sharing buttons of the major social networks, including the Whats 
 == Frequently Asked Questions ==
 
 Some social networks already have shares counters. Facebook, Linkedin, Pinterest, Twitter, Google Plus
+
+== Translations ==
+
+* Portuguese BR - default, always included
+* English: United State - immer dabei!
+* Spanish: Español - immer dabei!
+
+* Note: My plugin is translatable by default. This is very important for all users worldwide.
+So please contribute your language to the plugin to make it even more useful.
+For translating I recommend the awesome ["Codestyling Localization" plugin](http://wordpress.org/extend/plugins/codestyling-localization/)
+and for validating the ["Poedit Editor"](http://www.poedit.net/).
 
 == Screenshots ==
 
@@ -73,7 +92,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 * New: Tested WordPress version 4.3
 * New: Validations in the use of PHP method to call buttons
-* New: Option remove scripts the plugin in front
+* New: Option remove scripts in front
 * New: Option to time set cache reports of the page sharing of posts
 * Fix: Bug fixes
 
@@ -113,7 +132,7 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 = 1.0.1 =
 
-* New: Layout admin page configurations for plugin
+* New: Layout admin page configurations
 * New: Change layout buttons secondary
 * Fix: Fixes style layout buttons primary
 * Fix: Code patterns fixes
