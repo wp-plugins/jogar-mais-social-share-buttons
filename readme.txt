@@ -2,7 +2,6 @@
 
 Author URL: http://jogarmais.com.br
 Contributors: victorfreitas
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E
 Tags: share, social, buttons, share buttons, Sharing Buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.3.0
@@ -15,8 +14,7 @@ Implement the sharing buttons of the major social networks, including the Whats 
 == Description ==
 
 > **[Github](https://github.com/victorfreitas)** |
-> **[Twitter](https://twitter.com/_viktorfreitas "Follow on Twitter")** |
-> **[Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E "Support the development with a beer")**
+> **[Twitter](https://twitter.com/_viktorfreitas "Follow on Twitter")**
 
 Implement the sharing buttons of the major social networks, including the Whats App on your website or blog. The buttons are inserted automatically or can be called via shortcode or PHP method.
 
