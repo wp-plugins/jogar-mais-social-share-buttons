@@ -1,12 +1,12 @@
-.jm-ssb-social,
-.jm-ssb-container-theme-two,
-.jm-ssb-theme-total-share {
+.#{$prefix}-social,
+.#{$prefix}-container-theme-two,
+.#{$prefix}-theme-total-share {
 
-	.jm-ssb-hide {
+	.#{$prefix}-hide {
 		display: none;
 	}
 	
-	.jm-ssb-show {
+	.#{$prefix}-show {
 		display: inline-block;
 	}
 }

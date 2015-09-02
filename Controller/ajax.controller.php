@@ -25,7 +25,7 @@ class Ajax_Controller
 
 	/**
 	 * Quantity shares google plus
-	 * 
+	 *
 	 * @since 1.1
 	 * @param null
 	 * @return void
@@ -60,16 +60,20 @@ class Ajax_Controller
 						'source'  => 'widget',
 						'userId'  => '@viewer',
 						'groupId' => '@self',
-		        	) 
+		        	)
 		     	)
 		    ),
 		    'sslverify' => false
 		);
 
 	    $response = wp_remote_request( 'https://clients6.google.com/rpc', $args );
+
+	    if ( is_wp_error( $response ) )
+	    	return self::_error_request();
+
 	    $plusones = json_decode( $response['body'], true );
 		$results  = json_encode( self::_get_global_counts_google( $plusones, $response ) );
-		
+
 		header( 'Content-Type: application/javascript; charset=utf-8' );
 		echo $_REQUEST[ 'callback' ] . "({$results})";
 		exit(1);
@@ -77,16 +81,13 @@ class Ajax_Controller
 
 	/**
 	 * Quantity shares google plus
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Array $results
 	 * @return Array
 	 */
 	private static function _get_global_counts_google( $results, $response )
 	{
-		if ( is_wp_error( $response ) )
-			return array( 'count' => 0 );
-
 		$global_count = $results['result']['metadata']['globalCounts'];
 
 		if ( empty( $global_count ) || is_null( $global_count ) )
@@ -96,8 +97,23 @@ class Ajax_Controller
 	}
 
 	/**
+	 * Return count 0 if exist error
+	 *
+	 * @since 1.0
+	 * @param Null
+	 * @return Void
+	 */
+	private static function _error_request()
+	{
+		header( 'Content-Type: application/javascript; charset=utf-8' );
+		$results = json_encode( array( 'count' => 0 ) );
+		echo $_REQUEST[ 'callback' ] . "({$results})";
+		exit(1);
+	}
+
+	/**
 	 * Retrieve the requests
-	 * 
+	 *
 	 * @since 1.2
 	 * @global $wpdb
 	 * @param Null
@@ -132,7 +148,7 @@ class Ajax_Controller
 					'count_google'    => $count_google,
 					'count_linkedin'  => $count_linkedin,
 					'count_pinterest' => $count_pinterest,
-					'total'           => $total,			
+					'total'           => $total,
 				)
 			);
 		exit(1);
@@ -140,7 +156,7 @@ class Ajax_Controller
 
 	/**
 	 * Select the table and check for records
-	 * 
+	 *
 	 * @since 1.0
 	 * @global $wpdb
 	 * @param String $table
@@ -166,7 +182,7 @@ class Ajax_Controller
 
 	/**
 	 * Update records in the table
-	 * 
+	 *
 	 * @since 1.0
 	 * @global $wpdb
 	 * @param String $table
@@ -178,7 +194,7 @@ class Ajax_Controller
 		global $wpdb;
 
 		$wpdb->update(
-			$table, 
+			$table,
 			array(
 				'post_title' => $data['post_title'],
 				'facebook'   => $data['count_facebook'],
@@ -187,10 +203,10 @@ class Ajax_Controller
 				'linkedin'   => $data['count_linkedin'],
 				'pinterest'  => $data['count_pinterest'],
 				'total'      => $data['total'],
-			), 
+			),
 			array(
 				'post_id' => $data['post_id'],
-			), 
+			),
 			array(
 				'%s',
 				'%d',
@@ -210,7 +226,7 @@ class Ajax_Controller
 
 	/**
 	 * Insert records in the table
-	 * 
+	 *
 	 * @since 1.0
 	 * @global $wpdb
 	 * @param String $table
@@ -222,7 +238,7 @@ class Ajax_Controller
 		global $wpdb;
 
 		$wpdb->insert(
-			$table, 
+			$table,
 			array(
 				'post_id'    => $data['post_id'],
 				'post_title' => $data['post_title'],
@@ -240,7 +256,7 @@ class Ajax_Controller
 
 	/**
 	 * Verify json requests
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Integer $post_id
 	 * @param String $nonce

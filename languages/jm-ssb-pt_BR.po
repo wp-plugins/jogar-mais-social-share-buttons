@@ -1,0 +1,334 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Social Sharing Buttons\n"
+"POT-Creation-Date: 2015-08-18 01:34-0300\n"
+"PO-Revision-Date: 2015-08-18 01:35-0300\n"
+"Last-Translator: \n"
+"Language-Team: Victor Freitas <victorfreitas1@gmail.com>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: Config/core.php\n"
+"X-Poedit-SearchPath-1: Controller/ajax.controller.php\n"
+"X-Poedit-SearchPath-2: Controller/options.controller.php\n"
+"X-Poedit-SearchPath-3: Controller/settings.controller.php\n"
+"X-Poedit-SearchPath-4: Controller/shares.controller.php\n"
+"X-Poedit-SearchPath-5: Controller/sharing-reports.controller.php\n"
+"X-Poedit-SearchPath-6: Helper/utils.helper.php\n"
+"X-Poedit-SearchPath-7: jm-ssb.php\n"
+"X-Poedit-SearchPath-8: Model/settings.php\n"
+"X-Poedit-SearchPath-9: View/setting.view.php\n"
+"X-Poedit-SearchPath-10: View/share.view.php\n"
+"X-Poedit-SearchPath-11: View/sharing-report.view.php\n"
+
+#: Config/core.php:75
+msgid "Share on Facebook"
+msgstr "Compartilhar no Facebook"
+
+#: Config/core.php:83
+msgid "I just saw"
+msgstr "Acabei de ver"
+
+#: Config/core.php:83
+msgid "Click to see also"
+msgstr "Clique pra ver também"
+
+#: Config/core.php:84
+msgid "Share on Twitter"
+msgstr "Compartilhar no Twitter"
+
+#: Config/core.php:93
+msgid "Share on Google+"
+msgstr "Compartilhar no Google+"
+
+#: Config/core.php:102
+msgid "Share on WhatsApp"
+msgstr "Compartilhar via WhatsApp"
+
+#: Config/core.php:111
+msgid "Send via SMS"
+msgstr "Enviar via SMS"
+
+#: Config/core.php:120
+msgid "Share on Pinterest"
+msgstr "Compartilhar no Pinterest"
+
+#: Config/core.php:129
+msgid "Share on Linkedin"
+msgstr "Compartilhar no Linkedin"
+
+#: Config/core.php:138
+msgid "Share on Tumblr"
+msgstr "Compartilhar no Tumblr"
+
+#: Config/core.php:147
+msgid "Send via Gmail"
+msgstr "Enviar via Gmail"
+
+#: Config/core.php:156
+msgid "Send by email"
+msgstr "Enviar por email"
+
+#: Config/core.php:165
+msgid "Print via Print Friendly"
+msgstr "Imprimir via Print Friendly"
+
+#: Controller/settings.controller.php:124 View/setting.view.php:42
+#: View/setting.view.php:210 View/setting.view.php:315
+#: View/sharing-report.view.php:30
+msgid "Social Sharing Buttons"
+msgstr "Social Sharing Buttons"
+
+#: Controller/settings.controller.php:125
+msgid "Sharing Buttons"
+msgstr "Sharing Buttons"
+
+#: Controller/settings.controller.php:134
+msgid "Extra Settings | Social Sharing Buttons"
+msgstr "Configurações extra | Social Sharing Buttons"
+
+#: Controller/settings.controller.php:135 View/setting.view.php:212
+msgid "Extra Settings"
+msgstr "Configurações extra"
+
+#: Controller/settings.controller.php:143
+msgid "Use options | Social Sharing Buttons"
+msgstr "Opções de uso | Social Sharing Buttons"
+
+#: Controller/settings.controller.php:144 View/setting.view.php:318
+msgid "Use options"
+msgstr "Opções de uso"
+
+#: Controller/sharing-reports.controller.php:167
+msgid "Title"
+msgstr "Título"
+
+#: Controller/sharing-reports.controller.php:168
+msgid "Facebook"
+msgstr "Facebook"
+
+#: Controller/sharing-reports.controller.php:169
+msgid "Google+"
+msgstr "Google+"
+
+#: Controller/sharing-reports.controller.php:170
+msgid "Twitter"
+msgstr "Twitter"
+
+#: Controller/sharing-reports.controller.php:171
+msgid "Linkedin"
+msgstr "Linkedin"
+
+#: Controller/sharing-reports.controller.php:172
+msgid "Pinterest"
+msgstr "Pinterest"
+
+#: Controller/sharing-reports.controller.php:173
+msgid "Total"
+msgstr "Total"
+
+#: Controller/sharing-reports.controller.php:238
+msgid "There is no record available at the moment!"
+msgstr "Não existe relatório disponível no momento!"
+
+#: Controller/sharing-reports.controller.php:252
+msgid "Sharing Report | Social Sharing Buttons"
+msgstr "Relatório de compartilhamento | Social Sharing Buttons"
+
+#: Controller/sharing-reports.controller.php:253
+#: View/sharing-report.view.php:33
+msgid "Sharing Report"
+msgstr "Relatório de compartilhamento"
+
+#: View/setting.view.php:43 View/setting.view.php:211
+#: View/setting.view.php:316 View/sharing-report.view.php:31
+msgid "Add the sharing buttons automatically in posts and pages."
+msgstr ""
+"Adiciona os botões de compartilhamento automáticamente em posts e páginas"
+
+#: View/setting.view.php:44
+msgid "Settings"
+msgstr "Configurações"
+
+#: View/setting.view.php:51
+msgid "Places available"
+msgstr "Locais disponíveis"
+
+#: View/setting.view.php:55
+msgid "Single Post"
+msgstr "Single Post"
+
+#: View/setting.view.php:63
+msgid "Pages"
+msgstr "Páginas"
+
+#: View/setting.view.php:71
+msgid "Page Home"
+msgstr "Página Home"
+
+#: View/setting.view.php:79
+msgid "Before Contents"
+msgstr "Antes do Conteúdo"
+
+#: View/setting.view.php:87
+msgid "After Contents"
+msgstr "Depois do Conteúdo"
+
+#: View/setting.view.php:95
+msgid "View short content"
+msgstr "Exibir em conteúdo curto"
+
+#: View/setting.view.php:104
+msgid "Social networks available"
+msgstr "Redes sociais disponíveis"
+
+#: View/setting.view.php:123
+msgid "Available options only for the main theme."
+msgstr "Opções disponíveis apenas para o tema princípal."
+
+#: View/setting.view.php:128
+msgid "Custom class"
+msgstr "Classe personalizada"
+
+#: View/setting.view.php:132
+msgid "Custom class for primary div"
+msgstr "Classe personalizada para div princípal"
+
+#: View/setting.view.php:138
+msgid "Appearance options"
+msgstr "Opções de aparência"
+
+#: View/setting.view.php:146
+msgid "Main theme"
+msgstr "Tema princípal"
+
+#: View/setting.view.php:161 View/setting.view.php:175
+msgid "Theme"
+msgstr "Tema"
+
+#: View/setting.view.php:182
+msgid "All themes supports responsive."
+msgstr "Todos os temas tem suporte para responsivo"
+
+#: View/setting.view.php:190 View/setting.view.php:296
+msgid "Save Changes"
+msgstr "Salvar Alterações"
+
+#: View/setting.view.php:219
+msgid "Size of Icons"
+msgstr "Tamanho dos Ícones"
+
+#: View/setting.view.php:225
+msgid "Just for the main theme"
+msgstr "Apenas para o tema princípal"
+
+#: View/setting.view.php:230
+msgid "Cache time"
+msgstr "Tempo de cache"
+
+#: View/setting.view.php:235
+msgid "Minute"
+msgstr "Minuto"
+
+#: View/setting.view.php:236
+msgid "Set the time in minutes that will be cached in the Sharing report page"
+msgstr ""
+"Defina o tempo em minutos que terá o cache na página relatório de "
+"compartilhamento"
+
+#: View/setting.view.php:241 View/setting.view.php:245
+msgid "Twitter username"
+msgstr "Twitter username"
+
+#: View/setting.view.php:248
+msgid "Your twitter username"
+msgstr "Seu nome de usuário twitter"
+
+#: View/setting.view.php:253
+msgid "UTM de tracking"
+msgstr "UTM de tracking"
+
+#: View/setting.view.php:257
+msgid "Add UTM tracking (Analytics)"
+msgstr "Adicione UTM tracking (Analíticas)"
+
+#: View/setting.view.php:261
+msgid "Use the encode"
+msgstr "Utilize o encode"
+
+#: View/setting.view.php:261
+msgid "to add parameters to your tracking."
+msgstr "para adicionar parâmetros em seu tracking."
+
+#: View/setting.view.php:267
+msgid "Disable CSS"
+msgstr "Desabilitar CSS"
+
+#: View/setting.view.php:274 View/setting.view.php:287
+msgid "Check to disable"
+msgstr "Marque para desabilitar"
+
+#: View/setting.view.php:280
+msgid "Disable Scripts"
+msgstr "Desabilitar Scripts"
+
+#: View/setting.view.php:322 View/setting.view.php:335
+msgid "Via shortcode"
+msgstr "Via shortcode"
+
+#: View/setting.view.php:328 View/setting.view.php:341
+#: View/setting.view.php:350
+msgid "Via"
+msgstr "Via"
+
+#: View/setting.view.php:334
+msgid "Returns all the buttons and the use of classes is optional"
+msgstr "Retorna todos os botões e o uso das classes é opcional"
+
+#: View/setting.view.php:347
+msgid "Returns only WhatsApp button and use the class is optional"
+msgstr "Retorna apenas o botão do WhatsApp e o uso da classe é opcional"
+
+#: View/setting.view.php:370
+msgid "Returns according to the parameters sharing buttons"
+msgstr "Retorna os botões de compartilhamento de acordo com os parâmetros"
+
+#: View/setting.view.php:372
+msgid "optional"
+msgstr "opcional"
+
+#: View/setting.view.php:373
+msgid "Options theme"
+msgstr "Opcões de tema"
+
+#: View/share.view.php:136
+msgid "Tweet"
+msgstr "tweetar"
+
+#: View/share.view.php:136 View/share.view.php:192
+msgid "Share"
+msgstr "Compartilhar"
+
+#: View/sharing-report.view.php:35
+#, php-format
+msgid "This report has a cache of %d minute"
+msgstr "Este relatório tem um cache de %d minuto"
+
+#~ msgid "Share on Whats App"
+#~ msgstr "Compartilhar no WhatsApp"
+
+#~ msgid "Use options "
+#~ msgstr "Opções de uso"
+
+#~ msgid "Add the sharing buttons automatically in posts and pages"
+#~ msgstr ""
+#~ "Adiciona os botões de compartilhamento automáticamente em posts e páginas"
+
+#~ msgid "All themes supports responsive"
+#~ msgstr "Todos os temas tem suporte para responsivo"

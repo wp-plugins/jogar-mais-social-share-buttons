@@ -1,24 +1,30 @@
-Module( 'SHARE.HideElements', function( HideElements ) {
-	HideElements.fn.initialize = function( container ) {
+;(function(context) {
+
+	'use strict';
+
+	function HideElements( container ) {
 		this.container     = container;
-		this.themeTwo      = this.container.find( '.jm-ssb-container-theme-two' );
+		this.themeTwo      = this.container.find( '.jm-share-container-theme-two' );
 		this.elementCount  = this.themeTwo.find( '.count' );
 		this.themeTwoWidth = this.themeTwo.css( 'width' );
 		this.linkedin      = this.themeTwo.find( '.linkedin-share' );
 		this.init();
 	};
 
-	HideElements.fn.init = function() {
+	HideElements.prototype.init = function() {
 		this.hideElement();
 	};
 
-	HideElements.fn.hideElement = function() {
+	HideElements.prototype.hideElement = function() {
 		if ( 450 > parseFloat( this.themeTwoWidth ) ) {
-			this.linkedin.addClass( 'jm-ssb-hide' );
+			this.linkedin.addClass( 'jm-share-hide' );
 		}
 
 		if ( 655 > parseFloat( this.themeTwoWidth ) ) {
-			this.elementCount.addClass( 'jm-ssb-hide' );
+			this.elementCount.addClass( 'jm-share-hide' );
 		}
 	};
-});
+
+	context.HideElements = HideElements;
+
+})( window );

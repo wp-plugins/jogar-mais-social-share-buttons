@@ -1,4 +1,4 @@
-.jm-ssb-container-theme-two {
+.#{$prefix}-container-theme-two {
 	display: inline-block;
 	font-family: Helvetica, Verdana, Sans-serif;
 	font-size: 11px;
@@ -69,18 +69,18 @@
 		width: 6px;
 	}
 
-	.jm-ssb-icons-align:before {
+	.#{$prefix}-icons-align:before {
 		content: "";
 		font-size: 16px;
 		position: relative;
 		vertical-align: middle;
 	}
 
-	.jm-ssb-theme-two {
+	.#{$prefix}-theme-two {
 		position: relative;
 		float: left;
 
-		a .jm-ssb-icons-align {
+		a .#{$prefix}-icons-align {
 		    border-right: 1px solid rgba(255, 255, 255, 0.4);
 		    float: left;
 		    height: 24px;
@@ -99,7 +99,7 @@
 			border-color: darken( $color, 12% );
 		}
 	}
-	.jm-ssb-icon-#{$class}:before {
+	.#{$prefix}-icon-#{$class}:before {
 		content: "#{$content}";
 	}
 }
@@ -122,30 +122,30 @@
 
 @media screen and (max-width: 1024px) {
 
-	.jm-ssb-container-theme-two .count {
+	.#{$prefix}-container-theme-two .count {
 		display: none;
 	}
 }
 
 @media screen and ( max-width: 768px ) {
 
-	.jm-ssb-container-theme-two {
+	.#{$prefix}-container-theme-two {
 
 		div a {
 			width: auto;
 		}
 
-		.jm-ssb-icon-facebook:before {
+		.#{$prefix}-icon-facebook:before {
 			font-size: 22px;
 			left: -2px;
 		}
 
-		.jm-ssb-icon-google:before {
+		.#{$prefix}-icon-google:before {
 			font-size: 20px;
 			left: 1px;
 		}
 
-		.jm-ssb-icon-whatsapp:before {
+		.#{$prefix}-icon-whatsapp:before {
 			font-size: 29px;
 		}
 
@@ -154,18 +154,18 @@
 			position: relative;
 		}
 
-		.jm-ssb-theme-two a {
+		.#{$prefix}-theme-two a {
 			height: 32px;
 			padding: 0;
 			text-indent: -9999px;
 			width: 32px;
 
-			.jm-ssb-icons-align {
+			.#{$prefix}-icons-align {
 				border-right: 0;
 			}
 		}
 
-		.jm-ssb-icons-align:before {
+		.#{$prefix}-icons-align:before {
 			display: block;
 			height: 32px;
 			line-height: 32px;

@@ -8,18 +8,15 @@ module.exports = function(grunt) {
 		    },
 		    site : {
 				src : [
-					'<%= package.scriptroot %>/libs/*.js',
-					'<%= package.scriptroot %>/app/*.js',
-					'<%= package.scriptroot %>/boot.js'
+					'<%= package.scriptroot %>/boot.js',
+					'<%= package.scriptroot %>/app/*.js'
 				],
 				dest : '<%= package.scriptroot %>/script.min.js',
 		    },
 		    admin : {
 				src : [
-					'<%= package.scriptroot %>/libs/*.js',
-					'<%= package.scriptroot %>/admin/application.js',
-					'<%= package.scriptroot %>/admin/script-admin.js',
-					'<%= package.scriptroot %>/boot.js'
+					'<%= package.scriptroot %>/admin/boot.js',
+					'<%= package.scriptroot %>/admin/theme-options.js'
 				],
 				dest : '<%= package.scriptroot %>/admin/script-admin.min.js',
 		    },

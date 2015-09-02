@@ -43,7 +43,7 @@ class Options_Controller
 	 */
 	public function register_options()
 	{
-		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', Settings::PLUGIN_PREFIX_UNDERSCORE );
 		$new_options = array(
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_single'  => 'on',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_before'  => 'on',
@@ -54,7 +54,7 @@ class Options_Controller
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_class'   => '',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_desktop' => 0,
 		);
-		add_option( 'jm_ssb', $new_options );
+		add_option( Settings::PLUGIN_PREFIX_UNDERSCORE, $new_options );
 	}
 
 	/**
@@ -66,13 +66,12 @@ class Options_Controller
 	 */
 	public function register_options_social_media()
 	{
-		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', 'jm_ssb_settings' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_options_page', Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' );
 		$new_options_settings = array(
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Facebook'      => 'Facebook',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Twitter'       => 'Twitter',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Google'        => 'Google',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Whatsapp'      => 'Whatsapp',
-			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Sms'           => 'Sms',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Pinterest'     => 'Pinterest',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Linkedin'      => 'Linkedin',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Tumblr'        => 'Tumblr',
@@ -80,7 +79,7 @@ class Options_Controller
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_Email'         => 'Email',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_PrintFriendly' => 'PrintFriendly',
 		);
-		add_option( 'jm_ssb_settings', $new_options_settings );
+		add_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings', $new_options_settings );
 	}
 
 	/**
@@ -92,7 +91,7 @@ class Options_Controller
 	 */
 	public function register_options_extra_settings()
 	{
-		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page', 'jm_ssb_style_settings' );
+		register_setting( Settings::PLUGIN_PREFIX_UNDERSCORE . '_extra_options_page', Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' );
 		$new_options_settings = array(
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_style'      => 'on',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_remove_script'     => 'on',
@@ -102,6 +101,6 @@ class Options_Controller
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_tracking'          => '?utm_source=share_buttons&utm_medium=social_media&utm_campaign=social_share',
 			Settings::PLUGIN_PREFIX_UNDERSCORE . '_report_cache_time' => 10,
 		);
-		add_option( 'jm_ssb_style_settings', $new_options_settings );
+		add_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings', $new_options_settings );
 	}
 }

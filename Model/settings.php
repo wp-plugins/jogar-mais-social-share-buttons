@@ -128,14 +128,6 @@ class Settings
 	private $whatsapp;
 	
 	/**
-	 * Sms value verify option
-	 *
-	 * @since 1.0
-	 * @var string
-	 */
-	private $sms;
-	
-	/**
 	 * Twitter value verify option
 	 *
 	 * @since 1.0
@@ -237,7 +229,7 @@ class Settings
 	 * @since 1.0
 	 * @var string
 	 */
-	const PLUGIN_PREFIX = 'jm-ssb';
+	const PLUGIN_PREFIX = 'jm-share';
 	const PLUGIN_PREFIX_UNDERSCORE = 'jm_ssb';
 
 
@@ -376,11 +368,6 @@ class Settings
 					$this->whatsapp = $this->option( '_Whatsapp' );
 				break;
 
-			case 'sms' :
-				if ( ! isset( $this->sms ) )
-					$this->sms = $this->option( '_Sms' );
-				break;
-
 			case 'twitter' :
 				if ( ! isset( $this->twitter ) )
 					$this->twitter = $this->option( '_Twitter' );
@@ -460,9 +447,9 @@ class Settings
 	private function _merge_options()
 	{
 		$options = array_merge(
-			(array) get_option( 'jm_ssb' ),
-			(array) get_option( 'jm_ssb_settings' ),
-			(array) get_option( 'jm_ssb_style_settings' )
+			(array) get_option( Settings::PLUGIN_PREFIX_UNDERSCORE ),
+			(array) get_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_settings' ),
+			(array) get_option( Settings::PLUGIN_PREFIX_UNDERSCORE . '_style_settings' )
 		);
 
 		return $options;

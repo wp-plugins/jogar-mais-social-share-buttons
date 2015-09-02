@@ -50,8 +50,8 @@ class Sharing_Reports_Controller extends \WP_List_Table
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
 		parent::__construct(
 			array(
-				'singular' => 'jm-ssb-sharing-report',
-				'plural'   => 'jm-ssb-sharing-reports',
+				'singular' => 'jm-share-sharing-report',
+				'plural'   => 'jm-share-sharing-reports',
 				'screen'   => 'interval-list',
 			)
 		);
@@ -164,7 +164,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	public function get_columns()
 	{
 		$columns = array(
-			'Title'     => __( 'Título', Init::PLUGIN_SLUG ),
+			'Title'     => __( 'Title', Init::PLUGIN_SLUG ),
 			'Facebook'  => __( 'Facebook', Init::PLUGIN_SLUG ),
 			'Google'    => __( 'Google+', Init::PLUGIN_SLUG ),
 			'Twitter'   => __( 'Twitter', Init::PLUGIN_SLUG ),
@@ -235,7 +235,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	 */
 	public function no_items()
 	{
-		_e( 'Não existe relatório disponível no momento!', Init::PLUGIN_SLUG );
+		_e( 'There is no record available at the moment!', Init::PLUGIN_SLUG );
 	}
 
 	/**
@@ -249,8 +249,8 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	{
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		__( 'Relatório de compartilhamento | Social Sharing Buttons', Init::PLUGIN_SLUG ),
-	  		__( 'Relatório de compartilhamento', Init::PLUGIN_SLUG ),
+	  		__( 'Sharing Report | Social Sharing Buttons', Init::PLUGIN_SLUG ),
+	  		__( 'Sharing Report', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-sharing-report',
 	  		array( &$this, 'report' )

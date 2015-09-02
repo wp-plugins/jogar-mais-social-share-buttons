@@ -1,10 +1,10 @@
-.jm-ssb-theme-total-share {
+.#{$prefix}-theme-total-share {
 	color: #fff;
 	font-size: 10px;
 	margin-bottom: 20px;
 }
 
-.jm-ssb-total-share {
+.#{$prefix}-total-share {
 	display: inline-block;
 	line-height: normal;
 
@@ -21,7 +21,7 @@
 	}
 }
 
-.jm-ssb-total-share-btn {
+.#{$prefix}-total-share-btn {
 			transition: background .2s;
 		-ms-transition: background .2s;
 	-webkit-transition: background .2s;
@@ -74,19 +74,19 @@
 }
 
 @mixin icon( $class, $content, $color ) {
-	.jm-ssb-total-share .#{$class} {
+	.#{$prefix}-total-share .#{$class} {
 		background: $color;
 
 		a:hover {
 			background: darken( $color, 10% );
 		}
 
-		.jm-ssb-icon-#{$class} {
+		.#{$prefix}-icon-#{$class} {
 			color: $colorWhite;
 		}
 	}
 
-	.jm-ssb-icon-#{$class}:before {
+	.#{$prefix}-icon-#{$class}:before {
 		content: "#{$content}";
 	}
 }
@@ -100,29 +100,29 @@
 
 @media ( min-width: 768px ) {
 
-	.jm-ssb-total-share .whatsapp {
+	.#{$prefix}-total-share .whatsapp {
 		display: none;
 	}
 }
 
 @media ( max-width: 768px ) {
 
-	.jm-ssb-total-share span {
+	.#{$prefix}-total-share span {
 		display: none;
 	}
 
-	.jm-ssb-total-share-btn {
+	.#{$prefix}-total-share-btn {
 		margin-right: 6px;
 	}
 
-    .jm-ssb-theme-total-share {
+    .#{$prefix}-theme-total-share {
         display: inline-block;
         float: none;
         position: relative;
         top: 4px;
     }
 
-	.jm-ssb-total-share .linkedin {
+	.#{$prefix}-total-share .linkedin {
 		display: none;
 	}
 }

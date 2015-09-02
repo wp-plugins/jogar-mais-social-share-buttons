@@ -1,4 +1,8 @@
-.jm-ssb-social {
+.#{$prefix} .#{$prefix}-button a:hover {
+	background: none;
+}
+
+.#{$prefix}-social {
 	font-family: $fontDefault;
 	font-size: 14px;
 	list-style-type: none;
@@ -6,11 +10,11 @@
 	position: relative;
 }
 
-.jm-ssb-social .jm-ssb-shared a {
+.#{$prefix}-social .#{$prefix}-button a {
 	border-bottom: 0;
 }
 
-.jm-ssb-shared {
+.#{$prefix}-button {
 	display: inline-block;
 	margin-right: 1px;
 	position: relative;
@@ -21,7 +25,7 @@
 		display: inline-block;
 	}
 
-	a .jm-ssb-icon {
+	a .#{$prefix}-icon {
 		@include border-radius( 3px );
 		@include filter( brightness( 105% ) );
 		background-size: cover;
@@ -35,17 +39,26 @@
 		width: 32px;
 	}
 
-	a .jm-ssb-icon-sheet {
+	a .#{$prefix}-icon-sheet {
 		@include border-radius( 6px 0 );
 	}
 
-	a .jm-ssb-icon-radius {
+	a .#{$prefix}-icon-radius {
 		@include border-radius( 4px );
 	}
 
+	a .#{$prefix}-icon-printfriendly {
+	    background-color: $printColor;
+	}
+
+	a .#{$prefix}-icon-whatsapp {
+	    background-color: $whatsColor;
+	}
+
+
 	@mixin icon( $class, $color, $content ) {
 
-		a .jm-ssb-icon-#{$class} {
+		a .#{$prefix}-icon-#{$class} {
 			color: $color;
 
 			&:before {
@@ -57,55 +70,19 @@
 	@include icon( facebook, $fbColor, '\e602' );
 	@include icon( twitter, $ttColor, '\e604' );
 	@include icon( google, $gpColor, '\e601' );
+	@include icon( whatsapp, #ffffff, '\e610' );
 	@include icon( pinterest, $pinColor, '\e608' );
 	@include icon( linkedin, $inColor, '\e606' );
+	@include icon( tumblr, $tColor, '\e60f' );
 	@include icon( gmail, $gmailColor, '\e60e' );
-
-	a .jm-ssb-icon-whatsapp {
-		background-color: $whatsColor;
-		color: $colorWhite;
-
-		&:before {
-			content: "\e610";
-		}
-	}
-
-	a .jm-ssb-icon-tumblr:before {
-		color: $tColor;
-		content: "\e60f";
-		font-size: 38px;
-		position: relative;
-		top: -1px;
-	}
-
-	a .jm-ssb-icon-email:before {
-		color: $emailColor;
-		content: "\e605";
-		font-size: 36px;
-		position: relative;
-		top: -1px;
-	}
-
-	a .jm-ssb-icon-printfriendly:before {
-		@include border-radius( 4px );
-		background-color: $printColor;
-		color: #676464;
-		content: "\e607";
-		left: 4px;
-		position: relative;
-	}
-
-	a .jm-ssb-icon-sms {
-		background-image: url( '../icons/sms.svg' );
-		position: relative;
-		top: 1px;
-	}
+	@include icon( email, $emailColor, '\e605' );
+	@include icon( printfriendly, #777777, '\e607' );
 
 	 &:hover {
-	 	@include filter( brightness( 80% ) );
+	 	@include filter( brightness( .8 ) );
 	}
 
-	&:hover > .jm-ssb-counter {
+	&:hover > .#{$prefix}-counter {
 		left: 50%;		
 		opacity: 1;
 	}
@@ -113,17 +90,16 @@
 
 @media screen and ( min-width: 768px ) {
 
-	.jm-ssb-whatsapp,
-	.jm-ssb-sms {
+	.#{$prefix}-whatsapp {
 		display: none;
 	}
 }
 
 @media screen and ( max-width: 768px ) {
 
-	.jm-ssb-print-friendly,
-	.jm-ssb-email,
-	.jm-ssb-gmail {
+	.#{$prefix}-print-friendly,
+	.#{$prefix}-email,
+	.#{$prefix}-gmail {
 		display: none;
 	}
 }

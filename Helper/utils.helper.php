@@ -17,50 +17,95 @@ class Utils_Helper
 {
 	/**
 	 * Escape string conter XSS attack
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $string
 	 * @return String
 	 */
-	public static function esc_html( $string = '' )
+	public static function esc_html( $string, $type = 'html' )
 	{
 		$string = (string) $string;
 
 		if ( ! strlen( $string ) )
 			return '';
 
-		if ( ! preg_match( '/[&<>"\']/', $string ) )
-			return $string;
-		
-		$string = htmlentities( $string, ENT_QUOTES );
-
-		return $string;
+		return self::esc_xss( $string, $type );
 	}
 
 	/**
 	 * Escape string conter XSS attack
-	 * 
+	 *
+	 * @since 1.0
+	 * @param String $value
+	 * @param String $type
+	 * @return String
+	 */
+	private static function esc_xss( $value, $type )
+	{
+        switch ( $type ) :
+            case 'html' :
+				$value = htmlentities( $value, ENT_QUOTES );
+				$value = self::rip_tags( $value );
+                break;
+
+            case 'code' :
+            	if ( ! preg_match( '/[&<>"\']/', $value ) )
+					$value = $value;
+				break;
+        endswitch;
+
+        return $value;
+	}
+
+
+
+
+	/**
+	 * RIP tags html
+	 *
 	 * @since 1.0
 	 * @param String $string
 	 * @return String
 	 */
-	public static function esc_class( $class = '' )
+	private static function rip_tags( $string )
+	{
+	    $string = preg_replace( '/[<[^>]*>]/', ' ', $string );
+	    $string = str_replace( "\r", '', $string );
+	    $string = str_replace( "\n", ' ', $string );
+	    $string = str_replace( "\t", ' ', $string );
+	    $string = preg_replace( '/ {2,}/', ' ', $string );
+	    $string = strip_tags( $string );
+	    $string = trim( $string );
+
+	    return $string;
+	}
+
+	/**
+	 * Escape string for atribute class
+	 *
+	 * @since 1.0
+	 * @param String $string
+	 * @return String
+	 */
+	public static function esc_class( $class )
 	{
 		$class = (string) $class;
 
 		if ( ! strlen( $class ) )
 			return '';
 
-        $class = self::esc_html( $class );
-        $class = preg_replace( "/[^a-zA-Z0-9_\s-]/", "", $class );
-        $class = preg_replace( "/[\s-]+/", "-", $class );
+        $class = self::rip_tags( $class );
+        $class = str_replace( '_', '-', $class );
+        $class = preg_replace( "/[^a-zA-Z0-9\s-]/", '', $class );
+        $class = preg_replace( "/[\s-]+/", '-', $class );
+        $class = strtolower( $class );
 
         return $class;
 	}
 
 	/**
 	 * Sanitize value from methods post or get
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $key Relative as request method
 	 * @param Mixed Int/String/Array $default return this function
@@ -76,8 +121,8 @@ class Utils_Helper
 	}
 
 	/**
-	 * Sanitize requests 
-	 * 
+	 * Sanitize requests
+	 *
 	 * @since 1.0
 	 * @param String $value Relative sanitize
 	 * @param String $function_name Relative function to use
@@ -93,7 +138,7 @@ class Utils_Helper
 
 	/**
 	 * Post title
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return String title posts
@@ -112,7 +157,7 @@ class Utils_Helper
 
 	/**
 	 * Post ID
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return Integer
@@ -129,7 +174,7 @@ class Utils_Helper
 
 	/**
 	 * Permalinks posts
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return String
@@ -148,7 +193,7 @@ class Utils_Helper
 
 	/**
 	 * Thumbnail posts
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return String thumbnail
@@ -170,7 +215,7 @@ class Utils_Helper
 
 	/**
 	 * Get content posts
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return String content post
@@ -179,33 +224,32 @@ class Utils_Helper
 	{
 		global $post;
 
+		$content = '';
+
 		if ( isset( $post->post_content ) )
-			return wp_kses( $post->post_content, array() );
+			$content = $post->post_content;
 
-		if ( isset( $post->post_excerpt ) )
-			return wp_kses( $post->post_excerpt, array() );
+		$content = self::rip_tags( $content );
+		$content = preg_replace( '/\[.*\]/', null, $content );
 
-		if ( isset( $post->post_title ) )
-			return wp_kses( $post->post_title, array() );
-
-		return '';
+		return $content;
 	}
 
 	/**
 	 * Plugin base name
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return String link base file
 	 */
 	public static function base_name()
 	{
-		return plugin_basename( plugin_dir_path( __DIR__ ) . Init::PLUGIN_SLUG . '.php' );
+		return plugin_basename( plugin_dir_path( __DIR__ ) . basename( Init::FILE ) );
 	}
 
 	/**
 	 * Descode html entityes UTF-8
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $string
 	 * @return String
@@ -217,7 +261,7 @@ class Utils_Helper
 
 	/**
 	 * Plugin file url in assets directory
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $file
 	 * @param String $path
@@ -230,7 +274,7 @@ class Utils_Helper
 
 	/**
 	 * Plugin file path in assets directory
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $file
 	 * @return String
@@ -242,7 +286,7 @@ class Utils_Helper
 
 	/**
 	 * Generate file time style and scripts
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Int $path
 	 * @return Integer
@@ -254,7 +298,7 @@ class Utils_Helper
 
 	/**
 	 * Get option unique and sanitize
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $option Relative option name
 	 * @param String $sanitize Relative function
@@ -273,7 +317,7 @@ class Utils_Helper
 
 	/**
 	 * response error server json
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Int $code
 	 * @param String $message
@@ -298,7 +342,7 @@ class Utils_Helper
 
 	/**
 	 * Convert array in objects
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Array $arguments
 	 * @return Object
@@ -313,24 +357,24 @@ class Utils_Helper
 
 	/**
 	 * Verify option exists and update option
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $option_name
 	 * @return String
 	 */
-	public static function add_or_update_option( $option_name )
+	public static function add_or_update_option( $option_name, $value = Settings::SHARING_REPORT_DB_VERSION )
 	{
 		$option = get_site_option( $option_name );
 
 		if ( $option )
-			return update_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
+			return update_option( $option_name, $value );
 
-		return add_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
+		return add_option( $option_name, $value );
 	}
 
 	/**
 	 * Format number
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Integer $number
 	 * @return String

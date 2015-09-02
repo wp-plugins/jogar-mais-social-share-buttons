@@ -1,8 +1,10 @@
-Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
+;(function(context) {
+
+	'use strict';
 
 	var requests = {};
 
-	CounterSocialShare.fn.initialize = function(container) {
+	function CounterSocialShare(container) {
 		this.container        = container;
 		this.reference        = this.container.data( 'attr-reference' );
 		this.nonce            = this.container.data( 'attr-nonce' );
@@ -24,22 +26,22 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		this.init();
 	};
 
-	CounterSocialShare.fn.init = function() {
+	CounterSocialShare.prototype.init = function() {
 		this.request();
 		this.addEventListeners();
 	};
 
-	CounterSocialShare.fn.addEventListeners = function() {
+	CounterSocialShare.prototype.addEventListeners = function() {
 		this.container
 			.on( 'click', '[data-action="open-popup"]', this._onClickForceCounter.bind( this ) )
 		;
 	};
 
-	CounterSocialShare.fn._onClickForceCounter = function(event) {
+	CounterSocialShare.prototype._onClickForceCounter = function(event) {
 		this.request();
 	};
 
-	CounterSocialShare.fn.request = function() {
+	CounterSocialShare.prototype.request = function() {
 		var items = [
 			{
 				reference : 'facebookCounter',
@@ -72,11 +74,11 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		this._eachAjaxSocial( items );
 	};
 
-	CounterSocialShare.fn._eachAjaxSocial = function(items) {
+	CounterSocialShare.prototype._eachAjaxSocial = function(items) {
 		items.forEach( this._iterateItems.bind( this ) );
 	};
 
-	CounterSocialShare.fn._iterateItems = function(item) {
+	CounterSocialShare.prototype._iterateItems = function(item) {
 		this.doubleMax -= 1;
 
 		if ( requests[item.element] && this.doubleMax ) {
@@ -87,7 +89,7 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		this._setNewRequest( item );
 	};
 
-	CounterSocialShare.fn._getJSON = function(request) {
+	CounterSocialShare.prototype._getJSON = function(request) {
 		var args = jQuery.extend({
 			data     : {},
 			dataType : 'jsonp',
@@ -100,7 +102,7 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		ajax.fail( jQuery.proxy( this, '_fail', request ) );
 	};
 
-	CounterSocialShare.fn._done = function(request, response) {
+	CounterSocialShare.prototype._done = function(request, response) {
 		var number              = this.getNumberByData( response );
 		this[request.reference] = number;
 		this.max               -= 1;
@@ -116,27 +118,27 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 		}
 	};
 
-	CounterSocialShare.fn._fail = function(request, throwError, status) {
+	CounterSocialShare.prototype._fail = function(request, throwError, status) {
 		this[request.reference] = 0;
 		this[request.element].text( 0 );
 	};
 
-	CounterSocialShare.fn._setNewRequest = function(item) {
+	CounterSocialShare.prototype._setNewRequest = function(item) {
 		requests[item.element] = true;
 	};
 
-	CounterSocialShare.fn.getNumberByData = function(data) {
+	CounterSocialShare.prototype.getNumberByData = function(data) {
 		return ( parseFloat( data['shares'] ) + parseFloat( data['comments'] ) || data['shares'] || data['count'] || 0 );
 	};
 
-	CounterSocialShare.fn.getParamsGoogle = function() {
+	CounterSocialShare.prototype.getParamsGoogle = function() {
 		return {
 			action : 'get_plus_google',
 			url    : this.url
 		};
 	};
 
-	CounterSocialShare.fn.sendRequest = function() {
+	CounterSocialShare.prototype.sendRequest = function() {
 		jQuery.ajax({
 	       method : 'POST',
 	       url    : this.container.getUrlAjax(),
@@ -152,4 +154,7 @@ Module( 'SHARE.CounterSocialShare', function(CounterSocialShare) {
 	      }
 	   });
 	};
-});
+
+	context.CounterSocialShare = CounterSocialShare;
+
+})( window );

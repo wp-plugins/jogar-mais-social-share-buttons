@@ -2,10 +2,11 @@
 
 Author URL: http://jogarmais.com.br
 Contributors: victorfreitas
-Tags: share, social, buttons, share buttons, Sharing Buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, sms, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E
+Tags: share, social, buttons, share buttons, Sharing Buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.3.0
-Stable tag: 1.4.0
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +15,8 @@ Implement the sharing buttons of the major social networks, including the Whats 
 == Description ==
 
 > **[Github](https://github.com/victorfreitas)** |
-> **[Twitter](https://twitter.com/_viktorfreitas "Follow on Twitter")**
+> **[Twitter](https://twitter.com/_viktorfreitas "Follow on Twitter")** |
+> **[Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E "Support the development with a beer")**
 
 Implement the sharing buttons of the major social networks, including the Whats App on your website or blog. The buttons are inserted automatically or can be called via shortcode or PHP method.
 
@@ -24,7 +26,7 @@ Implement the sharing buttons of the major social networks, including the Whats 
 
 * Store some options with the data that will be used to show, hide, stylize and remove specific buttons.
 
-* The networks support are: - Facebook; - Google Plus; - Twitter; - Linkedin; - Pinterest; - Thumbler; - Whatsapp; - SMS; - Gmail; - Mailto; - Print;
+* The networks support are: - Facebook; - Google Plus; - Twitter; - Linkedin; - Pinterest; - Thumbler; - Whatsapp; - Gmail; - Mailto; - Print;
 
 == Useful ==
 
@@ -44,8 +46,8 @@ Some social networks already have shares counters. Facebook, Linkedin, Pinterest
 
 == Translations ==
 
-* Portuguese BR - default, always included
-* English: United State - immer dabei!
+* English: United State - default, always included
+* Portuguese Brazil - immer dabei!
 * Spanish: Español - immer dabei!
 
 * Note: My plugin is translatable by default. This is very important for all users worldwide.
@@ -73,6 +75,15 @@ and for validating the ["Poedit Editor"](http://www.poedit.net/).
 * Set for your sharing icons
 
 == Changelog ==
+
+= 1.4.2 =
+
+* Fix: Bug fixes
+* Fix: Improving performance
+
+= 1.4.1 =
+
+* Fix: Bug fixes
 
 = 1.4.0 =
 
@@ -141,9 +152,7 @@ and for validating the ["Poedit Editor"](http://www.poedit.net/).
 
 == Upgrade Notice ==
 
-= 1.4.0 =
+= 1.4.2 =
 
-* New: Preparing for internationalization
-* New: Adding English translation
-* New: Adding Spanish translation
-* New: Change button style theme 3
+* Fix: Bug fixes
+* Fix: Improving performance

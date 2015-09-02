@@ -1,9 +1,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Social Sharing Buttons\n"
-"POT-Creation-Date: 2015-08-16 12:39-0300\n"
-"PO-Revision-Date: 2015-08-16 15:16-0300\n"
+"POT-Creation-Date: 2015-08-18 01:51-0300\n"
+"PO-Revision-Date: 2015-08-18 01:51-0300\n"
+"Last-Translator: \n"
 "Language-Team: Victor Freitas <victorfreitas1@gmail.com>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,8 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _e;__\n"
-"Last-Translator: \n"
-"Language: es\n"
 "X-Poedit-SearchPath-0: Config/core.php\n"
 "X-Poedit-SearchPath-1: Controller/ajax.controller.php\n"
 "X-Poedit-SearchPath-2: Controller/options.controller.php\n"
@@ -27,56 +27,56 @@ msgstr ""
 "X-Poedit-SearchPath-10: View/share.view.php\n"
 "X-Poedit-SearchPath-11: View/sharing-report.view.php\n"
 
-#: Config/core.php:74
-msgid "Compartilhar no Facebook"
+#: Config/core.php:75
+msgid "Share on Facebook"
 msgstr "Compartir en Facebook"
 
-#: Config/core.php:82
-msgid "Acabei de ver"
+#: Config/core.php:83
+msgid "I just saw"
 msgstr "Acabo de ver"
 
-#: Config/core.php:82
-msgid "Clique pra ver também"
-msgstr "Haga clic para ver también"
-
 #: Config/core.php:83
-msgid "Compartilhar no Twitter"
+msgid "Click to see also"
+msgstr "Haga clic ver también"
+
+#: Config/core.php:84
+msgid "Share on Twitter"
 msgstr "Compartir en Twitter"
 
-#: Config/core.php:92
-msgid "Compartilhar no Google+"
+#: Config/core.php:93
+msgid "Share on Google+"
 msgstr "Compartir en Google+"
 
-#: Config/core.php:101
-msgid "Compartilhar no WhatsApp"
-msgstr "Compartir en Whats App"
+#: Config/core.php:102
+msgid "Share on WhatsApp"
+msgstr "Compartir en WhatsApp"
 
-#: Config/core.php:110
-msgid "Enviar via SMS"
+#: Config/core.php:111
+msgid "Send via SMS"
 msgstr "Enviar por SMS"
 
-#: Config/core.php:119
-msgid "Compartilhar no Pinterest"
+#: Config/core.php:120
+msgid "Share on Pinterest"
 msgstr "Compartir en Pinterest"
 
-#: Config/core.php:128
-msgid "Compartilhar no Linkedin"
+#: Config/core.php:129
+msgid "Share on Linkedin"
 msgstr "Compartir en Linkedin"
 
-#: Config/core.php:137
-msgid "Compartilhar no Tumblr"
+#: Config/core.php:138
+msgid "Share on Tumblr"
 msgstr "Compartir en Tumblr"
 
-#: Config/core.php:146
-msgid "Enviar via Gmail"
+#: Config/core.php:147
+msgid "Send via Gmail"
 msgstr "Enviar por Gmail"
 
-#: Config/core.php:155
-msgid "Enviar por email"
+#: Config/core.php:156
+msgid "Send by email"
 msgstr "Enviar por correo electrónico"
 
-#: Config/core.php:164
-msgid "Imprimir via Print Friendly"
+#: Config/core.php:165
+msgid "Print via Print Friendly"
 msgstr "Imprimir por Print Friendly"
 
 #: Controller/settings.controller.php:124 View/setting.view.php:42
@@ -90,23 +90,23 @@ msgid "Sharing Buttons"
 msgstr "Compartiendo Botones"
 
 #: Controller/settings.controller.php:134
-msgid "Configurações extra | Social Sharing Buttons"
-msgstr "Opciones extra | Compartir redes sociales Botones"
+msgid "Extra Settings | Social Sharing Buttons"
+msgstr "Ajustes adicionales | Social Sharing Buttons"
 
-#: Controller/settings.controller.php:135
-msgid "Configurações extra"
-msgstr "Opciones extra"
+#: Controller/settings.controller.php:135 View/setting.view.php:212
+msgid "Extra Settings"
+msgstr "Ajustes adicionales"
 
 #: Controller/settings.controller.php:143
-msgid "Opções de uso | Social Sharing Buttons"
-msgstr "Utilice las opciones | Compartir redes sociales Botones"
+msgid "Use options | Social Sharing Buttons"
+msgstr "Utilice las opciones | Social Sharing Buttons"
 
 #: Controller/settings.controller.php:144 View/setting.view.php:318
-msgid "Opções de uso"
+msgid "Use options"
 msgstr "Utilice las opciones"
 
 #: Controller/sharing-reports.controller.php:167
-msgid "Título"
+msgid "Title"
 msgstr "Título"
 
 #: Controller/sharing-reports.controller.php:168
@@ -134,31 +134,31 @@ msgid "Total"
 msgstr "Total"
 
 #: Controller/sharing-reports.controller.php:238
-msgid "Não existe relatório disponível no momento!"
-msgstr "No hay reporte disponible en este momento!"
+msgid "There is no record available at the moment!"
+msgstr "No hay registro disponible en este momento!"
 
 #: Controller/sharing-reports.controller.php:252
-msgid "Relatório de compartilhamento | Social Sharing Buttons"
-msgstr "compartiendo informe | Compartir redes sociales Botones"
+msgid "Sharing Report | Social Sharing Buttons"
+msgstr "Compartiendo informe"
 
 #: Controller/sharing-reports.controller.php:253
-msgid "Relatório de compartilhamento"
+#: View/sharing-report.view.php:33
+msgid "Sharing Report"
 msgstr "Compartiendo informe"
 
 #: View/setting.view.php:43 View/setting.view.php:211
 #: View/setting.view.php:316 View/sharing-report.view.php:31
-msgid ""
-"Adiciona os botões de compartilhamento automáticamente em posts e páginas"
+msgid "Add the sharing buttons automatically in posts and pages."
 msgstr ""
-"Añadir los botones de compartir de forma automática en los mensajes y "
-"las páginas"
+"Añadir los botones de compartir de forma automática en los mensajes y las "
+"páginas."
 
 #: View/setting.view.php:44
-msgid "Configurações"
+msgid "Settings"
 msgstr "Ajustes"
 
 #: View/setting.view.php:51
-msgid "Locais disponíveis"
+msgid "Places available"
 msgstr "Lugares disponibles"
 
 #: View/setting.view.php:55
@@ -166,123 +166,117 @@ msgid "Single Post"
 msgstr "Mensaje Individual"
 
 #: View/setting.view.php:63
-msgid "Páginas"
+msgid "Pages"
 msgstr "Páginas"
 
 #: View/setting.view.php:71
-msgid "Página Home"
-msgstr "Página hogar"
+msgid "Page Home"
+msgstr "Home Page"
 
 #: View/setting.view.php:79
-msgid "Antes do Conteúdo"
+msgid "Before Contents"
 msgstr "Antes de Contenido"
 
 #: View/setting.view.php:87
-msgid "Depois do Conteúdo"
-msgstr "Después de contenido"
+msgid "After Contents"
+msgstr "Después de Contenido"
 
 #: View/setting.view.php:95
-msgid "Exibir em conteúdo curto"
+msgid "View short content"
 msgstr "Ver el contenido corto"
 
 #: View/setting.view.php:104
-msgid "Redes sociais disponíveis"
+msgid "Social networks available"
 msgstr "Las redes sociales disponibles"
 
 #: View/setting.view.php:123
-msgid "Opções disponíveis apenas para o tema princípal."
+msgid "Available options only for the main theme."
 msgstr "Opciones disponibles solamente para el tema principal."
 
 #: View/setting.view.php:128
-msgid "Classe personalizada"
+msgid "Custom class"
 msgstr "Clase personalizada"
 
 #: View/setting.view.php:132
-msgid "Classe personalizada para div princípal"
-msgstr "Clase personalizada para primaria div"
+msgid "Custom class for primary div"
+msgstr "Clase personalizada para div primaria"
 
 #: View/setting.view.php:138
-msgid "Opções de aparência"
-msgstr "Opciones de Apariencia"
+msgid "Appearance options"
+msgstr "Opciones de apariencia"
 
 #: View/setting.view.php:146
-msgid "Tema princípal"
+msgid "Main theme"
 msgstr "Tema principal"
 
 #: View/setting.view.php:161 View/setting.view.php:175
-msgid "Tema"
+msgid "Theme"
 msgstr "Tema"
 
 #: View/setting.view.php:182
-msgid "Todos os temas tem suporte para responsivo"
-msgstr "Todos los temas soportes móvel"
+msgid "All themes supports responsive."
+msgstr "Todos los temas apoya móvil."
 
 #: View/setting.view.php:190 View/setting.view.php:296
-msgid "Salvar Alterações"
+msgid "Save Changes"
 msgstr "Guardar Cambios"
 
-#: View/setting.view.php:212
-msgid "Configurações Extras"
-msgstr "Configuraciones adicionales"
-
 #: View/setting.view.php:219
-msgid "Tamanho dos Ícones"
+msgid "Size of Icons"
 msgstr "Tamaño de Iconos"
 
 #: View/setting.view.php:225
-msgid "Apenas para o tema princípal"
+msgid "Just for the main theme"
 msgstr "Sólo por el tema principal"
 
 #: View/setting.view.php:230
-msgid "Tempo de cache"
-msgstr "Tiempo de Cache"
+msgid "Cache time"
+msgstr "Tiempo de cache"
 
 #: View/setting.view.php:235
-msgid "Minuto"
+msgid "Minute"
 msgstr "Minuto"
 
 #: View/setting.view.php:236
-msgid ""
-"Defina o tempo em minutos que terá o cache na página relatório de "
-"compartilhamento"
+msgid "Set the time in minutes that will be cached in the Sharing report page"
 msgstr ""
 "Ajuste el tiempo en minutos que se almacenan en caché en la página del "
-"informe Compartir"
+"informe Compartiendo"
 
-#: View/setting.view.php:241
+#: View/setting.view.php:241 View/setting.view.php:245
 msgid "Twitter username"
 msgstr "Nombre de usuario de Twitter"
 
 #: View/setting.view.php:248
-msgid "Seu nome de usuário twitter"
-msgstr "Nombre de usuario de Twitter"
+msgid "Your twitter username"
+msgstr "Su nombre de usuario de Twitter"
 
 #: View/setting.view.php:253
 msgid "UTM de tracking"
 msgstr "UTM de tracking"
 
 #: View/setting.view.php:257
-msgid "Adicione UTM tracking (Analíticas)"
-msgstr "Añadir seguimiento UTM (Análisis)"
+msgid "Add UTM tracking (Analytics)"
+msgstr "Añadir seguimiento UTM (Analytics)"
 
 #: View/setting.view.php:261
-msgid "Utilize o encode"
+msgid "Use the encode"
 msgstr "Utilice la codificación"
 
 #: View/setting.view.php:261
-msgid "para adicionar parâmetros em seu tracking."
+msgid "to add parameters to your tracking."
 msgstr "añadir parámetros a su seguimiento."
 
 #: View/setting.view.php:267
-msgid "Desabilitar CSS"
+msgid "Disable CSS"
 msgstr "CSS Desactivar"
 
 #: View/setting.view.php:274 View/setting.view.php:287
-msgid "Marque para desabilitar"
+msgid "Check to disable"
 msgstr "Compruebe para desactivar"
 
 #: View/setting.view.php:280
-msgid "Desabilitar Scripts"
+msgid "Disable Scripts"
 msgstr "Scripts Desactivar"
 
 #: View/setting.view.php:322 View/setting.view.php:335
@@ -295,53 +289,236 @@ msgid "Via"
 msgstr "Vía"
 
 #: View/setting.view.php:334
-msgid "Retorna todos os botões e o uso das classes é opcional"
+msgid "Returns all the buttons and the use of classes is optional"
 msgstr "Devuelve todos los botones y el uso de clases es opcional"
 
 #: View/setting.view.php:347
-msgid "Retorna apenas o botão do WhatsApp e o uso da classe é opcional"
+msgid "Returns only WhatsApp button and use the class is optional"
 msgstr "Devuelve único botón WhatsApp y utilizar la clase es opcional"
 
 #: View/setting.view.php:370
-msgid "Retorna os botões de compartilhamento de acordo com os parâmetros"
+msgid "Returns according to the parameters sharing buttons"
 msgstr "Devuelve según los parámetros que comparten botones"
 
 #: View/setting.view.php:372
-msgid "opcional"
+msgid "optional"
 msgstr "opcional"
 
 #: View/setting.view.php:373
-msgid "Opcões de tema"
+msgid "Options theme"
 msgstr "Opciones de tema"
 
 #: View/share.view.php:136
-msgid "tweetar"
+msgid "Tweet"
 msgstr "Tweet"
 
-#: View/share.view.php:136 View/share.view.php:193
-msgid "Compartilhar"
+#: View/share.view.php:136 View/share.view.php:192
+msgid "Share"
 msgstr "Compartir"
-
-#: View/sharing-report.view.php:33
-msgid "Relatório de Compartilhamento"
-msgstr "Compartiendo informe"
 
 #: View/sharing-report.view.php:35
 #, php-format
-msgid "Este relatório tem um cache de %d minuto"
+msgid "This report has a cache of %d minute"
 msgstr "Este informe tiene un caché de %d minuto"
 
-msgid "Social Share Buttons"
-msgstr "Social Sharing buttons"
+#~ msgid "Compartilhar no Facebook"
+#~ msgstr "Compartir en Facebook"
 
-msgid "Share Buttons"
-msgstr "Share Buttons"
+#~ msgid "Acabei de ver"
+#~ msgstr "Acabo de ver"
 
-msgid "Configurações extra | Social Share Buttons"
-msgstr "Extra Settings | Social Sharing Buttons"
+#~ msgid "Clique pra ver também"
+#~ msgstr "Haga clic para ver también"
 
-msgid "Opções de uso | Social Share Buttons"
-msgstr "Use options | Social Sharing Buttons"
+#~ msgid "Compartilhar no Twitter"
+#~ msgstr "Compartir en Twitter"
 
-msgid "Relatório de compartilhamento | Social Share Buttons"
-msgstr "Sharing Report | Social Sharing Buttons"
+#~ msgid "Compartilhar no Google+"
+#~ msgstr "Compartir en Google+"
+
+#~ msgid "Compartilhar no WhatsApp"
+#~ msgstr "Compartir en Whats App"
+
+#~ msgid "Enviar via SMS"
+#~ msgstr "Enviar por SMS"
+
+#~ msgid "Compartilhar no Pinterest"
+#~ msgstr "Compartir en Pinterest"
+
+#~ msgid "Compartilhar no Linkedin"
+#~ msgstr "Compartir en Linkedin"
+
+#~ msgid "Compartilhar no Tumblr"
+#~ msgstr "Compartir en Tumblr"
+
+#~ msgid "Enviar via Gmail"
+#~ msgstr "Enviar por Gmail"
+
+#~ msgid "Enviar por email"
+#~ msgstr "Enviar por correo electrónico"
+
+#~ msgid "Imprimir via Print Friendly"
+#~ msgstr "Imprimir por Print Friendly"
+
+#~ msgid "Configurações extra | Social Sharing Buttons"
+#~ msgstr "Opciones extra | Compartir redes sociales Botones"
+
+#~ msgid "Configurações extra"
+#~ msgstr "Opciones extra"
+
+#~ msgid "Opções de uso | Social Sharing Buttons"
+#~ msgstr "Utilice las opciones | Compartir redes sociales Botones"
+
+#~ msgid "Opções de uso"
+#~ msgstr "Utilice las opciones"
+
+#~ msgid "Título"
+#~ msgstr "Título"
+
+#~ msgid "Não existe relatório disponível no momento!"
+#~ msgstr "No hay reporte disponible en este momento!"
+
+#~ msgid "Relatório de compartilhamento | Social Sharing Buttons"
+#~ msgstr "compartiendo informe | Compartir redes sociales Botones"
+
+#~ msgid "Relatório de compartilhamento"
+#~ msgstr "Compartiendo informe"
+
+#~ msgid ""
+#~ "Adiciona os botões de compartilhamento automáticamente em posts e páginas"
+#~ msgstr ""
+#~ "Añadir los botones de compartir de forma automática en los mensajes y las "
+#~ "páginas"
+
+#~ msgid "Configurações"
+#~ msgstr "Ajustes"
+
+#~ msgid "Locais disponíveis"
+#~ msgstr "Lugares disponibles"
+
+#~ msgid "Páginas"
+#~ msgstr "Páginas"
+
+#~ msgid "Página Home"
+#~ msgstr "Página hogar"
+
+#~ msgid "Antes do Conteúdo"
+#~ msgstr "Antes de Contenido"
+
+#~ msgid "Depois do Conteúdo"
+#~ msgstr "Después de contenido"
+
+#~ msgid "Exibir em conteúdo curto"
+#~ msgstr "Ver el contenido corto"
+
+#~ msgid "Redes sociais disponíveis"
+#~ msgstr "Las redes sociales disponibles"
+
+#~ msgid "Opções disponíveis apenas para o tema princípal."
+#~ msgstr "Opciones disponibles solamente para el tema principal."
+
+#~ msgid "Classe personalizada"
+#~ msgstr "Clase personalizada"
+
+#~ msgid "Classe personalizada para div princípal"
+#~ msgstr "Clase personalizada para primaria div"
+
+#~ msgid "Opções de aparência"
+#~ msgstr "Opciones de Apariencia"
+
+#~ msgid "Tema princípal"
+#~ msgstr "Tema principal"
+
+#~ msgid "Tema"
+#~ msgstr "Tema"
+
+#~ msgid "Todos os temas tem suporte para responsivo"
+#~ msgstr "Todos los temas soportes móvel"
+
+#~ msgid "Salvar Alterações"
+#~ msgstr "Guardar Cambios"
+
+#~ msgid "Configurações Extras"
+#~ msgstr "Configuraciones adicionales"
+
+#~ msgid "Tamanho dos Ícones"
+#~ msgstr "Tamaño de Iconos"
+
+#~ msgid "Apenas para o tema princípal"
+#~ msgstr "Sólo por el tema principal"
+
+#~ msgid "Tempo de cache"
+#~ msgstr "Tiempo de Cache"
+
+#~ msgid "Minuto"
+#~ msgstr "Minuto"
+
+#~ msgid ""
+#~ "Defina o tempo em minutos que terá o cache na página relatório de "
+#~ "compartilhamento"
+#~ msgstr ""
+#~ "Ajuste el tiempo en minutos que se almacenan en caché en la página del "
+#~ "informe Compartir"
+
+#~ msgid "Seu nome de usuário twitter"
+#~ msgstr "Nombre de usuario de Twitter"
+
+#~ msgid "Adicione UTM tracking (Analíticas)"
+#~ msgstr "Añadir seguimiento UTM (Análisis)"
+
+#~ msgid "Utilize o encode"
+#~ msgstr "Utilice la codificación"
+
+#~ msgid "para adicionar parâmetros em seu tracking."
+#~ msgstr "añadir parámetros a su seguimiento."
+
+#~ msgid "Desabilitar CSS"
+#~ msgstr "CSS Desactivar"
+
+#~ msgid "Marque para desabilitar"
+#~ msgstr "Compruebe para desactivar"
+
+#~ msgid "Desabilitar Scripts"
+#~ msgstr "Scripts Desactivar"
+
+#~ msgid "Retorna todos os botões e o uso das classes é opcional"
+#~ msgstr "Devuelve todos los botones y el uso de clases es opcional"
+
+#~ msgid "Retorna apenas o botão do WhatsApp e o uso da classe é opcional"
+#~ msgstr "Devuelve único botón WhatsApp y utilizar la clase es opcional"
+
+#~ msgid "Retorna os botões de compartilhamento de acordo com os parâmetros"
+#~ msgstr "Devuelve según los parámetros que comparten botones"
+
+#~ msgid "opcional"
+#~ msgstr "opcional"
+
+#~ msgid "Opcões de tema"
+#~ msgstr "Opciones de tema"
+
+#~ msgid "tweetar"
+#~ msgstr "Tweet"
+
+#~ msgid "Compartilhar"
+#~ msgstr "Compartir"
+
+#~ msgid "Relatório de Compartilhamento"
+#~ msgstr "Compartiendo informe"
+
+#~ msgid "Este relatório tem um cache de %d minuto"
+#~ msgstr "Este informe tiene un caché de %d minuto"
+
+#~ msgid "Social Share Buttons"
+#~ msgstr "Social Sharing buttons"
+
+#~ msgid "Share Buttons"
+#~ msgstr "Share Buttons"
+
+#~ msgid "Configurações extra | Social Share Buttons"
+#~ msgstr "Extra Settings | Social Sharing Buttons"
+
+#~ msgid "Opções de uso | Social Share Buttons"
+#~ msgstr "Use options | Social Sharing Buttons"
+
+#~ msgid "Relatório de compartilhamento | Social Share Buttons"
+#~ msgstr "Sharing Report | Social Sharing Buttons"

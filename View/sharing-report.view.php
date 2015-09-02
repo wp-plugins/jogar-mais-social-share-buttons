@@ -28,11 +28,11 @@ class Sharing_Report_View
 		?>
 		<div class="wrap">
 			<h2><?php _e( 'Social Sharing Buttons', Init::PLUGIN_SLUG ); ?></h2>
-			<p class="description"><?php _e( 'Adiciona os botões de compartilhamento automáticamente em posts e páginas', Init::PLUGIN_SLUG ); ?></p>
+			<p class="description"><?php _e( 'Add the sharing buttons automatically in posts and pages.', Init::PLUGIN_SLUG ); ?></p>
 			<span class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-title">
-				<?php _e( 'Relatório de Compartilhamento', Init::PLUGIN_SLUG ); ?>
+				<?php _e( 'Sharing Report', Init::PLUGIN_SLUG ); ?>
 				<span class="description information-cache">
-					<?php printf( __( 'Este relatório tem um cache de %d minuto', Init::PLUGIN_SLUG ), $time_cache ); ?>(s)
+					<?php printf( __( 'This report has a cache of %d minute', Init::PLUGIN_SLUG ), $time_cache ); ?>(s)
 				</span>
 			</span>
 			<div class="<?php echo Settings::PLUGIN_PREFIX; ?>-settings-wrap">

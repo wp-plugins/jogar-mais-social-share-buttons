@@ -61,18 +61,17 @@ class Core
 	 * @param String $thumbnail
 	 * @param String $content
 	 * @param String $caracter
-	 * @param String $sms_title
 	 * @param String $twitter_via
 	 * @return Object all data links
 	 */
-	private static function _set_elements( $title, $url, $tracking, $thumbnail, $content, $caracter, $sms_title, $twitter_via )
+	private static function _set_elements( $title, $url, $tracking, $thumbnail, $content, $caracter, $twitter_via )
 	{
 		$data_action    = 'data-action="open-popup"';
 		$share_services = array(
 			'facebook' => array(
 				'name'  => 'Facebook',
 				'link'  => "https://www.facebook.com/sharer/sharer.php?u={$url}{$tracking}",
-				'title' => __( 'Compartilhar no Facebook', Init::PLUGIN_SLUG ),
+				'title' => __( 'Share on Facebook', Init::PLUGIN_SLUG ),
 				'icon'  => 'facebook.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-facebook',
 				'popup' => $data_action,
@@ -80,8 +79,8 @@ class Core
 			),
 			'twitter' => array(
 				'name'  => 'Twitter',
-				'link'  => "https://twitter.com/share?url={$url}&text=" . __( 'Acabei de ver', Init::PLUGIN_SLUG ) . " {$title} - " . __( 'Clique pra ver também', Init::PLUGIN_SLUG ) . " {$caracter}&via={$twitter_via}",
-				'title' => __( 'Compartilhar no Twitter', Init::PLUGIN_SLUG ),
+				'link'  => "https://twitter.com/share?url={$url}&text=" . __( 'I just saw', Init::PLUGIN_SLUG ) . " {$title} - " . __( 'Click to see also', Init::PLUGIN_SLUG ) . " {$caracter}&via={$twitter_via}",
+				'title' => __( 'Share on Twitter', Init::PLUGIN_SLUG ),
 				'icon'  => 'twitter.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-twitter',
 				'popup' => $data_action,
@@ -90,7 +89,7 @@ class Core
 			'google_plus' => array(
 				'name'  => 'Google',
 				'link'  => "https://plus.google.com/share?url={$url}{$tracking}",
-				'title' => __( 'Compartilhar no Google+', Init::PLUGIN_SLUG ),
+				'title' => __( 'Share on Google+', Init::PLUGIN_SLUG ),
 				'icon'  => 'google_plus.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-google-plus',
 				'popup' => $data_action,
@@ -99,25 +98,16 @@ class Core
 			'whatsapp' => array(
 				'name'  => 'Whatsapp',
 				'link'  => "whatsapp://send?text={$title}{$caracter}{$url}{$tracking}",
-				'title' => __( 'Compartilhar no WhatsApp', Init::PLUGIN_SLUG ),
+				'title' => __( 'Share on WhatsApp', Init::PLUGIN_SLUG ),
 				'icon'  => 'whatsapp.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-whatsapp',
 				'popup' => '',
 				'img'   => 'icon-whatsapp',
 			),
-			'sms' => array(
-				'name'  => 'Sms',
-				'link'  => "sms:?body={$sms_title}{$caracter}{$url}",
-				'title' => __( 'Enviar via SMS', Init::PLUGIN_SLUG ),
-				'icon'  => 'sms.svg',
-				'class' => Settings::PLUGIN_PREFIX . '-sms',
-				'popup' => '',
-				'img'   => 'icon-sms',
-			),
 			'pinterest' => array(
 				'name'  => 'Pinterest',
 				'link'  => "https://pinterest.com/pin/create/button/?url={$url}{$tracking}&media={$thumbnail}&description={$title}",
-				'title' => __( 'Compartilhar no Pinterest', Init::PLUGIN_SLUG ),
+				'title' => __( 'Share on Pinterest', Init::PLUGIN_SLUG ),
 				'icon'  => 'pinterest.png',
 				'class' => Settings::PLUGIN_PREFIX . '-pinterest',
 				'popup' => $data_action,
@@ -126,7 +116,7 @@ class Core
 			'linkedin' => array(
 				'name'  => 'Linkedin',
 				'link'  => "https://www.linkedin.com/shareArticle?mini=true&url={$url}{$tracking}&title={$title}",
-				'title' => __( 'Compartilhar no Linkedin', Init::PLUGIN_SLUG ),
+				'title' => __( 'Share on Linkedin', Init::PLUGIN_SLUG ),
 				'icon'  => 'linkedin.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-linkedin',
 				'popup' => $data_action,
@@ -135,7 +125,7 @@ class Core
 			'tumblr' => array(
 				'name'  => 'Tumblr',
 				'link'  => 'http://www.tumblr.com/share',
-				'title' => __( 'Compartilhar no Tumblr', Init::PLUGIN_SLUG ),
+				'title' => __( 'Share on Tumblr', Init::PLUGIN_SLUG ),
 				'icon'  => 'tumblr.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-tumblr',
 				'popup' => $data_action,
@@ -144,7 +134,7 @@ class Core
 			'gmail' => array(
 				'name'  => 'Gmail',
 				'link'  => "https://mail.google.com/mail/u/0/?ui=2&view=cm&fs=1&tf=1&su={$title}&body={$content}\n{$url}",
-				'title' => __( 'Enviar via Gmail', Init::PLUGIN_SLUG ),
+				'title' => __( 'Send via Gmail', Init::PLUGIN_SLUG ),
 				'icon'  => 'gmail.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-gmail',
 				'popup' => $data_action,
@@ -153,7 +143,7 @@ class Core
 			'email' => array(
 				'name'  => 'Email',
 				'link'  => "mailto:?subject={$title}&body={$url}",
-				'title' => __( 'Enviar por email', Init::PLUGIN_SLUG ),
+				'title' => __( 'Send by email', Init::PLUGIN_SLUG ),
 				'icon'  => 'email.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-email',
 				'popup' => $data_action,
@@ -162,7 +152,7 @@ class Core
 			'printfriendly' => array(
 				'name'  => 'PrintFriendly',
 				'link'  => "http://www.printfriendly.com/print?url={$url}&partner=whatsapp",
-				'title' => __( 'Imprimir via Print Friendly', Init::PLUGIN_SLUG ),
+				'title' => __( 'Print via Print Friendly', Init::PLUGIN_SLUG ),
 				'icon'  => 'printfriendly.svg',
 				'class' => Settings::PLUGIN_PREFIX . '-print-friendly',
 				'popup' => $data_action,
@@ -191,7 +181,6 @@ class Core
 			rawurlencode( $arguments['thumbnail'] ),
 			rawurlencode( $arguments['body_mail'] ),
 			rawurlencode( '➜ ' ),
-			rawurlencode( $arguments['sms_title'] ),
 			Utils_Helper::option( '_twitter_via' )
 		);
 
@@ -214,7 +203,6 @@ class Core
 			'link'      => Utils_Helper::get_permalink(),
 			'thumbnail' => Utils_Helper::get_image(),
 			'body_mail' => Utils_Helper::body_mail(),
-			'sms_title' => str_replace( '&', 'e', $title_decode ) . ' ',
 		);
 
 		return $arguments;

@@ -54,14 +54,14 @@ class Share_View extends Core
 					'class_link' => '',
 					'class_icon' => '',
 				),
-				$atts, 'JMSSB'
+				$atts, 'JM_SHARE'
 			)
 		);
 
 		$options            = $model->get_options();
 		$services           = parent::_get_elements();
 		$prefix             = Settings::PLUGIN_PREFIX;
-		$class_default      = "{$prefix}-shared ";
+		$class_default      = "{$prefix}-button ";
 		$class_default_icon = "{$prefix}-icon ";
 		$class_icon         = Utils_Helper::esc_html( $class_icon );
 		$class_link         = Utils_Helper::esc_html( $class_link );
@@ -106,7 +106,7 @@ class Share_View extends Core
 		$prefix           = Settings::PLUGIN_PREFIX;
 		$post_id          = Utils_Helper::get_id();
 		$permalink        = Utils_Helper::get_permalink();
-		$buttons_content  = "<div class=\"{$prefix}-container-theme-two\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
+		$buttons_content  = "<div class=\"{$prefix}-buttons {$prefix}-container-theme-two\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
 		$buttons_content .= " data-attr-reference=\"{$post_id}\" data-element-url=\"{$permalink}\">";
 		$buttons_content .= self::_get_button( $services->facebook, $prefix );
 		$buttons_content .= self::_get_button( $services->google_plus, $prefix );
@@ -130,10 +130,10 @@ class Share_View extends Core
 	private static function _get_button( $reference = array(), $prefix )
 	{
 		$element  = strtolower( $reference->name );
-		$content  = "<div class=\"jm-ssb-theme-two {$element}-share\">";		
+		$content  = "<div class=\"{$prefix}-theme-two {$element}-share\">";		
 		$content .= "<a data-attr-url=\"{$reference->link}\" data-action=\"open-popup\" title=\"{$reference->title}\">";
 		$content .= "<i class=\"{$prefix}-icons-align {$prefix}-{$reference->img}\"></i>";
-		$content .= ( $element == 'twitter' ) ? __( 'tweetar', Init::PLUGIN_SLUG ) : __( 'Compartilhar', Init::PLUGIN_SLUG );
+		$content .= ( $element == 'twitter' ) ? __( 'Tweet', Init::PLUGIN_SLUG ) : __( 'Share', Init::PLUGIN_SLUG );
 		$content .= '</a>';
 		$content .= "<span class=\"count\" data-counter-{$element}>...</span>";
 		$content .= '</div>';
@@ -156,7 +156,7 @@ class Share_View extends Core
 		$prefix           = Settings::PLUGIN_PREFIX;
 		$post_id          = Utils_Helper::get_id();
 		$permalink        = Utils_Helper::get_permalink();
-		$buttons_content  = "<div class=\"{$prefix}-theme-total-share\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
+		$buttons_content  = "<div class=\"{$prefix}-buttons {$prefix}-theme-total-share\" data-element-{$prefix} data-attr-nonce=\"{$nonce}\"";
 		$buttons_content .= " data-attr-reference=\"{$post_id}\" data-element-url=\"{$permalink}\">";	
 		$buttons_content .= "<div class=\"{$prefix}-total-share-counter\">";
 		$buttons_content .= '<aside data-counter-total-share>...</aside>';
@@ -189,7 +189,7 @@ class Share_View extends Core
 		$content .= "<div class=\"{$prefix}-total-share-btn {$element}\">";
 		$content .= "<a data-attr-url=\"{$reference->link}\" data-action=\"open-popup\" title=\"{$reference->title}\">";
 		$content .= "<i class=\"{$prefix}-{$reference->img}\"></i>";
-		$content .= ( $element == 'facebook' ) ? '<span>' . __( 'Compartilhar', Init::PLUGIN_SLUG ) . '</span>' : '';
+		$content .= ( $element == 'facebook' ) ? '<span>' . __( 'Share', Init::PLUGIN_SLUG ) . '</span>' : '';
 		$content .= '</a>';
 		$content .= '</div>';
 		$content .= '</div>';
@@ -209,7 +209,7 @@ class Share_View extends Core
 		$shortcode = shortcode_atts(
 			array( 'class' => '' ),
 			$atts,
-			'JMSSBWHATSAPP'
+			'JM_SHARE_WHATSAPP'
 		);
 
 		$elements  = parent::_get_elements();
@@ -253,7 +253,7 @@ class Share_View extends Core
 			return self::theme_secondary();
 
 		if ( 3 == $theme )
-			return self::theme_total_counter();		
+			return self::theme_total_counter();
 
 		return self::links( $attrs );
 
@@ -271,12 +271,8 @@ class Share_View extends Core
 		$model    = new Settings();
 		$size     = $model->icons_size;
 		$prefix   = Settings::PLUGIN_PREFIX;
-		$sizeCalc = $size + 4;
 		$style    = "<style type=\"text/css\" media=\"screen\">\n";
-		$style   .= ".{$prefix}-shared a .{$prefix}-icon{ width: {$size}px; height: {$size}px; background-size: cover; font-size: {$size}px; }\n";
-		$style   .= ".{$prefix}-shared a .{$prefix}-icon-tumblr{ position: relative; top: 1px; }\n";
-		$style   .= ".{$prefix}-shared a .{$prefix}-icon-tumblr:before{ font-size: {$sizeCalc}px; }\n";
-		$style   .= ".{$prefix}-shared a .{$prefix}-icon-email:before{ font-size: {$sizeCalc}px; }\n";
+		$style   .= ".{$prefix} a .{$prefix}-icon{ width: {$size}px; height: {$size}px; background-size: cover; font-size: {$size}px; }\n";
 		$style   .= "</style>\n";
 
 		if ( ( $size != 32 && $size ) && 'off' !== $model->disable_css )
@@ -332,7 +328,7 @@ class Share_View extends Core
 	{
 		$attr_link = "data-attr-url=\"{$element_link}\" ";
 
-		if ( 'Whatsapp' === $element || 'Sms' === $element || 'off' === Utils_Helper::option( '_remove_script' ) )
+		if ( 'Whatsapp' === $element || 'off' === Utils_Helper::option( '_remove_script' ) )
 			$attr_link = "href=\"{$element_link}\" ";
 
 		return $attr_link;
@@ -353,7 +349,7 @@ class Share_View extends Core
 		$post_id  = Utils_Helper::get_id();
 		$prefix   = Settings::PLUGIN_PREFIX;
 		$content  = "<div data-element-{$prefix} data-attr-reference=\"{$post_id}\" data-attr-nonce=\"{$nonce}\"";
-		$content .= " data-element-url=\"{$permalink}\" class=\"{$prefix}-social {$class_ul} {$class_option}\">\n";
+		$content .= " data-element-url=\"{$permalink}\" class=\"{$prefix} {$prefix}-social {$class_ul} {$class_option}\">\n";
 
 		return $content;
 	}
