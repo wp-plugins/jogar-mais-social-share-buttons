@@ -1,18 +1,17 @@
-Module( 'SHARE.Application', function( Application ) {
-	Application.fn.initialize = function( container ) {
-		this.container      = container;
-		this.buttonsGeneral = this.container.byData( 'element-jm-ssb' );
+;(function(context) {
+
+	'use strict';
+
+	function Application( container ) {
+		this.container = container;
 		this.init();
 	};
 
-	Application.fn.init = function() {
+	Application.prototype.init = function() {
 		this.popupOpen();
-		SHARE.isMobile( this.container );
-		SHARE.CounterSocialShare( this.buttonsGeneral );
-		SHARE.HideElements( this.container );
 	};
 
-	Application.fn.popupOpen = function() {
+	Application.prototype.popupOpen = function() {
 		var self = this;
 		
 		this.container.on( 'click', '[data-action=open-popup]', function(event) {
@@ -31,7 +30,7 @@ Module( 'SHARE.Application', function( Application ) {
 		});
 	};
 
-	Application.fn.popupCenter = function( url, title, width, height ) {
+	Application.prototype.popupCenter = function( url, title, width, height ) {
 		var left
 		  , top;
 		width  = ( width  || screen.width );
@@ -45,4 +44,7 @@ Module( 'SHARE.Application', function( Application ) {
 			, 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',toolbar=no,left=' + left + ',top=' + top
 		);
 	};
-});
+
+	context.Application = Application;
+
+})( window );

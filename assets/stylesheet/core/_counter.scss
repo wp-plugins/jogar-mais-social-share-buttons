@@ -1,4 +1,4 @@
-.jm-ssb-counter {
+.#{$prefix}-counter {
 			transform: translateX( -55% );
 			transition: opacity .3s;
 	-webkit-transform: translateX( -55% );
@@ -27,42 +27,42 @@
 	}
 }
 
-.jm-ssb-facebook-counter {
+.#{$prefix}-facebook-counter {
 	background: $fbColor;
 
 	&:before {
 		border-color: $fbColor transparent transparent;
 	}
 }
-.jm-ssb-twitter-counter {
+.#{$prefix}-twitter-counter {
 	background: $ttColor;
 
 	&:before {
 		border-color: $ttColor transparent transparent;
 	}
 }
-.jm-ssb-google-plus-counter {
+.#{$prefix}-google-plus-counter {
 	background: $gpColor;
 
 	&:before {
 		border-color: $gpColor transparent transparent;
 	}	
 }
-.jm-ssb-pinterest-counter {
+.#{$prefix}-pinterest-counter {
 	background: $pinColor;
 
 	&:before {
 		border-color: $pinColor transparent transparent;
 	}	
 }
-.jm-ssb-linkedin-counter {
+.#{$prefix}-linkedin-counter {
 	background: $inColor;
 
 	&:before {
 		border-color: $inColor transparent transparent;
 	}	
 }
-.jm-ssb-tumblr-counter {
+.#{$prefix}-tumblr-counter {
 	background: $tColor;
 	&:before {
 		border-color: $tColor transparent transparent;

@@ -22,8 +22,8 @@ class Shares_Controller
 	*/
 	public function __construct()
 	{
-		add_shortcode( 'JMSSB', array( 'JM\Share_Buttons\Share_View', 'links' ) );
-		add_shortcode( 'JMSSBWHATSAPP', array( 'JM\Share_Buttons\Share_View', 'whatsapp' ) );
+		add_shortcode( 'JM_SHARE', array( 'JM\Share_Buttons\Share_View', 'links' ) );
+		add_shortcode( 'JM_SHARE_WHATSAPP', array( 'JM\Share_Buttons\Share_View', 'whatsapp' ) );
 		add_filter( 'the_content', array( &$this, 'content' ), 100 );
 		add_action( 'init', array( &$this, 'custom_excerpt' ) );
 		add_filter( 'wp_head', array( 'JM\Share_Buttons\Share_View', 'icons_style' ) );

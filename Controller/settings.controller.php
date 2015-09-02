@@ -131,8 +131,8 @@ class Settings_Controller
 
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		__( 'Configurações extra | Social Sharing Buttons', Init::PLUGIN_SLUG ),
-	  		__( 'Configurações extra', Init::PLUGIN_SLUG ),
+	  		__( 'Extra Settings | Social Sharing Buttons', Init::PLUGIN_SLUG ),
+	  		__( 'Extra Settings', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-extra-settings',
 	  		array( 'JM\Share_Buttons\Setting_View', 'render_extra_settings_page' )
@@ -140,8 +140,8 @@ class Settings_Controller
 
 	  	add_submenu_page(
 	  		Init::PLUGIN_SLUG,
-	  		__( 'Opções de uso | Social Sharing Buttons', Init::PLUGIN_SLUG ),
-	  		__( 'Opções de uso', Init::PLUGIN_SLUG ),
+	  		__( 'Use options | Social Sharing Buttons', Init::PLUGIN_SLUG ),
+	  		__( 'Use options', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-faq',
 	  		array( 'JM\Share_Buttons\Setting_View', 'render_page_faq' )

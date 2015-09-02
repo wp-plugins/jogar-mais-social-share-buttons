@@ -200,7 +200,7 @@ class Utils_Helper
 	 */
 	public static function base_name()
 	{
-		return plugin_basename( plugin_dir_path( __DIR__ ) . Init::PLUGIN_SLUG . '.php' );
+		return plugin_basename( plugin_dir_path( __DIR__ ) . basename( Init::FILE ) );
 	}
 
 	/**
@@ -318,14 +318,14 @@ class Utils_Helper
 	 * @param String $option_name
 	 * @return String
 	 */
-	public static function add_or_update_option( $option_name )
+	public static function add_or_update_option( $option_name, $value = Settings::SHARING_REPORT_DB_VERSION )
 	{
 		$option = get_site_option( $option_name );
 
 		if ( $option )
-			return update_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
+			return update_option( $option_name, $value );
 
-		return add_option( $option_name, Settings::SHARING_REPORT_DB_VERSION );
+		return add_option( $option_name, $value );
 	}
 
 	/**
