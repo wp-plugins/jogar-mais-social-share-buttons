@@ -1,0 +1,55 @@
+.#{$prefixClass}-square-plus {
+	margin-bottom: 10px;
+	margin-top: 10px;
+
+	.#{$prefixClass}-item .#{$prefixClass}-link {
+		border-radius: 3px;
+		color: white;
+		height: 30px;
+		position: relative;
+		padding: 2px 0 0 2px;
+		text-align: center;
+		width: 34px;
+
+	    i {
+			color: #fff;
+			font-size: 22px;
+			height: initial;
+			width: initial;
+
+	    	&:hover {
+	    		color: inherit;
+	    	}
+	    }
+	}
+
+	.#{$prefixClass}-full .#{$prefixClass}-link {
+		padding: 0 5px 3px 3px;
+		text-align: initial;
+		width: 100%;
+
+	    // i {
+     //        vertical-align: -moz-middle-with-baseline;
+     //        vertical-align: -webkit-baseline-middle;
+	    // }
+
+	    span { display: none; }
+
+	    @media ( min-width: 520px ) {
+		    span {
+				display: inline-block;
+				font-weight: bold;
+				left: -2px;
+				line-height: 0;
+				margin-left: 3px;
+				position: relative;
+				text-transform: uppercase;
+				top: 2px;
+		    }
+	    }
+	}
+
+	i.#{$prefixClass}-icon-facebook-square-plus {
+		vertical-align: middle;
+	}
+}

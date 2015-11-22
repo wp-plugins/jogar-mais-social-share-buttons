@@ -1,0 +1,1 @@
+window.ssbPrefix = 'ssb-share';

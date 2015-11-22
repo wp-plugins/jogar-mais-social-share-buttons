@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Ajax Controller
- * @version 1.2.0
+ * @version 2.0
  */
 
 namespace JM\Share_Buttons;
@@ -32,14 +32,18 @@ class Ajax_Controller
 	 */
 	public static function get_plus_google()
 	{
+		header( 'Content-Type: application/javascript; charset=utf-8' );
 
-		$url = Utils_Helper::request( 'url', false, 'esc_url' );
+		//Cache 10 minutes
+		$cache = get_transient( Setting::SSB_TRANSIENT_GOOGLE_PLUS );
+		$url   = Utils_Helper::request( 'url', false, 'esc_url' );
 
-		if ( ! $url ) :
-			http_response_code( 500 );
-			Utils_Helper::error_server_json( 'url_is_empty' );
-			exit(0);
+		if ( false !== $cache && isset( $cache[$url] ) ) :
+			echo Utils_Helper::esc_html( $_REQUEST[ 'callback' ] ) . '(' . $cache[$url] . ')';
+			exit(1);
 		endif;
+
+		Utils_Helper::ajax_verify_request( $url, 500, 'url_is_empty' );
 
 	    $args = array(
 			'method'  => 'POST',
@@ -68,13 +72,13 @@ class Ajax_Controller
 
 	    $response = wp_remote_request( 'https://clients6.google.com/rpc', $args );
 
-	    if ( is_wp_error( $response ) )
-	    	return self::_error_request();
+	    if ( is_wp_error( $response ) ) :
+	    	return static::_error_request();
+	    endif;
 
 	    $plusones = json_decode( $response['body'], true );
-		$results  = json_encode( self::_get_global_counts_google( $plusones, $response ) );
+		$results  = json_encode( static::_get_global_counts_google( $plusones, $response, $url ) );
 
-		header( 'Content-Type: application/javascript; charset=utf-8' );
 		echo $_REQUEST[ 'callback' ] . "({$results})";
 		exit(1);
 	}
@@ -86,12 +90,22 @@ class Ajax_Controller
 	 * @param Array $results
 	 * @return Array
 	 */
-	private static function _get_global_counts_google( $results, $response )
+	private static function _get_global_counts_google( $results, $response, $url )
 	{
 		$global_count = $results['result']['metadata']['globalCounts'];
+		$cache        = array();
 
-		if ( empty( $global_count ) || is_null( $global_count ) )
+		if ( empty( $global_count ) || is_null( $global_count ) ) :
 			return array( 'count' => 0 );
+		endif;
+
+		$cache[$url] = json_encode( $global_count );
+
+		set_transient(
+			Setting::SSB_TRANSIENT_GOOGLE_PLUS,
+			$cache,
+			apply_filters( Setting::SSB_TRANSIENT_GOOGLE_PLUS, 10 * MINUTE_IN_SECONDS )
+		);
 
 		return $global_count;
 	}
@@ -105,7 +119,6 @@ class Ajax_Controller
 	 */
 	private static function _error_request()
 	{
-		header( 'Content-Type: application/javascript; charset=utf-8' );
 		$results = json_encode( array( 'count' => 0 ) );
 		echo $_REQUEST[ 'callback' ] . "({$results})";
 		exit(1);
@@ -132,13 +145,13 @@ class Ajax_Controller
 		$count_pinterest = Utils_Helper::request( 'count_pinterest', 0, 'intval' );
 		$total           = ( $count_facebook + $count_twitter + $count_google + $count_linkedin + $count_pinterest );
 		$nonce           = Utils_Helper::request( 'nonce', false, 'esc_html' );
-		$table           = $wpdb->prefix . Settings::TABLE_NAME;
+		$table           = $wpdb->prefix . Setting::TABLE_NAME;
 
-		if ( self::_verify_request( $post_id, $nonce ) )
+		if ( static::_verify_request( $post_id, $nonce ) )
 			exit(0);
 
 		if ( $total > 0 )
-			self::_select(
+			static::_select(
 				$table,
 				array(
 					'post_id'         => $post_id,
@@ -172,10 +185,10 @@ class Ajax_Controller
 		$row_count = intval( $row_count );
 
 		if ( 1 === $row_count )
-			self::_update( $table, $data );
+			static::_update( $table, $data );
 
 		if ( 0 === $row_count )
-			self::_insert( $table, $data );
+			static::_insert( $table, $data );
 
 		exit(1);
 	}

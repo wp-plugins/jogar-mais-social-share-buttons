@@ -1,0 +1,161 @@
+.#{$prefixClass} {
+    @extend %noSelect;
+    font-size: 0;
+    margin-bottom: 20px;
+
+    .#{$prefixClass}-item {
+        display: inline-block;
+    }
+
+    .#{$prefixClass}-count {
+        display: none;
+        margin-left: 10px;
+    }
+
+    .#{$prefixClass}-item,
+    .#{$prefixClass}-count {
+        font-size: $fontSizeDefault;
+        vertical-align: middle;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// -- share item
+// ----------------------------------------------------------------------------
+.#{$prefixClass} .#{$prefixClass}-item {
+    margin-left: 15px;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    a {
+        -moz-transition: background 0.3s ease;
+        -webkit-transition: background 0.3s ease;
+                transition: background 0.3s ease;
+        border: none;
+    }
+}
+
+.#{$prefixClass}-square-plus {
+    .#{$prefixClass}-item {
+        margin-left: 5px;
+    }
+
+    .#{$prefixClass}-full {
+        margin-left: 0;
+    }
+}
+
+.#{$prefixClass}-square-plus .#{$prefixClass}-counter {
+    display: none;
+}
+
+// ----------------------------------------------------------------------------
+// -- Items position fixed left
+// ----------------------------------------------------------------------------
+.#{$prefixClass}-fixed-left {
+    position: fixed;
+    left: 0;
+    top: 30%;
+    z-index: 999;
+
+    .#{$prefixClass}-item {
+        display: block;
+        margin-left: 0;
+
+        a,
+        .#{$prefixClass}-total-share .#{$prefixClass}-button {
+            border-radius: initial;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            width: 40px;
+        }
+
+        a span { display: none; }
+
+        .#{$prefixClass}-count {
+            display: none;
+        }
+    }
+}
+
+.#{$prefixClass}-total-share {
+    .#{$prefixClass}-button {
+        background: #E3E3E3;
+        color: #165118;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    span { font-size: 15px; }
+}
+
+// ----------------------------------------------------------------------------
+// -- Mobile
+// ----------------------------------------------------------------------------
+@media ( min-width: $tablet ) {
+    .#{$prefixClass} {
+        .#{$prefixClass}-whatsapp {
+            display: none;
+        }
+
+        .#{$prefixClass}-count {
+            display: inline-block;
+        }
+    }
+}
+
+@media ( max-width: $mobile ) {
+    .#{$prefixClass}-item a span {
+        display: none;
+    }
+}
+
+ @media ( min-width: $mobile ) {
+    .#{$prefixClass}-square-plus .#{$prefixClass}-counter {
+        color: #005329;
+        display: inline-block;
+        margin-right: 10px;
+        max-height: 30px;
+        overflow: hidden;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 0;
+        position: relative;
+
+        span {
+            display: block;
+            font-family: sans-serif;
+            font-size: 15px;
+            font-style: italic;
+            font-weight: bold;
+            position: relative;
+            text-align: center;
+        }
+
+        .#{$prefixClass}-counter {
+            min-width: 50px;
+        }
+
+        .#{$prefixClass}-text {
+            bottom: -4px;
+            font-size: 10px;
+            left: 17%;
+            position: absolute;
+            text-transform: uppercase;
+        }
+
+        .#{$prefixClass}-slash:after {
+            content: "/";
+            color: #999393;
+            font-size: 28px;
+            font-weight: bolder;
+            position: absolute;
+            right: 5px;
+            top: -8px;
+        }
+    }
+}

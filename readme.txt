@@ -1,12 +1,12 @@
-=== Social Sharing Buttons by Victor Freitas ===
+=== Sharing Buttons ===
 
 Author URL: http://jogarmais.com.br
 Contributors: victorfreitas
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X7BF5KKYQMA8E
 Tags: share, social, buttons, share buttons, Sharing Buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
-Tested up to: 4.3.0
-Stable tag: 1.4.2
+Tested up to: 4.3.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,24 +57,43 @@ and for validating the ["Poedit Editor"](http://www.poedit.net/).
 
 == Screenshots ==
 
-1. screenshot-1.png
-2. screenshot-2.png
-3. screenshot-3.png
-4. screenshot-4.png
-5. screenshot-5.png
-6. screenshot-6.png
-7. screenshot-7.png
-8. screenshot-8.png
-9. screenshot-9.png
-10. screenshot-10.png
-11. screenshot-11.png
-12. screenshot-12.png
+1. Admin settings page
+2. Admin extra settings page
+3. Admin use options page
+4. Admin sharing report page
+5. Layout: Default
+6. Layout: Default
+7. Layout: Default
+8. Layout: Default
+9. Layout: Buttons
+10. Layout: Buttons
+11. Layout: Buttons
+12. Layout: Rounded
+13. Layout: Rounded
+14. Layout: Rounded
+15. Layout: Square
+16. Layout: Square
+17. Layout: Square
+18. Layout: Square Plus
+19. Layout: Square Plus
+20. Layout: Square Plus
+21. Layout: Buttons > Position fixed left
 
 * Sharing buttons
 * Settings panel
 * Set for your sharing icons
 
 == Changelog ==
+
+= 2.0.0 =
+
+* New: new layouts
+* New: Improvements in settings
+* New: new features
+* New: new customizations
+* New: Removing old layouts that were broken
+* Fix: Performance improvements
+* Fix: Bug fixes
 
 = 1.4.2 =
 
@@ -152,7 +171,12 @@ and for validating the ["Poedit Editor"](http://www.poedit.net/).
 
 == Upgrade Notice ==
 
-= 1.4.2 =
+= 2.0.0 =
 
+* New: new layouts
+* New: Improvements in settings
+* New: new features
+* New: new customizations
+* New: Removing old layouts that were broken
+* Fix: Performance improvements
 * Fix: Bug fixes
-* Fix: Improving performance

@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
- * @version 1.3.0
+ * @version 2.0
  */
 
 namespace JM\Share_Buttons;
@@ -44,21 +44,16 @@ class Utils_Helper
 	{
         switch ( $type ) :
             case 'html' :
-				$value = htmlentities( $value, ENT_QUOTES );
 				$value = self::rip_tags( $value );
                 break;
 
             case 'code' :
-            	if ( ! preg_match( '/[&<>"\']/', $value ) )
-					$value = $value;
+				$value = htmlentities2( $value );
 				break;
         endswitch;
 
         return $value;
 	}
-
-
-
 
 	/**
 	 * RIP tags html
@@ -69,7 +64,7 @@ class Utils_Helper
 	 */
 	private static function rip_tags( $string )
 	{
-	    $string = preg_replace( '/[<[^>]*>]/', ' ', $string );
+	    $string = preg_replace( '/[<[^>]*>]/', '', $string );
 	    $string = str_replace( "\r", '', $string );
 	    $string = str_replace( "\n", ' ', $string );
 	    $string = str_replace( "\t", ' ', $string );
@@ -114,10 +109,10 @@ class Utils_Helper
 	*/
 	public static function request( $key, $default = '', $sanitize = 'esc_html' )
 	{
-		if ( ! isset( $_REQUEST[ $key ] ) OR empty( $_REQUEST[ $key ] ) )
+		if ( ! isset( $_REQUEST[$key] ) OR empty( $_REQUEST[$key] ) )
 			return $default;
 
-		return self::sanitize_type( $_REQUEST[ $key ], $sanitize );
+		return self::sanitize_type( $_REQUEST[$key], $sanitize );
 	}
 
 	/**
@@ -130,7 +125,7 @@ class Utils_Helper
 	*/
 	public static function sanitize_type( $value, $function_name )
 	{
-		if ( ! is_callable( $function_name ) || 'esc_html' === $function_name )
+		if ( ! is_callable( $function_name ) || 'esc_html' == $function_name )
 			return self::esc_html( $value );
 
 		return call_user_func( $function_name, $value );
@@ -147,12 +142,12 @@ class Utils_Helper
 	{
 		global $post;
 
-		$the_title = '';
+		$post_title = '';
 
 		if ( isset( $post->ID ) )
-			$the_title = get_the_title( $post->ID );
+			$post_title = get_the_title( $post->ID );
 
-		return $the_title;
+		return $post_title;
 	}
 
 	/**
@@ -269,7 +264,7 @@ class Utils_Helper
 	 */
 	public static function plugin_url( $file, $path = 'assets/' )
 	{
-		return plugins_url( $path . $file, __DIR__ );
+		return plugins_url( "{$path}{$file}", __DIR__ );
 	}
 
 	/**
@@ -281,7 +276,7 @@ class Utils_Helper
 	 */
 	public static function file_path( $file = '', $path = 'assets/' )
 	{
-		return plugin_dir_path( dirname( __FILE__ ) ) . $path . $file;
+		return plugin_dir_path( dirname( __FILE__ ) ) . "{$path}{$file}";
 	}
 
 	/**
@@ -304,13 +299,13 @@ class Utils_Helper
 	 * @param String $sanitize Relative function
 	 * @return String
 	 */
-	public static function option( $option, $sanitize = 'esc_html', $default = '' )
+	public static function option( $option, $default = '', $sanitize = 'esc_html' )
 	{
-		$model   = new Settings();
+		$model   = new Setting();
 		$options = $model->get_options();
 
-		if ( isset( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . $option] ) )
-			return self::sanitize_type( $options[Settings::PLUGIN_PREFIX_UNDERSCORE . $option], $sanitize );
+		if ( isset( $options[$option] ) )
+			return self::sanitize_type( $options[$option], $sanitize );
 
 		return $default;
 	}
@@ -334,10 +329,30 @@ class Utils_Helper
 			)
 		);
 
-		if ( ! $echo )
-			return $response;
+		if ( $echo ) :
+			echo $response;
+			exit(0);
+		endif;
 
-		echo $response;
+		return $response;
+	}
+
+	/**
+	 * Request not found
+	 *
+	 * @since 1.0
+	 * @param Array/String/Bool/Int $request
+	 * @param Int $code
+	 * @param String $message
+	 * @return Void
+	 */
+	public static function ajax_verify_request( $request, $code = 500, $message = 'server_error' )
+	{
+		if ( ! $request ) :
+			http_response_code( $code );
+			self::error_server_json( $code, $message );
+			exit(0);
+		endif;
 	}
 
 	/**
@@ -362,14 +377,14 @@ class Utils_Helper
 	 * @param String $option_name
 	 * @return String
 	 */
-	public static function add_or_update_option( $option_name, $value = Settings::SHARING_REPORT_DB_VERSION )
+	public static function add_update_option( $option_name )
 	{
 		$option = get_site_option( $option_name );
 
 		if ( $option )
-			return update_option( $option_name, $value );
+			return update_option( $option_name, Setting::DB_VERSION );
 
-		return add_option( $option_name, $value );
+		return add_option( $option_name, Setting::DB_VERSION );
 	}
 
 	/**
@@ -381,8 +396,27 @@ class Utils_Helper
 	 */
 	public static function number_format( $number )
 	{
-		$number = intval( $number );
+		$number = (double) $number;
+
+		if ( ! $number )
+			return $number;
 
 		return number_format( $number, 0, '.', '.' );
+	}
+
+	/**
+	 * Verify index in array and set
+	 *
+	 * @since 1.0
+	 * @param Array $args
+	 * @param String/int $index
+	 * @return String
+	 */
+	public static function isset_set( $args = array(), $index )
+	{
+		if ( isset( $args[$index] ) )
+			return $args[$index];
+
+		return '';
 	}
 }

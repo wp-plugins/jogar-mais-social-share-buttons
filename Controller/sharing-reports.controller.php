@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Controller Sharing Report
- * @version 1.4.0
+ * @version 2.0
  */
 
 namespace JM\Share_Buttons;
@@ -29,7 +29,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 {
 	/**
 	 * Number for posts per page
-	 * 
+	 *
 	 * @since 1.1
 	 * @var Integer
 	 */
@@ -37,7 +37,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Number for cache time
-	 * 
+	 *
 	 * @since 1.2
 	 * @var Integer
 	 */
@@ -45,21 +45,22 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	public function __construct()
 	{
-		$this->cache_time = Utils_Helper::option( '_report_cache_time', 'intval', 10 );
+		$this->cache_time = Utils_Helper::option( 'report_cache_time', 10, 'intval' );
 
 		add_action( 'admin_menu', array( &$this, 'menu' ) );
 		parent::__construct(
 			array(
-				'singular' => 'jm-share-sharing-report',
-				'plural'   => 'jm-share-sharing-reports',
+				'singular' => 'social-share-report',
+				'plural'   => 'social-sharing-reports',
 				'screen'   => 'interval-list',
+				'ajax'     => false,
 			)
 		);
 	}
 
 	/**
-	 * Search in database results relative share posts 
-	 * 
+	 * Search in database results relative share posts
+	 *
 	 * @since 1.4
 	 * @global $wpdb
 	 * @param Int $page
@@ -71,9 +72,9 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	{
 		global $wpdb;
 
-		$offset     = ( ( $current_page - 1 ) * self::POSTS_PER_PAGE );
-		$cache      = get_transient( Settings::JM_TRANSIENT );
-		$table      = $wpdb->prefix . Settings::TABLE_NAME;
+		$offset = ( ( $current_page - 1 ) * self::POSTS_PER_PAGE );
+		$cache  = get_transient( Setting::SSB_TRANSIENT );
+		$table  = $wpdb->prefix . Setting::TABLE_NAME;
 
 		if ( false !== $cache && isset( $cache[$current_page][$orderby][$order] ) )
 			return $cache[$current_page][$orderby][$order];
@@ -90,14 +91,14 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 		$cache[$current_page][$orderby][$order] = $wpdb->get_results( $query );
 
-		set_transient( Settings::JM_TRANSIENT, $cache, $this->cache_time * MINUTE_IN_SECONDS );
+		set_transient( Setting::SSB_TRANSIENT, $cache, $this->cache_time * MINUTE_IN_SECONDS );
 
 		return $cache[$current_page][$orderby][$order];
 	}
 
 	/**
 	 * Get total results in wp list table for records
-	 * 
+	 *
 	 * @since 1.0
 	 * @global $wpdb
 	 * @param Null
@@ -107,27 +108,27 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	{
 		global $wpdb;
 
-		$cache = get_transient( Settings::JM_TRANSIENT_SELECT_COUNT );
-		$table = $wpdb->prefix . Settings::TABLE_NAME;
+		$cache = get_transient( Setting::SSB_TRANSIENT_SELECT_COUNT );
+		$table = $wpdb->prefix . Setting::TABLE_NAME;
 
 		if ( false !== $cache )
 			return $cache;
 
 		if ( ! $wpdb->query( "SHOW TABLES LIKE '{$table}'" ) )
-			return;
+			return 0;
 
 		$query        = "SELECT COUNT(*) FROM {$table}";
 		$row_count    = $wpdb->get_var( $query );
 		$total_result = intval( $row_count );
 
-		set_transient( Settings::JM_TRANSIENT_SELECT_COUNT, $total_result,  $this->cache_time * MINUTE_IN_SECONDS );
+		set_transient( Setting::SSB_TRANSIENT_SELECT_COUNT, $total_result,  $this->cache_time * MINUTE_IN_SECONDS );
 
 		return $total_result;
 	}
 
 	/**
 	 * Insert results in column wp list table
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return Mixed String/Integer
@@ -156,7 +157,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Set column wp list table
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return Array
@@ -178,7 +179,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Set orderby in column wp list table
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return Array
@@ -200,7 +201,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Prepare item for record add in wp list table
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return Array
@@ -211,7 +212,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 		$order_type            = Utils_Helper::request( 'order', 'desc', 'sanitize_sql_orderby' );
 		$reference             = $this->_verify_sql_orderby( $orderby, 'total' );
 		$order                 = $this->_verify_sql_order( $order_type, 'desc' );
-		$posts_per_page        = $this->get_items_per_page( 'jm_posts_per_page', self::POSTS_PER_PAGE );
+		$posts_per_page        = $this->get_items_per_page( 'ssb_posts_per_page', self::POSTS_PER_PAGE );
 		$current_page          = $this->get_pagenum();
 		$total_results         = self::_total_results();
 		$this->_column_headers = $this->get_column_info();
@@ -219,16 +220,17 @@ class Sharing_Reports_Controller extends \WP_List_Table
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_results,
+				'total_pages' => ( $total_results / $posts_per_page ),
 				'per_page'    => $posts_per_page,
 			)
 		);
-		
+
 		$this->items = self::_get_sharing_report( $posts_per_page, $current_page, $reference, $order );
 	}
 
 	/**
 	 * Return message in wp list table case empty records
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return String
@@ -240,7 +242,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Create submenu page
-	 * 
+	 *
 	 * @since 1.0
 	 * @param null
 	 * @return Void
@@ -259,7 +261,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Set report page view
-	 * 
+	 *
 	 * @since 1.3
 	 * @param null
 	 * @return Void
@@ -271,7 +273,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Verify sql orderby param
-	 * 
+	 *
 	 * @since 1.2
 	 * @param String $orderby
 	 * @param String $default
@@ -289,7 +291,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Verify sql order param
-	 * 
+	 *
 	 * @since 1.0
 	 * @param String $order
 	 * @param String $default
@@ -305,7 +307,7 @@ class Sharing_Reports_Controller extends \WP_List_Table
 
 	/**
 	 * Create table sharing reports.
-	 * 
+	 *
 	 * @since 1.1
 	 * @global $wpdb
 	 * @param Null
@@ -315,9 +317,9 @@ class Sharing_Reports_Controller extends \WP_List_Table
 	public function create_table()
 	{
 		global $wpdb;
-		
+
 		$charset    = $wpdb->get_charset_collate();
-		$table_name = $wpdb->prefix . Settings::TABLE_NAME;
+		$table_name = $wpdb->prefix . Setting::TABLE_NAME;
 
 		$sql = "
 			CREATE TABLE IF NOT EXISTS $table_name (
@@ -333,10 +335,10 @@ class Sharing_Reports_Controller extends \WP_List_Table
 				PRIMARY KEY id ( id ),
 				UNIQUE( post_id )
 			)   {$charset};";
-		
+
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		dbDelta( $sql );
-		Utils_Helper::add_or_update_option( Settings::TABLE_NAME . '_db_version' );
+		Utils_Helper::add_update_option( Setting::TABLE_NAME . '_db_version' );
 	}
 }

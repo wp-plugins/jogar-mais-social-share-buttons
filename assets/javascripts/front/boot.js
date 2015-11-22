@@ -10,5 +10,8 @@ jQuery(function($) {
 		return;
 	}
 
-	new SsbSettings( component );
+	new Application( container );
+	new CounterSocialShare( component );
+	new isMobile( container );
+	new HideElements( container );
 });

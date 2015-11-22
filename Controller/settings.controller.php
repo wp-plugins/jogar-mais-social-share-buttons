@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Settings Controller
- * @version 1.4.0
+ * @version 2.0
  */
 
 namespace JM\Share_Buttons;
@@ -13,7 +13,13 @@ namespace JM\Share_Buttons;
 if ( ! function_exists( 'add_action' ) )
 	exit(0);
 
-Init::uses( 'ajax', 'Controller' );
+//View
+Init::uses( 'settings', 'View' );
+Init::uses( 'settings-extra', 'View' );
+Init::uses( 'settings-faq', 'View' );
+
+//Model
+Init::uses( 'setting', 'Model' );
 
 class Settings_Controller
 {
@@ -27,7 +33,7 @@ class Settings_Controller
 		add_filter( 'plugin_action_links_' . Utils_Helper::base_name(), array( &$this, 'plugin_link' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_scripts' ) );
-		add_action( 'admin_menu', array( &$this, 'menu_page' ) );		
+		add_action( 'admin_menu', array( &$this, 'menu_page' ) );
 		add_action( 'wp_ajax_nopriv_get_plus_google', array( 'JM\Share_Buttons\Ajax_Controller', 'get_plus_google' ) );
 		add_action( 'wp_ajax_get_plus_google', array( 'JM\Share_Buttons\Ajax_Controller', 'get_plus_google' ) );
 		add_action( 'wp_ajax_nopriv_global_counts_social_share', array( 'JM\Share_Buttons\Ajax_Controller', 'global_counts_social_share' ) );
@@ -36,7 +42,7 @@ class Settings_Controller
 
 	/**
 	 * Adds links page plugin action
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Array $links
 	 * @return Array links action plugins
@@ -44,7 +50,8 @@ class Settings_Controller
 	public function plugin_link( $links )
 	{
 		$page_link     = get_admin_url( null,  'admin.php?page=' . Init::PLUGIN_SLUG );
-		$settings_link = "<a href=\"{$page_link}\">Configurações</a>";
+		$settings      = __( 'Settings', Init::PLUGIN_SLUG );
+		$settings_link = "<a href=\"{$page_link}\">{$settings}</a>";
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -52,23 +59,24 @@ class Settings_Controller
 
 	/**
 	 * Enqueue scripts and styles
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return Void
 	 */
 	public function scripts()
 	{
-		if ( 'off' !== Utils_Helper::option( '_remove_script' ) ) :
+		if ( 'on' !== Utils_Helper::option( 'disable_js' ) ) :
 			wp_enqueue_script(
-				Settings::PLUGIN_PREFIX . '-theme-scripts',
-				Utils_Helper::plugin_url( 'javascripts/script.min.js' ),
+				Setting::PREFIX . '-scripts',
+				Utils_Helper::plugin_url( 'javascripts/built.front.js' ),
 				array( 'jquery' ),
-				Utils_Helper::filetime( Utils_Helper::file_path( 'javascripts/script.min.js' ) ),
+				Utils_Helper::filetime( Utils_Helper::file_path( 'javascripts/built.front.js' ) ),
 				true
 			);
+
 			wp_localize_script(
-				Settings::PLUGIN_PREFIX . '-theme-scripts',
+				Setting::PREFIX . '-scripts',
 				'PluginGlobalVars',
 				array(
 					'urlAjax' => admin_url( 'admin-ajax.php' ),
@@ -76,19 +84,19 @@ class Settings_Controller
 			);
 		endif;
 
-		if ( 'off' !== Utils_Helper::option( '_remove_style' ) ) :
+		if ( 'on' !== Utils_Helper::option( 'disable_css' ) ) :
 			wp_enqueue_style(
-				Settings::PLUGIN_PREFIX . '-theme-style',
-				Utils_Helper::plugin_url( 'stylesheet/style.css' ),
+				Setting::PREFIX . '-style',
+				Utils_Helper::plugin_url( 'stylesheets/style.css' ),
 				array(),
-				Utils_Helper::filetime( Utils_Helper::file_path( 'stylesheet/style.css' ) )
+				Utils_Helper::filetime( Utils_Helper::file_path( 'stylesheets/style.css' ) )
 			);
 		endif;
 	}
 
 	/**
 	 * Enqueue scripts and stylesheets on admin
-	 * 
+	 *
 	 * @since 1.2
 	 * @param Null
 	 * @return Void
@@ -96,24 +104,24 @@ class Settings_Controller
 	public function admin_scripts()
 	{
 		wp_enqueue_script(
-			Settings::PLUGIN_PREFIX . '-theme-scripts',
-			Utils_Helper::plugin_url( 'javascripts/admin/script-admin.min.js' ),
+			Setting::PREFIX . '-admin-scripts',
+			Utils_Helper::plugin_url( 'javascripts/built.admin.js' ),
 			array( 'jquery' ),
-			Utils_Helper::filetime( Utils_Helper::file_path( 'javascripts/admin/script-admin.min.js' ) ),
+			Utils_Helper::filetime( Utils_Helper::file_path( 'javascripts/built.admin.js' ) ),
 			true
 		);
 
 		wp_enqueue_style(
-			Settings::PLUGIN_PREFIX . '-theme-admin-style',
-			Utils_Helper::plugin_url( 'stylesheet/admin.css' ),
+			Setting::PREFIX . '-admin-style',
+			Utils_Helper::plugin_url( 'stylesheets/admin.css' ),
 			array(),
-			Utils_Helper::filetime( Utils_Helper::file_path( 'stylesheet/admin.css' ) )
+			Utils_Helper::filetime( Utils_Helper::file_path( 'stylesheets/admin.css' ) )
 		);
 	}
 
 	/**
 	 * Register menu page and submenus
-	 * 
+	 *
 	 * @since 1.0
 	 * @param Null
 	 * @return void
@@ -125,7 +133,7 @@ class Settings_Controller
 			__( 'Sharing Buttons', Init::PLUGIN_SLUG ),
 			'manage_options',
 			Init::PLUGIN_SLUG,
-			array( 'JM\Share_Buttons\Setting_View', 'render_settings_page' ),
+			array( 'JM\Share_Buttons\Settings_View', 'render_settings_page' ),
 			'dashicons-share-alt2'
 	  	);
 
@@ -135,7 +143,7 @@ class Settings_Controller
 	  		__( 'Extra Settings', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-extra-settings',
-	  		array( 'JM\Share_Buttons\Setting_View', 'render_extra_settings_page' )
+	  		array( 'JM\Share_Buttons\Settings_Extra_View', 'render_settings_extra' )
 	  	);
 
 	  	add_submenu_page(
@@ -144,7 +152,7 @@ class Settings_Controller
 	  		__( 'Use options', Init::PLUGIN_SLUG ),
 	  		'manage_options',
 	  		Init::PLUGIN_SLUG . '-faq',
-	  		array( 'JM\Share_Buttons\Setting_View', 'render_page_faq' )
+	  		array( 'JM\Share_Buttons\Settings_Faq_View', 'render_page_faq' )
 	  	);
 	}
 }

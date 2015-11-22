@@ -1,0 +1,105 @@
+// ----------------------------------------------------------------------------
+// Font Icon
+// ----------------------------------------------------------------------------
+@font-face {
+	font-family: $prefixClass;
+	src: url("../fonts/ssb-share.eot");
+	src: url("../fonts/ssb-share.eot?#iefix") format("embedded-opentype"),
+		 url("../fonts/ssb-share.woff") format("woff"),
+		 url("../fonts/ssb-share.ttf") format("truetype"),
+		 url("../fonts/ssb-share.svg#/ssb-share") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="ssb-share-icon"], [class*="ssb-share-icon"] {
+	@extend %icon;
+}
+
+.ssb-share-icon-email:before {
+	content: "\e605";
+}
+.ssb-share-icon-facebook:before {
+	content: "\ea8c";
+}
+.ssb-share-icon-google-plus:before {
+	content: "\ea88";
+}
+.ssb-share-icon-pinterest:before {
+	content: "\e600";
+}
+.ssb-share-icon-flickr:before {
+	content: "\eaa1";
+}
+.ssb-share-icon-twitter:before {
+	content: "\ea91";
+}
+.ssb-share-icon-linkedin:before {
+	content: "\eac9";
+}
+.ssb-share-icon-tumblr:before {
+	content: "\e60d";
+}
+.ssb-share-icon-phone:before {
+	content: "\e603";
+}
+.ssb-share-icon-printer:before {
+	content: "\e607";
+}
+.ssb-share-icon-whatsapp:before {
+	content: "\e610";
+}
+.ssb-share-icon-mail-rounded:before {
+	content: "\ea86";
+}
+.ssb-share-icon-facebook-rounded:before {
+	content: "\e609";
+}
+.ssb-share-icon-google-plus-rounded:before {
+	content: "\ea8a";
+}
+.ssb-share-icon-pinterest-rounded:before {
+	content: "\ead0";
+}
+.ssb-share-icon-flickr-rounded:before {
+	content: "\eaa3";
+}
+.ssb-share-icon-twitter-rounded:before {
+	content: "\e60c";
+}
+.ssb-share-icon-linkedin-rounded:before {
+	content: "\e60b";
+}
+.ssb-share-icon-tumblr-rounded:before {
+	content: "\e611";
+}
+.ssb-share-icon-gmail-square:before {
+	content: "\e60e";
+}
+.ssb-share-icon-facebook-square:before {
+	content: "\e602";
+}
+.ssb-share-icon-google-plus-square:before {
+	content: "\e601";
+}
+.ssb-share-icon-pinterest-square:before {
+	content: "\e608";
+}
+.ssb-share-icon-flickr-square:before {
+	content: "\e60a";
+}
+.ssb-share-icon-twitter-square:before {
+	content: "\e604";
+}
+.ssb-share-icon-linkedin-square:before {
+	content: "\e606";
+}
+.ssb-share-icon-tumblr-square:before {
+	content: "\e60f";
+}
+.ssb-share-icon-remove:before {
+	content: "\e900";
+}
+.ssb-share-icon-checked:before {
+	content: "\e901";
+}

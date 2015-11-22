@@ -1,4 +1,19 @@
 module.exports = function(grunt) {
+
+	function getObjectConcat(folder) {
+		return {
+			src : [
+				'<%= package.scripstroot %>/base/*.js',
+				'<%= package.scripstroot %>/' + folder + '/libs/*.js',
+				'<%= package.scripstroot %>/vendor/*.js',
+				'<%= package.scripstroot %>/' + folder + '/vendor/*.js',
+				'<%= package.scripstroot %>/' + folder + '/app/*.js',
+				'<%= package.scripstroot %>/' + folder + '/boot.js'
+			],
+			dest : '<%= package.scripstroot %>/built.' + folder + '.js',
+		};
+	}
+
 	var config = {
 		package : grunt.file.readJSON( 'package.json' ),
 
@@ -6,55 +21,48 @@ module.exports = function(grunt) {
 		    options : {
 				separator : ';'
 		    },
-		    site : {
-				src : [
-					'<%= package.scriptroot %>/boot.js',
-					'<%= package.scriptroot %>/app/*.js'
-				],
-				dest : '<%= package.scriptroot %>/script.min.js',
-		    },
-		    admin : {
-				src : [
-					'<%= package.scriptroot %>/admin/boot.js',
-					'<%= package.scriptroot %>/admin/theme-options.js'
-				],
-				dest : '<%= package.scriptroot %>/admin/script-admin.min.js',
-		    },
+		    admin : getObjectConcat( 'admin' ),
+		    front : getObjectConcat( 'front' )
   		},
 
-		compass : {
-			site : {
-				options : {
-					sassDir     : '<%= package.cssroot %>',
-					cssDir      : '<%= package.cssroot %>',
-					environment : 'production'
+		sass: {
+			site: {
+				options: {
+					style: 'compressed',
+					'sourcemap=none': '',
 				},
-				files : {
-					'style.css' : '<%= package.cssroot %>/style.scss',
-					'admin.css' : '<%= package.cssroot %>/admin.scss'
+				files: {
+					'<%= package.cssroot %>/admin.css': '<%= package.cssadmin %>/admin.scss',
+					'<%= package.cssroot %>/style.css': '<%= package.cssfront %>/style.scss'
 				}
 			},
 		},
 
+  		jshint: {
+			options: {
+				jshintrc : true
+			},
+    		beforeconcat : ['<%= concat.admin.src %>', '<%= concat.front.src %>']
+  		},
 
   		uglify : {
 			site : {
 				files : {
-					'<%= concat.site.dest %>'  : '<%= concat.site.dest %>',
-					'<%= concat.admin.dest %>' : '<%= concat.admin.dest %>'
+					'<%= concat.admin.dest %>' : '<%= concat.admin.dest %>',
+					'<%= concat.front.dest %>' : '<%= concat.front.dest %>'
 				}
 			}
     	},
 
 		watch: {
+		    site : {
+		    	files : ['<%= concat.admin.src %>', '<%= concat.front.src %>'],
+		    	tasks : ['jshint', 'concat', 'uglify']
+		    },
 			css : {
-				files : ['assets/stylesheet/**/*.scss'],
-				tasks : ['compass']
+				files : ['<%= package.cssroot %>/**/*.scss'],
+				tasks : ['sass:site']
 			},
-		    script : {
-		    	files : ['<%= concat.site.src %>', '<%= concat.admin.src %>'],
-		    	tasks : ['concat', 'uglify']
-		    }
   		}
 	};
 
@@ -63,8 +71,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
-	grunt.loadNpmTasks( 'grunt-contrib-compass' );
+	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+	grunt.loadNpmTasks( 'grunt-contrib-sass' );
 
-	grunt.registerTask( 'jsmin', ['concat', 'uglify'] );
-	grunt.registerTask( 'deploy', ['jsmin', 'compass'] );
+	grunt.registerTask( 'js', ['jshint', 'concat'] );
+	grunt.registerTask( 'jsmin', ['jshint', 'concat', 'uglify'] );
+	grunt.registerTask( 'deploy', ['jsmin', 'sass:site'] );
 };
