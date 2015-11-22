@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: share, social, buttons, share buttons, Sharing Buttons, whatsapp, facebook, twitter, google plus, compartilhar, redes sociais, social plugin, tweet button, share image, sharebar, sharing, social bookmarking, email form, social media buttons, click to tweet, pinterest, linkedin
 Requires at least: 3.0
 Tested up to: 4.3.1
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,10 @@ and for validating the ["Poedit Editor"](http://www.poedit.net/).
 * Set for your sharing icons
 
 == Changelog ==
+
+= 2.0.1 =
+
+* Fix: Bug fixes
 
 = 2.0.0 =
 
