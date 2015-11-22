@@ -12,6 +12,4 @@ jQuery(function($) {
 
 	new Application( container );
 	new CounterSocialShare( component );
-	new isMobile( container );
-	new HideElements( container );
 });
