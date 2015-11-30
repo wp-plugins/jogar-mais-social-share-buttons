@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Utils Helper
- * @version 2.0
+ * @version 1.3.0
  */
 
 namespace JM\Share_Buttons;

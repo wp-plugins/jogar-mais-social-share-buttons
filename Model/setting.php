@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Settings Model
- * @version 2.0
+ * @version 1.3.0
  */
 
 namespace JM\Share_Buttons;
@@ -224,6 +224,14 @@ class Setting
 	private $position_fixed;
 
 	/**
+	 * Layout posisition
+	 *
+	 * @since 1.0
+	 * @var String
+	 */
+	private $fixed;
+
+	/**
 	 * ID of post
 	 *
 	 * @since 1.0
@@ -436,6 +444,11 @@ class Setting
 			case 'position_fixed' :
 				if ( ! isset( $this->position_fixed ) )
 					$this->position_fixed = Utils_Helper::option( 'position_fixed' );
+				break;
+
+			case 'fixed' :
+				if ( ! isset( $this->fixed ) )
+					$this->fixed = Utils_Helper::option( 'fixed' );
 				break;
 
 			default :

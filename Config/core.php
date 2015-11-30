@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @subpackage Functions
  * @author  Victor Freitas
- * @version 1.7
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -99,7 +99,7 @@ class Core
 				'class_icon'  => "{$prefix}-icon-twitter",
 				'popup'       => $action,
 				'inside'      => __( 'Tweet', Init::PLUGIN_SLUG ),
-				'has_counter' => true,
+				'has_counter' => false,
 			),
 			'google_plus' => array(
 				'name'        => 'Google Plus',

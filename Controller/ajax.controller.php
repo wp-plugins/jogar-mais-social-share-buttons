@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Ajax Controller
- * @version 2.0
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;

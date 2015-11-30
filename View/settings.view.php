@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage View Admin Page
- * @version 2.0
+ * @version 1.4.0
  */
 
 namespace JM\Share_Buttons;
@@ -80,6 +80,14 @@ class Settings_View extends Shares_View
 				                	       <?php checked( 'on', $model->after ); ?>>
 					                <label for="<?php echo $prefix; ?>-after">
 					                	<span><?php _e( 'After content', Init::PLUGIN_SLUG ); ?></span>
+					                </label>
+				                </td>
+								<td>
+				                	<input id="<?php echo $prefix; ?>-fixed" type="checkbox"
+				                	       value="on" name="<?php echo "{$option_name}[fixed]"; ?>"
+				                	       <?php checked( 'on', $model->fixed ); ?>>
+					                <label for="<?php echo $prefix; ?>-fixed">
+					                	<span><?php _e( 'Fixed', Init::PLUGIN_SLUG ); ?></span>
 					                </label>
 				                </td>
 							</tr>

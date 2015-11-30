@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Social Icons Display
- * @version 2.0
+ * @version 1.2.0
  */
 
 namespace JM\Share_Buttons;
@@ -18,6 +18,8 @@ Init::uses( 'shares', 'View' );
 
 class Shares_Controller
 {
+	private $_fixed = false;
+
 	/**
 	* Initialize the plugin by setting localization, filters, and administration functions.
 	*
@@ -27,6 +29,7 @@ class Shares_Controller
 	{
 		add_shortcode( 'SSB_SHARE', array( 'JM\Share_Buttons\Shares_View', 'ssb_share' ) );
 		add_filter( 'the_content', array( &$this, 'content' ), 100 );
+		add_action( 'wp_footer', array( &$this, 'footer' ), 100 );
 	}
 
 	/**
@@ -39,15 +42,21 @@ class Shares_Controller
 	protected function _check_position()
 	{
 		$position = '';
+		$before   = Utils_Helper::option( 'before' );
+		$after    = Utils_Helper::option( 'after' );
+		$fixed    = Utils_Helper::option('fixed');
 
-		if ( Utils_Helper::option( 'before' ) === 'on' && Utils_Helper::option( 'after' ) === 'on' )
+		if ( 'on' === $before &&  'on' === $after )
 			$position = 'full';
 
-		if ( Utils_Helper::option( 'before' ) === 'on' && Utils_Helper::option( 'after' ) !== 'on' )
+		if ( 'on' === $before && 'on' !== $after )
 			$position = 'before';
 
-		if ( Utils_Helper::option( 'before' ) !== 'on' && Utils_Helper::option( 'after' ) === 'on' )
+		if ( 'on' !== $before && 'on' === $after )
 			$position = 'after';
+
+		if ( 'on' === $fixed )
+			$position = 'fixed';
 
 		return $position;
 	}
@@ -62,27 +71,30 @@ class Shares_Controller
 	public function content( $content )
 	{
 		if ( $this->_is_single() || $this->_is_page() || $this->_is_home() ) :
-			$buttons     = Shares_View::buttons_share();
-			$new_content = '';
+			$buttons = Shares_View::buttons_share();
 
 			switch ( $this->_check_position() ) :
 				case 'full' :
-		      		$new_content .= $buttons;
+		      		$new_content  = $buttons;
 		      		$new_content .= $content;
 		      		$new_content .= $buttons;
 		      		$content      = $new_content;
 					break;
 
 				case 'before' :
-					$new_content .= $buttons;
+					$new_content  = $buttons;
 					$new_content .= $content;
 					$content      = $new_content;
 					break;
 
 				case 'after' :
-					$new_content .= $content;
+					$new_content  = $content;
 					$new_content .= $buttons;
 					$content      = $new_content;
+					break;
+
+				case 'fixed' :
+					$this->_fixed = true;
 					break;
 			endswitch;
 
@@ -135,5 +147,20 @@ class Shares_Controller
 			return true;
 
 		return false;
+	}
+
+	/**
+	 * Add buttons on footer case selected layout fixed
+	 *
+	 * @since 1.0
+	 * @param Null
+	 * @return void
+	 */
+	public function footer()
+	{
+		if ( ! $this->_fixed )
+			return;
+
+		echo Shares_View::buttons_share();
 	}
 }

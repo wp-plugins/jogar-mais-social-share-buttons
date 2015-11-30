@@ -4,7 +4,7 @@
  * @package Social Sharing Buttons
  * @author  Victor Freitas
  * @subpackage Options Admin Page
- * @since 2.0
+ * @since 1.0.3
  */
 
 namespace JM\Share_Buttons;

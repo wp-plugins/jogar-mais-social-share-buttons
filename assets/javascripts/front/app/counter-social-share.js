@@ -10,19 +10,16 @@
 		this.nonce            = this.container.data( 'attr-nonce' );
 		this.url              = this.container.data( 'element-url' );
 		this.facebook         = this.container.byElement( 'facebook' );
-		this.twitter          = this.container.byElement( 'twitter' );
 		this.google           = this.container.byElement( 'google-plus' );
 		this.pinterest        = this.container.byElement( 'pinterest' );
 		this.linkedin         = this.container.byElement( 'linkedin' );
 		this.totalShare       = this.container.byElement( 'total-share' );
 		this.totalCounter     = 0;
 		this.facebookCounter  = 0;
-		this.twitterCounter   = 0;
 		this.googleCounter    = 0;
 		this.linkedinCounter  = 0;
 		this.pinterestCounter = 0;
-		this.max              = 5;
-		this.doubleMax        = 10;
+		this.max              = 4;
 		this.init();
 	};
 
@@ -46,11 +43,6 @@
 				reference : 'facebookCounter',
 				element   : 'facebook',
 				url       : 'http://graph.facebook.com/?id=' + this.url
-			},
-			{
-				reference : 'twitterCounter',
-				element   : 'twitter',
-				url	      : 'http://cdn.api.twitter.com/1/urls/count.json?url=' + this.url
 			},
 			{
 				reference : 'googleCounter',
@@ -78,9 +70,7 @@
 	};
 
 	CounterSocialShare.prototype._iterateItems = function(item) {
-		this.doubleMax -= 1;
-
-		if ( requests[item.element] && this.doubleMax ) {
+		if ( requests[item.element] ) {
 			return;
 		}
 
@@ -141,7 +131,6 @@
 	       	action          : 'global_counts_social_share',
 		    reference       : this.reference,
 		    count_facebook  : this.facebookCounter,
-		    count_twitter   : this.twitterCounter,
 		    count_google    : this.googleCounter,
 		    count_linkedin  : this.linkedinCounter,
 		    count_pinterest : this.pinterestCounter,

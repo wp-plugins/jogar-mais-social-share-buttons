@@ -31,6 +31,7 @@ $_itemsAvailable : 'items-available';
 @include input-remove( home );
 @include input-remove( before );
 @include input-remove( after );
+@include input-remove( fixed );
 
 // ----------------------------------------------------------------------------
 // -- Advanced selector > Settings > Social networks available
